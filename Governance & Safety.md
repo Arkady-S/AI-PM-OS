@@ -1,6 +1,6 @@
 Risk frameworks, defense in depth, and incident response for AI products
 
-**March 2026**
+**April 2026**
 
 ## CORE INSIGHTS
 
@@ -31,6 +31,7 @@ No single layer is enough. Assume any layer can fail. Six layers, each catching 
 | Bias | Systematic unfairness in outputs | Diverse eval sets, bias testing, human audits |
 | Model deprecation | Vendor sunsets model you depend on | Abstraction layer, cross-model testing |
 | Silent failure | Errors that look like normal responses | Monitoring, user feedback loops, periodic audits |
+| Prolonged-use psychological harm | Users develop distorted thinking, dependency, or detachment from reality after extended conversational AI sessions. Connor Leahy (Conjecture CEO, April 2026): even Nobel Prize scientists and AI safety researchers report cognitive distortion after sustained daily use. Tool use is safe; hours-long open-ended conversation is the risk vector. | Session-length guardrails, tool-mode defaults over open-ended chat, usage pattern monitoring, cool-down nudges after extended sessions. Design distinction: task-bound interactions (agent executes, returns result) vs. unbounded conversation (user talks to AI about personal problems). Default products toward task-bound. |
 
 ## FTCEM: PRE-LAUNCH SAFETY
 
