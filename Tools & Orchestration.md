@@ -1,6 +1,6 @@
 How LLMs act in the world: function calling, pipelines, and agent loops
 
-**April 2026**
+**May 2026**
 
 ## CORE CONCEPTS
 
@@ -168,6 +168,25 @@ Side effect: changing tool logic leads to worse model performance even when the 
 | Tool set | Fixed tools, code execution, hybrid | Predictability vs flexibility |
 | Context management | Compaction, offloading, summarization | Cost vs information retention |
 | Verification | Self-eval, test suite, human review | Autonomy vs reliability |
+
+## BACKGROUND CODING AGENTS
+
+Agents that work autonomously in the cloud without user-initiated sessions. The user triggers a task (or a system event does), the agent executes in a sandboxed environment, and results appear when done.
+
+Examples (as of May 2026): Stripe Minions (leveraged years of internal platform tooling), Ramp Inspect (dedicated engineering team built the infrastructure). Both demonstrate that the infrastructure layer is the hard part, not the model capability.
+
+### Build vs. Buy Considerations
+
+| Factor | Build | Buy |
+|--------|-------|-----|
+| Existing platform tooling | Strong (like Stripe): amortize investment | Weak: vendor gets you running faster |
+| Security requirements | Custom sandboxing, credential management | Vendor handles isolation but you trust their boundary |
+| Agent customization depth | Full control over harness, memory, tool set | Constrained to vendor's abstractions |
+| Team investment | Full dedicated eng team (Ramp's approach) | Integration team, not platform team |
+
+Resource: background-agents.com (maintained by Ona) tracks the vendor landscape.
+
+> Background agents require the same harness primitives as interactive agents (sandbox, filesystem, memory, orchestration) plus: job scheduling, async result delivery, credential vaulting, and cost controls for unattended execution.
 
 ## COMMON FAILURE MODES
 

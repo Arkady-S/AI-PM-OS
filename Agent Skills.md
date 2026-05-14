@@ -1,6 +1,6 @@
 Patterns for building reusable agent instructions across any platform
 
-**April 2026**
+**May 2026**
 
 Based on Anthropic best practices, LangChain skill benchmarking (2026)
 
@@ -350,6 +350,12 @@ Include common errors, causes, solutions. Bundle validation scripts.
 ### Stale Gotchas
 
 Treat skills as living docs. Update after every new failure mode.
+
+### Context Rot After Model Upgrades
+
+Skills and AGENTS.md accumulate compensatory workarounds for older model limitations (ex: explicit to-do list scaffolding, step-by-step railroading, verbose chain-of-thought prompts). When a new frontier model ships, these workarounds become noise or actively mislead the model. Cat Wu (PM, Claude Code): teams have latent performance gains hiding behind stale context that should be pruned on each major model release.
+
+Practice: after each frontier model update, audit skills and AGENTS.md for instructions that compensate for capabilities the new model handles natively. Remove them. Test before and after to confirm the pruning improves or maintains quality.
 
 ## FRONTMATTER REFERENCE
 

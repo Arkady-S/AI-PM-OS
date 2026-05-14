@@ -1,6 +1,6 @@
 Trust engineering, humorphism, and relationship design for AI products
 
-**March 2026**
+**May 2026**
 
 ## HUMORPHISM
 
@@ -40,6 +40,8 @@ AI surfaces blockers with context + options; never hallucinate through ambiguity
 > Borrow from RTS/tower defense: dynamic visual canvas of agents surfacing requests, verifications, status. You're the commander, not the operator.
 
 > Multi-agent management as gameplay, not inbox triage.
+
+> Cognitive expansion over cognitive offloading. Products that automate tasks (offloading) commoditize. Products that help users see patterns, connections, and possibilities they'd miss on their own (expansion) create loyalty. "Do it for me" is table stakes. "Help me see what I'm missing" is the differentiated play. (Scott Belsky)
 
 ## MEASUREMENT
 
@@ -151,7 +153,7 @@ Users form trust judgments almost immediately. The first interaction must demons
 | Over-automating early | Start with suggestions, not execution |
 | Under-guiding ambiguity | Add scaffolding when AI is uncertain |
 | Outputs without explanation | Show reasoning breadcrumbs |
-| Everything in a chatbox | Structured UIs for structured tasks |
+| Everything in a chatbox | Structured UIs for structured tasks. For transactional domains (travel, e-commerce, task management), agents need rich UI: maps, calendars, comparison tables, booking flows. Chat is a local maximum that underserves users when the task involves browsing, comparing, or committing. (Brian Chesky) |
 | Silent failures | Always surface uncertainty and errors |
 | Punishing exploration | Generous limits, sandbox mode |
 | Expecting prompt eng. | Translate user intent to instructions |
@@ -171,6 +173,37 @@ Synthesized from Anthropic's agent framework and enterprise deployment patterns:
 > Reduce cognitive load, not just clicks. The system should do the thinking, not just the task.
 
 > When the AI isn't sure, say so. Confident wrong answers erode trust faster than honest uncertainty.
+
+## MODEL-TO-PIXEL DESIGN
+
+Design AI products from the user experience backward into model behavior, not the reverse. The interface is shaped by intelligence in real time; model orchestration decisions (what to call, when, how to combine outputs) are UX decisions.
+
+At scale (Grammarly: 100B+ LLM calls/week, thousands per user per day), latency and cost stop being infrastructure concerns and become UX variables:
+
+| Decision | UX Impact |
+|----------|-----------|
+| Which model to call | Response quality vs wait time the user experiences |
+| When to call | Proactive feels smart or intrusive depending on timing |
+| How to combine outputs | Coherence of the experience across multiple model calls |
+| Cost per call | Determines where and how often intelligence can appear |
+
+> Model behavior is the product experience. You are not building features on top of models. The orchestration layer is the design layer.
+
+This reframes the PM/design relationship with infra: latency budgets, cost ceilings, and model routing are product spec elements, not eng implementation details.
+
+## AGENT OUTPUT FORMAT
+
+HTML outperforms Markdown as the default agent output format. Markdown constrains agents to flat text; HTML gives them a full rendering surface: interactive tables, editable specs, annotated code review, embedded charts, collapsible sections, and custom editing interfaces.
+
+| Format | Best For | Limitation |
+|--------|----------|------------|
+| Markdown | Quick replies, inline chat, developer docs | No interactivity, no layout control, no embedded logic |
+| HTML | Specs, reports, code review, data exploration, design artifacts | Heavier to render, requires sandboxed display |
+| Structured JSON | Machine-to-machine handoffs, API responses | Not human-readable without a rendering layer |
+
+> When an agent can produce an interactive artifact instead of a text blob, users engage with the output rather than just reading it. The output becomes a working surface, not a deliverable. (Thariq)
+
+Design implication: agent output rendering is a UX decision, not an infrastructure detail. The output format determines whether users can act on results immediately or must copy-paste into another tool. For Super Agents producing multi-step work products (project plans, analysis, dashboards), HTML should be the default output target.
 
 ## COMMON FAILURE MODES
 

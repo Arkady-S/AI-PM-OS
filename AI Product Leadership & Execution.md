@@ -1,6 +1,6 @@
 Operating model, leverage levels, and strategic alignment
 
-**March 2026**
+**May 2026**
 
 ## CORE INSIGHTS
 
@@ -151,6 +151,24 @@ Every roadmap item must trace back through the full chain. If any link is missin
 | Lever > Product NSM | How does lever influence NSM? | Causal chain has >2 leaps |
 | Product > Company NSM | How does product NSM drive co.? | Relationship assumed, not validated |
 | Strategy > Worldview | Which assumption does this test? | Team can't name it |
+
+## AI-NATIVE TRANSFORMATION MODEL
+
+Three layers, all required. Bottom-up capability without top-down pressure produces experimentation theater. Top-down pressure without bottom-up capability produces compliance theater.
+
+| Layer | What It Contains | Failure If Missing |
+|-------|-----------------|-------------------|
+| 1. Capability (bottom) | People pushed past learning curve quickly; tools become the teacher; experimentation in the flow of work | Teams can't execute on leadership expectations; mandates feel arbitrary |
+| 2. Culture (middle) | Rituals (ex: AI Fridays), open workflow sharing, standardizing on a small tool set; creates pull, not push | Adoption stays individual; no compounding across teams |
+| 3. Leadership (top) | Aggressive concrete milestones, not vague goals; redefining ownership (ex: "every PM pushes code to production") | No forcing function; teams optimize for comfort, not transformation |
+
+Source: Noam Lovinsky (CPO, Superhuman; formerly CPO, Grammarly).
+
+### Role Convergence
+
+As execution cost drops, specialization becomes friction. Organizations converge toward two archetypes: people who build the thing, and people who get the thing adopted. Everyone becomes a builder, not necessarily writing code, but able to prototype, test, ship, and iterate without waiting on another function.
+
+Hiring implication: expect candidates to use AI during interviews. Evaluate how they think with the model (prompt structure, iteration, judgment), not just the answer. Avoiding AI in an interview signals the candidate won't use it on the job.
 
 ## COMMON FAILURE MODES
 

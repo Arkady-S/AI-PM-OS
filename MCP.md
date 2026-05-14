@@ -1,6 +1,6 @@
 Model Context Protocol: open standard for connecting LLM applications to external data sources and tools via a universal interface
 
-**March 2026**
+**May 2026**
 
 ## CORE CONCEPT
 
@@ -40,7 +40,10 @@ Single host runs multiple clients, each connected to different server. JSON-RPC 
 | Sampling | Server asks LLM to generate (nested calls) | Agentic loops: server can reason, not just execute |
 | Elicitation | Server requests user input mid-workflow | Multi-step flows with human judgment at key points |
 | Async Tasks | Long-running ops that report progress | Doc processing, indexing, analytics jobs |
+| Events | Server pushes messages to client proactively (experimental, May 2026) | Server-initiated workflows: "task assigned" fires agent, real-time notifications without polling |
 | Roots | Client tells server which paths it can access | Scoping permissions; least privilege |
+
+Events (formerly "Triggers") shift MCP from request/response to event-driven. Claude Code shipped an early version via Channels; the spec is being standardized across clients. For product design: Events enable proactive agent behaviors where the server, not the user, initiates a workflow.
 
 ## TRANSPORT TYPES
 
@@ -58,6 +61,31 @@ stdio: simpler (no auth, process-level isolation). Streamable HTTP: required for
 3. Define resources with @server.resource(): URI-based (file:///, db://)
 4. Define prompts with @server.prompt(): template workflows with args
 5. Test with MCP Inspector before integrating
+
+## SERVER DESIGN PATTERNS
+
+### Rationale Parameter
+
+Add a required `rationale` string parameter to tool calls. Forces the model to articulate why it's invoking the tool. Benefits: doubles as observability signal, feeds eval pipelines, and surfaces misuse patterns. Ramp reported measurable adoption lift after implementing this.
+
+### Feedback Tool
+
+Expose a standalone `submit_feedback` tool on the server alongside action tools. Agents call it to report outcome quality after completing a workflow. Captures structured signal (success/failure, confidence, blockers) that drives server product development without requiring separate instrumentation.
+
+### Interaction Hierarchy
+
+Anthropic's recommended priority for how agents reach external systems:
+
+1. MCP server connections (fastest, cheapest, most reliable)
+2. Bash/CLI (pinch-hitter for gaps in MCP coverage)
+3. Browser automation (fallback when no API exists)
+4. Computer use (last resort: native apps, simulators, tools without any programmatic interface)
+
+Default to the highest layer that covers the use case. Computer/browser use is for things nothing else can reach.
+
+## ECOSYSTEM ADOPTION
+
+As of May 2026: 500+ MCP clients, thousands of servers, hockey-stick adoption curve. Recent GA or announced: Google Workspace, Salesforce, Zoom (Anthropic partnership), X/Twitter (xmcp on GitHub), Pinterest (major internal investment). The density of enterprise MCP servers directly increases the value of any MCP client and vice versa.
 
 ## SECURITY CONSIDERATIONS
 

@@ -1,6 +1,6 @@
 Measuring, maintaining, and scaling AI product quality
 
-**March 2026**
+**May 2026**
 
 Based on Braintrust, LangChain, and Product Faculty research
 
@@ -186,6 +186,12 @@ Write focused tests by hand for behaviors you think are important. These 'artisa
 ### Production logs
 
 Mine real user interactions for edge cases. Feed production failures back into eval datasets on a weekly cadence.
+
+### Agent session transcripts
+
+Agent transcripts (skill invocations, MCP tool calls, reasoning traces, error recovery sequences) are a distinct data category from production logs. They contain the full decision trajectory, not just inputs and outputs. Cursor uses coding session data for real-time RL. If transcripts flow uncaptured through LLM API calls, the signal is lost permanently.
+
+Capture strategy: persist full transcripts server-side, distill into structured records (tool sequences, success/failure outcomes, time-to-completion, error types), feed into eval pipelines as trajectory-level test cases. Over time, transcript-derived data becomes a proprietary asset for fine-tuning and RL.
 
 **Separate SDK unit/integration tests from model capability evals.** Any model passes plumbing tests, so including them in scoring adds no signal.
 
