@@ -2,11 +2,23 @@ Moats, archetypes, and frameworks for durable AI advantage
 
 **March 2026**
 
-## CORE INSIGHTS
+## CORE CONCEPT
 
 Capability is rented. Position is owned. Any competitor can license the same foundation model. Differentiation comes from proprietary data, workflow integration, domain expertise, and trust relationships that strengthen with every interaction.
 
 Traditional moats (network effects, brand, UX) are collapsing under AI pressure. New moats are contextual: data gravity, learning loops, and counter-positioning advantages that incumbents cannot copy without damaging their existing business.
+
+## KEY STRATEGIC PRINCIPLES
+
+> 1. **6-month differentiation half-life.** Features become table stakes within two quarters. Build systems that get stronger with use.
+
+> 2. **90-day incumbent response window.** Large companies now move at startup speed on AI. Plan for competitive response within one quarter.
+
+> 3. **Counter-positioning is the strongest moat.** Find the approach incumbents can't copy without damaging existing business. Structural, not capability-based.
+
+> 4. **Data gravity > distribution.** Same model, different data. Every interaction generating proprietary signal widens the gap.
+
+> 5. **Measure dependency, not engagement.** Better autonomous AI reduces frequency. A weekly user who can't function without you beats a daily user who could switch.
 
 ## 4C DISRUPTION FRAMEWORK
 
@@ -66,18 +78,6 @@ Powers are built sequentially through execution, not claimed at founding. Map wh
 | Switching Costs | Customer-specific models, deep integrations, muscle memory |
 | Brand | Trust in accuracy, responsible data handling, quality reputation |
 
-## KEY STRATEGIC PRINCIPLES
-
-> 1. **6-month differentiation half-life.** Features become table stakes within two quarters. Build systems that get stronger with use.
-
-> 2. **90-day incumbent response window.** Large companies now move at startup speed on AI. Plan for competitive response within one quarter.
-
-> 3. **Counter-positioning is the strongest moat.** Find the approach incumbents can't copy without damaging existing business. Structural, not capability-based.
-
-> 4. **Data gravity > distribution.** Same model, different data. Every interaction generating proprietary signal widens the gap.
-
-> 5. **Measure dependency, not engagement.** Better autonomous AI reduces frequency. A weekly user who can't function without you beats a daily user who could switch.
-
 ## BEHAVIORAL SEGMENTATION
 
 Segment by patterns of drive (motivation, enablement, momentum) and resistance (friction, anxiety, inertia), not demographics. The highest-leverage opportunities live where both are high.
@@ -110,18 +110,6 @@ Cross-cuts demographics. Affects value framing, defaults, autonomy levels, and t
 | Collaboration | "Help me decide." AI as partner. | Default to suggestions. Risk: too much initiative feels intrusive. |
 | Control | "I'll decide when AI helps." | Default manual, AI on-demand. Risk: never discovers full value. |
 
-## COMMON FAILURE MODES
-
-| Failure | Symptom | Prevention |
-|---------|---------|-----------|
-| Feature-first strategy | Roadmap driven by competitor parity | Anchor initiatives to moat-building |
-| Wrong archetype | Running wrong playbook | Classify honestly; validate with research |
-| Moat delusion | Believing brand/UX is defensible | Annual audit: what survives identical AI? |
-| Demographic seg. | Building for titles, not behavior | Segment by drive/resistance patterns |
-| Ignoring doing nothing | Assuming all TAM will adopt | Test if pain overcomes inertia |
-| Underestimating inc. | Planning 12-month window | Plan for 90-day response |
-| Capability-only | Differentiating on replicable AI | Pair capability with defensibility |
-
 ## ASSESSMENT CADENCE
 
 | Cadence | Activity | Output |
@@ -153,3 +141,18 @@ Not all trends create advantage. The intersection of a trend and your unique cap
 | Tech Maturity | "Amazing demo; cutting-edge" | Reliable for production, not demos |
 | Market Timing | "Analysts predict growth" | Users paying for bad solutions now |
 | Your Position | "Everyone will benefit" | "Uniquely advantages our approach" |
+
+## COMMON FAILURE MODES
+
+| Failure | Symptom | Prevention |
+|---------|---------|-----------|
+| Feature-first strategy | Roadmap driven by competitor parity | Anchor initiatives to moat-building |
+| Wrong archetype | Running wrong playbook | Classify honestly; validate with research |
+| Moat delusion | Believing brand/UX is defensible | Annual audit: what survives identical AI? |
+| Demographic seg. | Building for titles, not behavior | Segment by drive/resistance patterns |
+| Ignoring doing nothing | Assuming all TAM will adopt | Test if pain overcomes inertia |
+| Underestimating inc. | Planning 12-month window | Plan for 90-day response |
+| Capability-only | Differentiating on replicable AI | Pair capability with defensibility |
+
+→ See: Probing for Deep Jobs (behavioral segmentation)
+→ See: AI GTM & Pricing (launch strategy, pricing)

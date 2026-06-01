@@ -1,12 +1,26 @@
 Cost, latency, and capability ceilings for every AI product decision
 
-**March 2026**
+**May 2026** (updated May 31, AI PM Course ingest)
 
-## CORE DISCIPLINE
+## CORE CONCEPT
 
 Every token has a cost (money), a latency cost (time), and an attention cost (quality). Model selection is a product decision with 30-50x cost implications, not an engineering detail.
 
 Choose the cheapest model that clears your quality bar. Optimize the token budget before optimizing the prompt. Build for vendor optionality before you need it.
+
+## KEY PRINCIPLES
+
+> Input tokens are cheap; output tokens cost 3-4x more. Constrain output length first.
+
+> Prompt caching: stable prefixes (system prompts, examples) cached for 50-90% savings. Put stable elements first.
+
+> Streaming reduces perceived latency dramatically. A 3s streaming response feels faster than 2s blocked.
+
+> Model deprecation is when, not if. Build an abstraction layer between product and provider.
+
+> Price for p95 cost, not averages. Two users on the same plan can have radically different cost profiles.
+
+> Wait vs. build: building complex scaffolding around a capability gap that disappears in 6 months is waste.
 
 ## MODEL SELECTION FRAMEWORK
 
@@ -19,6 +33,21 @@ Choose the cheapest model that clears your quality bar. Optimize the token budge
 4. **Test tiers bottom-up** - Start cheapest. Clears quality floor? Ship it. If not, move up one tier.
 
 5. **Calculate unit economics** - Cost/query x queries/user x users = AI cost. Does this work in your model?
+
+## REASONING COST-BENEFIT MATRIX
+
+Extended thinking / reasoning models (OpenAI O-series, Claude extended thinking, DeepSeek R1) are a product decision, not an automatic upgrade. They trade 5-20x cost and 5-60+ second latency for deeper logic.
+
+| | High Stakes | Low Stakes |
+|---|---|---|
+| High Complexity | Strong reasoning candidate (ex: medical diagnosis, financial advisory) | Test if cost is justified; often standard generation suffices |
+| Low Complexity | Reasoning as safety margin (ex: high-value but simple compliance check) | Standard generation preferred; reasoning adds overhead without benefit |
+
+Three dials move simultaneously: quality (better logic), latency (seconds to minutes vs. sub-second), cost (5-20x per query).
+
+> Reasoning doesn't always improve output. On creative tasks and conversational exchanges, it can produce overthinking (unnecessary caveats), less creative responses (more rigid, formulaic), and reasoning collapse (model loses thread in long chains). Wrong assumptions compound through reasoning steps, creating hidden hallucination.
+
+Apply reasoning surgically: route complex queries to reasoning models, simple queries to standard. Cascading (start fast, escalate if confidence is low) is the default architecture for mixed-complexity workloads.
 
 ## 7-LAYER COST STRUCTURE
 
@@ -69,20 +98,6 @@ In priority order, highest impact first:
 | Parallelization | Wall clock time | Independent LLM calls |
 | Edge deployment | Network latency | Global users, latency-critical |
 
-## KEY PRINCIPLES
-
-> Input tokens are cheap; output tokens cost 3-4x more. Constrain output length first.
-
-> Prompt caching: stable prefixes (system prompts, examples) cached for 50-90% savings. Put stable elements first.
-
-> Streaming reduces perceived latency dramatically. A 3s streaming response feels faster than 2s blocked.
-
-> Model deprecation is when, not if. Build an abstraction layer between product and provider.
-
-> Price for p95 cost, not averages. Two users on the same plan can have radically different cost profiles.
-
-> Wait vs. build: building complex scaffolding around a capability gap that disappears in 6 months is waste.
-
 ## VENDOR RISK CHECKLIST
 
 | Risk | Mitigation |
@@ -105,3 +120,21 @@ In priority order, highest impact first:
 | Claude Haiku | ~$160 | ~$0.002 |
 
 30-40x difference between tiers. Model selection is a product decision, not an engineering detail.
+
+## COMMON FAILURE MODES
+
+| Failure | Symptom | Prevention |
+|---------|---------|-----------|
+| Premium model default | AI costs consume margin at scale | Test tiers bottom-up; cheapest that clears quality floor |
+| Ignoring output tokens | Cost 3-4x higher than expected | Constrain output length first |
+| No vendor abstraction | Model deprecation becomes crisis | Abstraction layer between product and provider |
+| Averaging costs | P95 users blow budget | Price for p95 cost, not averages |
+| Building vs waiting | Complex scaffolding for temporary gap | Assess if next-gen model solves natively |
+| No per-feature economics | Subsidizing expensive features with cheap ones | Each AI feature gets its own P&L |
+
+→ See: Governance & Safety (vendor risk mitigation, model deprecation)
+
+---
+
+**Sources:**
+- Product Faculty AI PM Course (May 2026)

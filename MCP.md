@@ -98,10 +98,14 @@ As of May 2026: 500+ MCP clients, thousands of servers, hockey-stick adoption cu
 
 ## COMMON FAILURE MODES
 
-| Failure Mode | What Happens | How to Catch |
-|-------------|-------------|-------------|
+| Failure | Symptom | Prevention |
+|---------|---------|-----------|
 | Silent quality regression | Model update changes tool-calling behavior; same prompts, worse results | Golden set evals on every model version change |
 | Agentic loop runaway | Sampling creates uncontrolled recursive LLM calls; cost and latency spike | Call depth limits, cost anomaly alerts, timeout enforcement |
 | Stale resource context | Cached or outdated resources served to model; decisions based on old data | TTL on resource caching; freshness checks before serving |
 | Server trust escalation | Untested third-party MCP server given broad access in production | Allowlist servers; audit tool descriptions; sandbox before prod |
 | Credential leakage via tools | Tool call passes user credentials to unintended downstream service | Audience-bound tokens (RFC 8707); monitor outbound requests |
+
+→ See: Tools & Orchestration (agent patterns, harness engineering)
+→ See: CLI for AI Agents (CLI as tool interface)
+→ See: Governance & Safety (security considerations)

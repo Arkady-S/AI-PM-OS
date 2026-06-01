@@ -1,10 +1,10 @@
 Patterns for building reusable agent instructions across any platform
 
-**May 2026**
+**May 2026** (updated May 31)
 
 Based on Anthropic best practices, LangChain skill benchmarking (2026)
 
-## WHAT IS A SKILL?
+## CORE CONCEPT
 
 A skill is a folder of instructions that teaches an AI agent how to handle specific tasks. Instead of re-explaining workflows every session, you teach the agent once and reuse it consistently.
 
@@ -137,6 +137,23 @@ Cherry-pick onto a clean branch. Resolve conflicts preserving intent. If it can'
 
 Give the agent composable code (helper functions, query libraries) so it spends turns on composition rather than reconstruction. Think of it as providing building blocks.
 
+### Interpreter Skills: Determinism Inside Discretion
+
+Skills can carry executable code modules (TypeScript, Python) alongside natural-language instructions. The agent decides *when* to invoke the skill (discretion); the skill runs deterministic code for the actual work (determinism). The model handles judgment calls, the code handles precision.
+
+> "Discretion on the outside, determinism on the inside." The agent chooses what to do; the interpreter ensures it's done correctly. (Hunter Lovell, LangChain)
+
+This inverts the typical failure mode where skills describe a task and hope the model executes it correctly. Instead, the skill's scripts handle API calls, data transforms, validations, and format enforcement deterministically. The model's role shrinks to orchestration and exception handling.
+
+| Layer | Handled By | Example |
+|---|---|---|
+| Task selection | Model (discretion) | "User wants a sprint plan, invoke sprint-planner skill" |
+| Data retrieval | Code (determinism) | Script fetches velocity data from Jira API |
+| Analysis / judgment | Model (discretion) | "These 3 stories should slip based on capacity" |
+| Output formatting | Code (determinism) | Script creates tickets with correct field mappings |
+
+Design implication: when building skills for high-stakes or repetitive workflows, push as much execution logic as possible into scripts. Reserve model involvement for decisions that require judgment or context interpretation.
+
 ### Think Through Setup
 
 Store user-specific config (ex: Slack channel, project ID) in config.json. If missing, prompt the user on first run. Cache it.
@@ -145,11 +162,38 @@ Store user-specific config (ex: Slack channel, project ID) in config.json. If mi
 
 Skills can persist data between runs: append-only logs, JSON, or SQLite. Ex: standup skill keeps a log so the agent diffs what changed since yesterday. Store in a stable folder that survives skill upgrades.
 
+## SKILL LIFECYCLE
+
+### Bootstrap from Interactive Sessions
+
+The fastest path to a working skill: do the task once interactively in a normal session, then ask the model to turn what you just did into a skill. Run the new skill on the same or similar task. Correct the output within the session so feedback is logged in the transcript. Ask the model to update the skill from the corrections. After a few rounds, the skill converges and output rarely needs manual editing.
+
+You can also seed a skill with examples of the desired output. Have the model extract the patterns (code structure, doc tone, formatting conventions) rather than writing the skill instructions yourself.
+
+### Refine via Transcript, Not the File
+
+The first version of a skill overfits the original session. When you run it and need changes, correct within the session rather than editing SKILL.md directly. In-session correction gives the model before-and-after pairs that accumulate in the transcript: what was done, what was wanted, and why. Once the output is right, have the model merge the feedback into the skill. This produces better skills than manual editing because the model has the full correction history as training signal.
+
+### Lazy-Loaded Guides
+
+A long CLAUDE.md becomes a context tax: it loads every session even when irrelevant. Refactor chunks into guide files that load on demand. Don't @import them (that inlines everything). Instead, tell CLAUDE.md to read specific guides when relevant. A session building evals skips the guide on writing docs. A session writing docs skips the eval guide.
+
+```
+## Guides (read when relevant, don't load by default)
+- guides/writing-docs.md: tone, structure, templates for documentation
+- guides/evals.md: eval framework, golden set management, scoring
+- guides/deploy.md: CI/CD pipeline, staging, rollback procedures
+```
+
+This is the structural solution to the "Too Much Context Loaded at Once" failure mode. Keep SKILL.md under 5,000 words; keep CLAUDE.md focused on always-relevant rules and pointers to lazy-loaded detail.
+
+### Simple Mode for Exploration
+
+Not every task benefits from full harness context. For brainstorming, exploration, and rough drafts, running with a minimal harness (CLAUDE.md loads but skills, hooks, and tool-heavy loops don't) keeps the model closer to raw capability. Use full harness for shipping, simple mode for thinking.
+
 ## AGENT KNOWLEDGE MANAGEMENT
 
 A skill tells an agent how to do something. A knowledge base tells it what it has already learned. Without persistent knowledge, every session starts from zero: the agent re-discovers the same patterns, re-makes the same mistakes, and can't build on prior work. The difference between a stateless tool-caller and a capable assistant is accumulated context.
-
-Based on Isaac Flath's open-source agentkb system (April 2026).
 
 ### The Knowledge Management Problem
 
@@ -324,39 +368,6 @@ Bad or redundant skills are easy to create. Gate additions: sandbox folder for e
 
 Skills can reference each other by name. No formal dependency management yet. Keep skills self-contained where possible.
 
-## COMMON MISTAKES
-
-### Verbose Instructions, Buried Priorities
-
-Put critical rules at top. Move reference docs to separate files.
-
-### Ambiguous Language
-
-- "Validate things properly" ✗
-- "Verify: name non-empty, member assigned, start date not past." ✓
-
-### Over-Prescriptive Steps
-
-Give intent + constraints, not click-by-click. Let the agent adapt.
-
-### Too Much Context Loaded at Once
-
-Keep SKILL.md under 5,000 words. Progressive disclosure for the rest.
-
-### No Error Handling
-
-Include common errors, causes, solutions. Bundle validation scripts.
-
-### Stale Gotchas
-
-Treat skills as living docs. Update after every new failure mode.
-
-### Context Rot After Model Upgrades
-
-Skills and AGENTS.md accumulate compensatory workarounds for older model limitations (ex: explicit to-do list scaffolding, step-by-step railroading, verbose chain-of-thought prompts). When a new frontier model ships, these workarounds become noise or actively mislead the model. Cat Wu (PM, Claude Code): teams have latent performance gains hiding behind stale context that should be pruned on each major model release.
-
-Practice: after each frontier model update, audit skills and AGENTS.md for instructions that compensate for capabilities the new model handles natively. Remove them. Test before and after to confirm the pruning improves or maintains quality.
-
 ## FRONTMATTER REFERENCE
 
 ```yaml
@@ -394,3 +405,27 @@ metadata:                                # optional
 - [ ] Tested: triggering, output, performance
 - [ ] Error handling and troubleshooting included
 - [ ] Config/setup flow for user-specific state
+
+## COMMON FAILURE MODES
+
+| Failure | Symptom | Prevention |
+|---------|---------|-----------|
+| Verbose instructions, buried priorities | Agent misses critical rules | Put critical rules at top; move reference docs to separate files |
+| Ambiguous language | Inconsistent agent behavior | Specific constraints ("name non-empty") over vague ("validate properly") |
+| Over-prescriptive steps | Skill breaks on edge cases | Give intent + constraints, not click-by-click |
+| Too much context loaded | Token waste, degraded reasoning | Keep SKILL.md under 5,000 words; progressive disclosure |
+| No error handling | Agent stalls on failures | Include common errors, causes, solutions; bundle validation scripts |
+| Stale gotchas | Repeated known failures | Treat skills as living docs; update after every new failure mode |
+| Context rot after model upgrades | Stale workarounds mislead newer models | Audit skills after each frontier model update; prune compensatory instructions |
+
+→ See: Tools & Orchestration (harness engineering, agent loops)
+→ See: Evals & Observability (skill testing, benchmarking)
+
+---
+
+**Sources:**
+- Anthropic best practices (2026)
+- LangChain skill benchmarking (2026)
+- Eugene Yan, "How to Work and Compound with AI" (May 2026)
+- Isaac Flath, agentkb system (April 2026)
+- Hunter Lovell, LangChain (interpreter skills)

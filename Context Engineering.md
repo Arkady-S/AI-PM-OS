@@ -1,6 +1,6 @@
 Curating the right tokens for every model call
 
-**March 2026**
+**May 2026** (updated May 31, AI PM Course ingest)
 
 Based on Anthropic + Product Faculty research
 
@@ -150,6 +150,34 @@ Design failure handling before building:
 
 > Feedback loops: explicit ratings, implicit behavior (undo, edits), cross-mistake patterns
 
+## MEMORY ARCHITECTURE
+
+The 6-layer context pyramid defines what to include in a single call. Memory architecture defines what persists across calls and sessions. Six levels, each adding complexity:
+
+| Level | Type | What It Does | Complexity |
+|---|---|---|---|
+| 1 | Buffer | Appends all prior messages to each request | Simplest; grows unbounded |
+| 2 | Summary | Compresses earlier conversation into summaries | Manages growth; loses detail |
+| 3 | Cross-session | Persistent storage with retrieval strategy | Requires storage + retrieval design |
+| 4 | Entity | Structured profiles (people, projects, companies) with relationship tracking | Requires schema + entity resolution |
+| 5 | Collective/shared | Patterns learned across users and teams | Requires aggregation + privacy controls |
+| 6 | Agent | Memory boundaries between multiple cooperating agents | Requires scoping rules per agent |
+
+> Misremembering is worse than not remembering. Wrong memory erodes trust faster than no memory. This is the "uncanny valley of memory": surfacing incorrect context feels worse to users than a blank-slate interaction.
+
+### Memory Scoring at Runtime
+
+When the memory store grows large, not everything can load into context. Score memories across four dimensions to decide what surfaces:
+
+| Dimension | What It Measures | Example |
+|---|---|---|
+| Recency | How recently the memory was created or updated | Last week's project context > last year's |
+| Source gravity | Authority level of the memory's origin | CEO directive > one-time customer feedback |
+| Context specificity | Relevance to the current department or task | Sales context stays out of engineering queries |
+| Conflict resolution | Whether the memory contradicts other memories | Flag conflicting entries for user-mediated resolution |
+
+Design decision: always-load memories (under 2,000 tokens, apply to nearly every task) vs. on-demand retrieval (searched when task matches a known pattern). Keep the always-load set small.
+
 ## TOKEN PRIORITY STACK
 
 When filling context, pack in this order:
@@ -168,29 +196,6 @@ When filling context, pack in this order:
 
 5. **Everything else**
    Drop or summarize
-
-## COMMON FAILURE MODES
-
-**"Just put everything in the prompt"**
-Token overload, inconsistent behavior. Fix: priority stack, aggressive curation.
-
-**Relying solely on semantic search**
-Irrelevant chunks distort reasoning. Fix: hybrid search, domain structure.
-
-**Prompts as rule enforcement**
-Model eventually ignores soft constraints. Fix: hard walls in code, not prompts.
-
-**Context as afterthought**
-Weak AI that can't grow. Fix: define schemas and structure upfront.
-
-**Mixing raw and enriched context**
-Contradictions and hallucinations. Fix: consistent enrichment pipeline.
-
-**No provenance tracking**
-Can't debug or explain reasoning. Fix: track source of every context piece.
-
-**Trusting model to infer structure**
-Unpredictable behavior. Fix: explicit schemas, labeled sections.
 
 ## CONTEXT QUALITY CHECKLIST
 
@@ -220,3 +225,25 @@ Run before every LLM call:
 - [ ] Business rules embedded explicitly
 - [ ] Tone, formatting, domain rules included
 - [ ] Permission logic represented accurately
+
+## COMMON FAILURE MODES
+
+| Failure | Symptom | Fix |
+|---------|---------|-----|
+| Token overload | Inconsistent behavior, ignored instructions | Priority stack, aggressive curation |
+| Semantic-only search | Irrelevant chunks distort reasoning | Hybrid search, domain structure |
+| Prompts as rule enforcement | Model eventually ignores soft constraints | Hard walls in code, not prompts |
+| Context as afterthought | Weak AI that can't grow | Define schemas and structure upfront |
+| Mixing raw and enriched context | Contradictions and hallucinations | Consistent enrichment pipeline |
+| No provenance tracking | Can't debug or explain reasoning | Track source of every context piece |
+| Trusting model to infer structure | Unpredictable behavior | Explicit schemas, labeled sections |
+
+→ See: Prompt Engineering (behavioral framing layer)
+→ See: RAG (retrieval context)
+→ See: Evals & Observability (quality measurement)
+
+---
+
+**Sources:**
+- Anthropic + Product Faculty research (2026)
+- Muhammad Umer Farooq, Flow/Brain Chain (May 2026)

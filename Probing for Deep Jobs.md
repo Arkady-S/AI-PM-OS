@@ -2,7 +2,7 @@ Uncovering psychological and tribal jobs beneath functional requests
 
 **March 2026**
 
-## CORE INSIGHT
+## CORE CONCEPT
 
 Users describe functional jobs. They hire products for emotional and social ones.
 
@@ -90,6 +90,18 @@ Vulnerability preambles signal the real job. Whatever follows the qualifier is g
 ### 5. Contradiction with stated priority.
 
 They say speed matters most but spend 20 minutes describing accuracy anxiety. The contradiction reveals the emotional job.
+
+## COMMON FAILURE MODES
+
+| Failure | Symptom | Prevention |
+|---------|---------|-----------|
+| Staying functional | Features match competitors in 6 months | Use Depth Ladder; push past functional layer |
+| Missing energy shifts | Surface-level insights only | Watch for body language, pace changes, unprompted storytelling |
+| Ignoring contradictions | Wrong priority in product spec | When stated priority contradicts time spent, probe the contradiction |
+| Premature interpretation | Projecting hypothesis onto their words | Let them finish; don't interpret during the interview |
+| No tribal probing | Product ignores social/status needs | Ask "What would your team/peers think?" |
+
+→ See: Empathetic User Interviews (Mom Test, interview structure, commitment ladder)
 
 ---
 

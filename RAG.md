@@ -2,7 +2,7 @@ Retrieval-Augmented Generation: grounding LLMs in facts via pipeline, chunking, 
 
 **March 2026**
 
-## CORE INSIGHTS
+## CORE CONCEPT
 
 RAG is an open-book exam for LLMs. Instead of relying on training memory, the model looks up relevant information before answering. This reduces hallucination, keeps answers current, and enables use of proprietary data.
 
@@ -59,16 +59,6 @@ Every retrieved chunk is input tokens you're paying for. Retrieval adds cost and
 | Cost per query | Retrieval + generation cost | Calculate at design time |
 | Search method | How retrieval works | Hybrid + reranking |
 
-## FAILURE MODES
-
-| Failure | Symptom | Fix |
-|---|---|---|
-| Retrieval miss | Confident wrong answer (right doc not found) | Better chunking, hybrid search, query expansion |
-| Retrieval noise | Rambling, unfocused answer (irrelevant chunks) | Smaller chunks, reranking, relevance threshold |
-| Stale data | Outdated answer | Increase corpus sync frequency |
-| Token overload | Inconsistent behavior, ignored instructions | Reduce top-K, compress chunks |
-| No-result silence | Model fabricates when nothing retrieved | Explicit handling: "I don't have info on that" |
-
 ## PRD ELEMENTS
 
 | Element | What You Define | Example |
@@ -82,3 +72,16 @@ Every retrieved chunk is input tokens you're paying for. Retrieval adds cost and
 | Citation requirements | How model attributes sources | Must cite source for each claim |
 | No-result handling | What if retrieval finds nothing | Say "I don't have info on that" |
 | Cost/latency budget | Constraints per query | Retrieval <200ms, <$0.01/query |
+
+## COMMON FAILURE MODES
+
+| Failure | Symptom | Fix |
+|---------|---------|-----|
+| Retrieval miss | Confident wrong answer (right doc not found) | Better chunking, hybrid search, query expansion |
+| Retrieval noise | Rambling, unfocused answer (irrelevant chunks) | Smaller chunks, reranking, relevance threshold |
+| Stale data | Outdated answer | Increase corpus sync frequency |
+| Token overload | Inconsistent behavior, ignored instructions | Reduce top-K, compress chunks |
+| No-result silence | Model fabricates when nothing retrieved | Explicit handling: "I don't have info on that" |
+
+→ See: Context Engineering (token budgets, retrieval context)
+→ See: Evals & Observability (retrieval eval, golden set)

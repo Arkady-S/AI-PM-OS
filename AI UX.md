@@ -1,8 +1,8 @@
 Trust engineering, humorphism, and relationship design for AI products
 
-**May 2026**
+**May 2026** (updated May 31)
 
-## HUMORPHISM
+## CORE CONCEPT
 
 Replace user interfaces built for operating tools with human interfaces built for collaborating with AI teammates. The shift: from interaction design to relationship design, from capturing attention to cultivating trust.
 
@@ -43,15 +43,45 @@ AI surfaces blockers with context + options; never hallucinate through ambiguity
 
 > Cognitive expansion over cognitive offloading. Products that automate tasks (offloading) commoditize. Products that help users see patterns, connections, and possibilities they'd miss on their own (expansion) create loyalty. "Do it for me" is table stakes. "Help me see what I'm missing" is the differentiated play. (Scott Belsky)
 
-## MEASUREMENT
+## TRUST DESIGN PRINCIPLES
 
-| Stop Measuring | Start Measuring |
-|---|---|
-| DAU | Daily Delegated Decisions |
-| Time in app | Time saved by user |
-| Feature adoption % | Task completion rate with AI |
-| NPS alone | Human-AI pair outcome quality |
-| Clicks to complete | Cognitive load reduction |
+Synthesized from Anthropic's agent framework and enterprise deployment patterns:
+
+> Trust accumulates, doesn't switch on. Design for repeated small wins, not a single convincing demo.
+
+> Guardrails are conversion levers, not compliance overhead. Visible safety reduces fear and increases exploration.
+
+> A single high-visibility failure can undo weeks of earned trust. Failure-first design is not optional.
+
+> Show reasoning without overwhelming. Users need enough to calibrate confidence, not full chain-of-thought.
+
+> Reduce cognitive load, not just clicks. The system should do the thinking, not just the task.
+
+> When the AI isn't sure, say so. Confident wrong answers erode trust faster than honest uncertainty.
+
+## COGNITIVE SURRENDER
+
+When AI is too frictionless, users stop thinking and defer to AI output even when it's wrong. Ethan Mollick's term: "cognitive surrender." The risk compounds with agentic systems that just do stuff without requiring user engagement at each step.
+
+Three studies quantify the effect:
+
+| Study | Setup | Finding |
+|---|---|---|
+| Turkish high school (~1,000 students) | One group used ChatGPT for math homework, one had no AI | ChatGPT group did homework better but scored worse on tests. AI gave answers, short-circuiting the effort required for learning. |
+| Taipei Python course (~1,000 students, 5 months) | AI tutor provided personalized problem sequences | Students scored 0.15 SD higher on a final exam taken without AI (equivalent of 6-9 months additional schooling). Customized tutoring enhanced learning instead of replacing it. |
+| BCG consultants (758 people) | Half got GPT-4, half had no AI | AI users vastly outperformed on tasks AI handles well. On a task where AI was wrong, AI users were significantly less likely to get the right answer. They accepted the incorrect AI output without catching it. |
+
+The design distinction: "AI that does the work" and "AI that helps you do better work" produce opposite capability outcomes. Small implementation differences (answer-giving vs. problem-sequencing) determine whether users learn or atrophy.
+
+A small Anthropic study found that programmers who asked AI to explain what it was doing, or used AI for only part of the work, avoided surrender. Those who let AI do everything couldn't answer questions about what they'd done.
+
+### Product Design Implications
+
+> Default to tutoring mode over answer mode when the task involves skill development. The three major AI products offer learning modes (Gemini: Guided Learning, ChatGPT: /learn, Claude: learning style), but they're buried and unintuitive to access.
+
+> Frictionless is not always better. When AI required elaborate back-and-forth and made frequent errors, humans had to stay engaged. Agentic systems that "just do stuff" maximize throughput but minimize learning and authenticity.
+
+> The commercial pressure pushes toward frictionless. Designing for cognitive preservation requires intentional product choices that run counter to "make it easier" defaults.
 
 ## 6 LAWS OF AI UX
 
@@ -88,6 +118,12 @@ AI surfaces blockers with context + options; never hallucinate through ambiguity
    "I'll operate continuously within these boundaries."
 
 **Most products jump to Level 3-4 and lose users. Start at Level 1-2. Autonomy is earned through demonstrated competence.**
+
+### Overton Window for AI Acceptance
+
+The range of AI behaviors users find acceptable shifts rapidly. Features considered uncomfortable today can become expected within 8 months. Sheridan's 10-level autonomy scale (from "human does everything" to "computer ignores human") maps where users currently sit, but that position moves fast.
+
+Implication for roadmap sequencing: design the autonomy staircase knowing users will climb faster than you expect if trust is maintained. Build the infrastructure for Level 3-4 while shipping Level 1-2. The bottleneck shifts from "will users accept this?" to "can we maintain trust at each new level?"
 
 ## AGENT OVERSIGHT PRINCIPLES
 
@@ -146,6 +182,16 @@ Users form trust judgments almost immediately. The first interaction must demons
 | Engagement | Dim. returns | Learning loops, visible personalization. |
 | Retention | Trust erosion | Surface uncertainty, recover from errors. |
 
+## MEASUREMENT
+
+| Stop Measuring | Start Measuring |
+|---|---|
+| DAU | Daily Delegated Decisions |
+| Time in app | Time saved by user |
+| Feature adoption % | Task completion rate with AI |
+| NPS alone | Human-AI pair outcome quality |
+| Clicks to complete | Cognitive load reduction |
+
 ## 7 AI UX TRAPS
 
 | Trap | Prevention |
@@ -153,26 +199,10 @@ Users form trust judgments almost immediately. The first interaction must demons
 | Over-automating early | Start with suggestions, not execution |
 | Under-guiding ambiguity | Add scaffolding when AI is uncertain |
 | Outputs without explanation | Show reasoning breadcrumbs |
-| Everything in a chatbox | Structured UIs for structured tasks. For transactional domains (travel, e-commerce, task management), agents need rich UI: maps, calendars, comparison tables, booking flows. Chat is a local maximum that underserves users when the task involves browsing, comparing, or committing. (Brian Chesky) |
+| Everything in a chatbox | Structured UIs for structured tasks. For transactional domains (travel, e-commerce, task management), agents need rich UI: maps, calendars, comparison tables, booking flows. Chat is a local maximum that underserves users when the task involves browsing, comparing, or committing. Chat works for users with money who want to save time. Chat fails for users with excess time seeking to make or save money. The cost-time tradeoff determines which user segments a chat interface can serve. |
 | Silent failures | Always surface uncertainty and errors |
 | Punishing exploration | Generous limits, sandbox mode |
 | Expecting prompt eng. | Translate user intent to instructions |
-
-## TRUST DESIGN PRINCIPLES
-
-Synthesized from Anthropic's agent framework and enterprise deployment patterns:
-
-> Trust accumulates, doesn't switch on. Design for repeated small wins, not a single convincing demo.
-
-> Guardrails are conversion levers, not compliance overhead. Visible safety reduces fear and increases exploration.
-
-> A single high-visibility failure can undo weeks of earned trust. Failure-first design is not optional.
-
-> Show reasoning without overwhelming. Users need enough to calibrate confidence, not full chain-of-thought.
-
-> Reduce cognitive load, not just clicks. The system should do the thinking, not just the task.
-
-> When the AI isn't sure, say so. Confident wrong answers erode trust faster than honest uncertainty.
 
 ## MODEL-TO-PIXEL DESIGN
 
@@ -214,3 +244,16 @@ Design implication: agent output rendering is a UX decision, not an infrastructu
 | Silent failures | Users perceive stupidity | Surface uncertainty, show errors |
 | Prompt dependency | Only power users succeed | Context packs, not blank boxes |
 | Cognitive overload | Users abandon complex UIs | Structured UI, structured tasks |
+
+→ See: Context Engineering (context curation for AI features)
+→ See: Prompt Engineering (behavioral framing in system prompts)
+→ See: Governance & Safety (positive alignment, preference-wellbeing divergence)
+
+---
+
+**Sources:**
+- Ethan Mollick, "Choosing to Stay Human" (May 2026). Studies: Bastani et al. (Turkey), Chien et al. (Taipei), Dell'Acqua et al. (BCG/Wharton/Harvard)
+- Scott Belsky (cognitive expansion vs offloading)
+- Anthropic agent oversight framework
+- Brian Chesky (structured UI for transactional domains)
+- Henry (Anthropic / formerly Super.com), Product Faculty AI PM Course (May 2026)

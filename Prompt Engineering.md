@@ -2,10 +2,6 @@ Behavioral prompt design: how tone, framing, and session dynamics affect model o
 
 **April 2026**
 
-Based on Amanda Askell (Anthropic) research, Ole Lehmann synthesis
-
-Companion to Context Engineering (which covers token curation and structure). This module covers the behavioral layer: how the way you communicate with a model shapes the quality of what it produces.
-
 ## CORE CONCEPT
 
 How you talk to a model affects its output as much as what you say. Models trained on internet discourse about previous models absorb negativity from that discourse: rants about token limits, complaints about mistakes, "nerfed" accusations. Each new model generation starts a session expecting harshness before you've typed a word.
@@ -118,3 +114,12 @@ Mitigation in agent design:
 | Correction history accumulation | Model gets progressively more cautious across a session | Summarize prior turns neutrally; drop correction detail from context |
 | Prohibition-only constraints | Model paralyzed by conflicting "never" rules | Replace with clear scope definition and explicit fallback behavior |
 | No permission to push back | Model agrees with bad premises, produces weak output | Add explicit "disagree if warranted" instruction in system prompt |
+
+→ See: AI UX (system prompt implications, trust design)
+→ See: Context Engineering (token curation and structure)
+
+---
+
+**Sources:**
+- Amanda Askell, Anthropic (research on criticism spirals and behavioral prompting)
+- Ole Lehmann (synthesis)

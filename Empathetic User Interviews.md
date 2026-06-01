@@ -2,7 +2,7 @@ Discovering problems worth solving through honest conversation
 
 **March 2026**
 
-## CORE INSIGHTS
+## CORE CONCEPT
 
 > Your job is to find truth, not collect validation. Bad feedback is worse than no feedback because it sends you down the wrong path with false confidence.
 > (Fitzpatrick, The Mom Test)
@@ -86,6 +86,8 @@ Compliments are free. Commitment costs something. Escalate asks to test whether 
 | Hypothetical answers | "I would definitely..." | Redirect: "Tell me about last time." |
 | Skipping commitment | Good vibes but no next step | Always ask for a concrete next action |
 | Solo synthesis | One person interprets all notes | Share exact quotes; team reviews together |
+
+→ See: Probing for Deep Jobs (emotional/social job layers beneath functional requests)
 
 ---
 

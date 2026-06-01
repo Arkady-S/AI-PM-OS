@@ -71,6 +71,8 @@ Use them together: exact match for deterministic, LLM-as-judge for subjective, h
 
 PMs and domain experts review outputs by hand. Define what 'good' looks like. Build initial 50-100 golden set examples.
 
+**Caveat: human labelers are unreliable.** Two humans with the same background from the same university labeling the same prompt agree less than 50% of the time. The same grader shown the same prompt at different times also shows discrepancy. Humans are the "master of all LLM judges" but require redundancy. Use humans as tiebreakers for epistemic uncertainty (when model and automated classifiers disagree), not as the primary evaluation mechanism at scale. Build redundant labeling into any human review process.
+
 ### Tier 2: Programmatic
 
 Python scripts run deterministic checks against golden set. Format compliance, guardrail adherence. Automated regression detection in CI.
@@ -98,6 +100,22 @@ Use ideal trajectories as baselines. For simple tasks the optimal path is obviou
 **Online evals:** Same scoring functions against production logs. Validates offline results and identifies examples worth adding to eval datasets.
 
 **The gap matters:** Offline 0.75 but online 0.3 means your eval set doesn't represent production. Daily: review yesterday's traces, surface new patterns.
+
+### Self-Optimizing Loops
+
+The manual version of the eval loop: human reviews traces, identifies regressions, writes prompt patches, validates them. The automated version closes this loop programmatically: trace → eval → diagnose → patch → validate → deploy.
+
+LangSmith Engine productizes this as an automated pipeline: the system watches production traces, runs evals against them, identifies regression patterns, generates candidate prompt or config fixes, validates fixes against the eval suite, and deploys passing changes. Adds preference learning so the system improves its fix generation over time.
+
+| Manual Loop | Self-Optimizing Loop |
+|---|---|
+| Human reviews traces daily | System monitors traces continuously |
+| Human diagnoses regression | System classifies failure patterns |
+| Human writes prompt patch | System generates candidate fixes |
+| Human runs eval suite | System validates automatically |
+| Iteration speed: days | Iteration speed: hours |
+
+> Self-optimizing loops don't eliminate human judgment. They eliminate the manual labor between "we know something regressed" and "here's a candidate fix to review." The human shifts from writing fixes to approving them.
 
 ## SCORING FORMAT: WHEN TO USE WHAT
 
@@ -223,17 +241,6 @@ As models improve, static eval thresholds create a false sense of progress. An o
 
 Every major model update. Quarterly at minimum. When user satisfaction diverges from eval scores. Re-rate past 4/5 and 5/5 outputs with current expectations.
 
-## COMMON FAILURE MODES
-
-| Failure | Symptom | Fix |
-|---------|---------|-----|
-| "Vibes only" | No systematic measurement | Build golden set first |
-| Silent regression | Users complain, metrics fine | Golden set + user signals |
-| Eval gaming | Teams optimize scores | Maintain failing evals |
-| Offline/online gap | Offline 0.75, online 0.3 | Score production logs too |
-| Unfocused evals | No mapping to prod behaviors | Docstring per eval |
-| Stale golden set | Same examples for 6 months | Weekly production feedback |
-
 ## EVAL QUALITY CHECKLIST
 
 Run before shipping any AI change:
@@ -254,9 +261,25 @@ Run before shipping any AI change:
 
 > Eval standards reviewed against current frontier model output
 
+## COMMON FAILURE MODES
+
+| Failure | Symptom | Fix |
+|---------|---------|-----|
+| "Vibes only" | No systematic measurement | Build golden set first |
+| Silent regression | Users complain, metrics fine | Golden set + user signals |
+| Eval gaming | Teams optimize scores | Maintain failing evals |
+| Offline/online gap | Offline 0.75, online 0.3 | Score production logs too |
+| Unfocused evals | No mapping to prod behaviors | Docstring per eval |
+| Stale golden set | Same examples for 6 months | Weekly production feedback |
+
+→ See: Context Engineering (prompt/context quality)
+→ See: Agent Skills (skill testing and benchmarking)
+
 ---
 
 **Sources:**
 - Braintrust (Goyal, 2025)
 - LangChain Deep Agents (2025-2026)
 - Product Faculty (2026)
+- Reah Miyara, Google Cloud AI / formerly OpenAI (May 2026)
+- Palash Shah, LangSmith Engine (May 2026)

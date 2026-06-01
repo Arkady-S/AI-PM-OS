@@ -4,7 +4,7 @@ Design principles, output contracts, and safety patterns for agent-consumable co
 
 Based on emerging industry patterns from Anthropic, Cloudflare, and open-source agent tooling
 
-## CORE INSIGHTS
+## CORE CONCEPT
 
 CLIs are the new APIs for AI agents. An agent's primary interface to external systems is tool calls, and CLIs map 1:1 to tool schemas: a command name, typed parameters, and structured output. A well-designed CLI is instantly consumable by any agent framework without wrapper code.
 
@@ -217,21 +217,6 @@ Run these checks before shipping any CLI that agents will consume:
 | Error recovery | Agent self-corrects on failure | Inject errors (bad IDs, expired auth); verify agent reads error and adapts |
 | Composition | Agent chains multiple commands | Multi-step workflow (create > configure > verify); measure step count vs ideal |
 
-## COMMON FAILURE MODES
-
-| Failure | Symptom | Prevention |
-|---------|---------|-----------|
-| Interactive prompts | Agent hangs indefinitely | --yes flag on every mutating command; stdin closed test |
-| Unstructured errors | Agent retries blindly, burns tokens | Structured JSON errors with suggestion field |
-| Unstable output schema | Agent's parsing breaks on update | Schema versioning; treat field removal as breaking change |
-| Unbounded output | Agent context overflow, degraded reasoning | Default --limit; --fields filtering; pagination |
-| Exit code 1 for everything | Agent can't distinguish auth failure from not-found | Semantic exit codes with documented table |
-| Human-only help text | Agent can't determine correct params | Examples in --help; --schema flag for machine-readable spec |
-| No dry-run | Agent makes irreversible changes during exploration | --dry-run on all write/delete commands |
-| Stateful commands | Agent loses track across invocations | Return full state in output; don't rely on session memory |
-| Colors/ANSI in JSON mode | Agent parses escape codes as data | Disable formatting when --json is active |
-| Required env setup | Agent fails silently with missing config | Check prerequisites at startup; structured error with setup instructions |
-
 ## PRD ELEMENTS
 
 When speccing a CLI that agents will consume, define:
@@ -265,8 +250,27 @@ When speccing a CLI that agents will consume, define:
 - [ ] All commands pass non-interactive test (stdin closed)
 - [ ] ANSI colors/formatting disabled in --json mode
 
-## Sources
+## COMMON FAILURE MODES
 
+| Failure | Symptom | Prevention |
+|---------|---------|-----------|
+| Interactive prompts | Agent hangs indefinitely | --yes flag on every mutating command; stdin closed test |
+| Unstructured errors | Agent retries blindly, burns tokens | Structured JSON errors with suggestion field |
+| Unstable output schema | Agent's parsing breaks on update | Schema versioning; treat field removal as breaking change |
+| Unbounded output | Agent context overflow, degraded reasoning | Default --limit; --fields filtering; pagination |
+| Exit code 1 for everything | Agent can't distinguish auth failure from not-found | Semantic exit codes with documented table |
+| Human-only help text | Agent can't determine correct params | Examples in --help; --schema flag for machine-readable spec |
+| No dry-run | Agent makes irreversible changes during exploration | --dry-run on all write/delete commands |
+| Stateful commands | Agent loses track across invocations | Return full state in output; don't rely on session memory |
+| Colors/ANSI in JSON mode | Agent parses escape codes as data | Disable formatting when --json is active |
+| Required env setup | Agent fails silently with missing config | Check prerequisites at startup; structured error with setup instructions |
+
+→ See: MCP (protocol layer for tool connections)
+→ See: Tools & Orchestration (tool design principles)
+
+---
+
+**Sources:**
 - Cloudflare: RFC 9457-compliant error responses for agents (2026)
 - Anthropic: Claude Code CLI patterns and Agent SDK documentation
 - clig.dev: Command Line Interface Guidelines

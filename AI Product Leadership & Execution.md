@@ -1,8 +1,8 @@
 Operating model, leverage levels, and strategic alignment
 
-**May 2026**
+**May 2026** (updated May 31)
 
-## CORE INSIGHTS
+## CORE CONCEPT
 
 > An exponential AI strategy cannot succeed through a linear organizational structure. Bolting AI onto unchanged structures produces unpredictable quality and confused teams. Redesign how the org works, not just what it ships.
 
@@ -17,6 +17,10 @@ Every AI initiative operates at one of three levels. Most orgs are stuck at Leve
 | 1 | Task | Removes individual toil | Additive (saves hours) |
 | 2 | Workflow | Reshapes entire processes | Multiplicative (collapses cycles) |
 | 3 | Capability | Creates org infrastructure all plug into | Exponential (multiplies across org) |
+
+### Level 3 in Practice
+
+At Anthropic (as of May 2026), the majority of code is written by Claude. A single human ran a team of 9 synthetic research agents: the human set initial research directions, agents executed the research. The org restructures every 3-4 months as capability shifts change what's possible. This is Level 3: the AI layer is org infrastructure that every function plugs into, and the org continuously reshapes around it.
 
 ### Level 1 vs 2 Examples
 
@@ -36,6 +40,22 @@ Every AI initiative operates at one of three levels. Most orgs are stuck at Leve
 
 In an age of infinite AI generation, value moves from production to judgment. Taste becomes the bottleneck. Teams that generate with AI but lack editorial skill to select and refine will ship average output.
 
+As code volume explodes (Anthropic's internal code output grew dramatically once Claude wrote most of it), humans move to a "verification layer" atop a virtual organization of agents. The editing role becomes: set direction, review output, course-correct. Hiring shifts accordingly toward two profiles: AI-native early-career people who think in human-AI pairs from day one, and experienced people who can imagine entire projects and decompose them for agent execution.
+
+### AI-Native Operating Benchmarks
+
+Concrete ratios from teams operating at Level 3:
+
+| Metric | Benchmark | Source |
+|---|---|---|
+| Team composition | 50 engineers, 2 PMs, 2 designers across 10-12 products | OpenAI Codex, May 2026 |
+| Token spend per person | $4,000-5,000/month on AI tokens | OpenAI Codex team average |
+| AI-generated code target | 90-100% of PRs | Henry (Anthropic), May 2026 |
+| Experimentation ratio | Ship 2 out of 10 things built; other 8 are experiments | Rohan (OpenAI), May 2026 |
+| Full automation stack | AI writes code, AI reviews code, AI QA, AI merges | Pressure-test recommendation |
+
+> If your team's token spend per engineer is under $1,000/month, you're likely underinvesting. The recommendation from practitioners at frontier labs: double or 10x current token budgets.
+
 ## THE HANDOFF PROTOCOL
 
 Every AI workflow follows Human > AI > Human across three zones. Most failures trace to skipping Zone 1 or rubber-stamping Zone 3.
@@ -45,6 +65,8 @@ Every AI workflow follows Human > AI > Human across three zones. Most failures t
 | 1: Setup | Human | Define intent, context, constraints | AI produces without direction |
 | 2: Scale | AI | Draft, synthesize, recognize patterns | Human bottleneck at volume |
 | 3: Judgment | Human | Apply taste, verify, approve | Errors ship unchecked |
+
+A "trust economy" is forming around Zone 3. When most of a document is AI-generated, teams need systems for indicating how much a human endorses the output. The endorsement signal (not authorship) becomes the trust anchor. Without it, AI-generated artifacts circulate with ambiguous accountability.
 
 ## THE SENSING FUNCTION
 
@@ -79,8 +101,6 @@ Before advancing any initiative to the next level, confirm:
 > **Handoff:** Protocol mapped with clear Zone 1, 2, 3 ownership.
 
 > **Rollback:** Path defined and tested. Can revert within defined SLA.
-
----
 
 ## AI NORTH STAR FRAMEWORK
 
@@ -162,8 +182,6 @@ Three layers, all required. Bottom-up capability without top-down pressure produ
 | 2. Culture (middle) | Rituals (ex: AI Fridays), open workflow sharing, standardizing on a small tool set; creates pull, not push | Adoption stays individual; no compounding across teams |
 | 3. Leadership (top) | Aggressive concrete milestones, not vague goals; redefining ownership (ex: "every PM pushes code to production") | No forcing function; teams optimize for comfort, not transformation |
 
-Source: Noam Lovinsky (CPO, Superhuman; formerly CPO, Grammarly).
-
 ### Role Convergence
 
 As execution cost drops, specialization becomes friction. Organizations converge toward two archetypes: people who build the thing, and people who get the thing adopted. Everyone becomes a builder, not necessarily writing code, but able to prototype, test, ship, and iterate without waiting on another function.
@@ -182,3 +200,13 @@ Hiring implication: expect candidates to use AI during interviews. Evaluate how 
 | Orphaned OKRs | KRs set by brainstorm, no lever link | Derive all OKRs from KPI graph |
 | Hidden misalignment | Teams on different assumptions | Worldview workshop before planning |
 | Static roadmaps | 12-month plan obsolete by Q2 | Sensing Function; monthly calibration |
+
+→ See: Evals & Observability (quality signals for guardrail thresholds)
+→ See: Governance & Safety (guardrails framework)
+
+---
+
+**Sources:**
+- Jack Clark, Import AI 458 (May 2026)
+- Noam Lovinsky, CPO Superhuman; formerly CPO Grammarly
+- Rohan (OpenAI Codex PM), Henry (Anthropic), Product Faculty AI PM Course (May 2026)

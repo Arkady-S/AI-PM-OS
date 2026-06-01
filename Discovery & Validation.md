@@ -2,7 +2,7 @@ Cognitive load mapping, AI-fit classification, and capability validation
 
 **March 2026**
 
-## CORE INSIGHTS
+## CORE CONCEPT
 
 AI solves cognitive problems, not task problems. The question isn't "what step is difficult?" but "what thinking is difficult?"
 
@@ -94,3 +94,6 @@ Prioritize by cognitive leverage x technical feasibility. Error severity determi
 | Undefined success | Can't tell if AI is working | Define threshold before dev |
 | Invisible work missed | Automated easy, not hard part | Ask what new hire would struggle with |
 | Built at capability cliff | Complex scaffolding, temp gap | Assess if next-gen solves natively |
+
+→ See: Evals & Observability (validation/eval pipeline)
+→ See: Empathetic User Interviews (10-conversation discovery phase)

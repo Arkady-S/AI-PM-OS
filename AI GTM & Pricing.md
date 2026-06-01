@@ -1,8 +1,8 @@
 Trust mechanics, pricing psychology, and launch strategy for AI products
 
-**March 2026**
+**May 2026** (updated May 31, AI PM Course ingest)
 
-## CORE INSIGHTS
+## CORE CONCEPT
 
 > SaaS: users experience value, then develop trust. AI inverts this: users must trust before they can experience value. This changes onboarding, pricing, and distribution.
 
@@ -16,6 +16,23 @@ Trust mechanics, pricing psychology, and launch strategy for AI products
 | Seat-based | Users explore freely | Broad team value needed |
 | Outcome-based | Highest trust, lowest friction | Measurable outcomes exist |
 | Hybrid | Safety to explore + scale ctrl | Default starting point |
+
+## AI MARGINAL COST SHIFT
+
+Traditional SaaS has near-zero marginal cost, making freemium viable and gross margins predictable. AI products break this: every query has variable compute cost (tokens, retrieval, orchestration) that scales with usage. This structural shift changes which pricing models are viable.
+
+| Dimension | Traditional SaaS | AI Products |
+|---|---|---|
+| Marginal cost | Near zero | Significant and variable per query |
+| Freemium viability | Strong (free users cost almost nothing) | Challenging (free users burn tokens) |
+| Gross margin behavior | Stable or improving with scale | Can degrade with usage growth |
+| Cost visibility | Infrastructure cost, not per-feature | Each feature has its own cost profile |
+
+### Prosumer Pricing Segment
+
+$20-100/month pricing tier is a high-growth segment for AI products. Not enterprise, not pure consumer. Characteristics: high willingness to pay because value demonstration is immediate, bottom-up adoption via product-led growth, token-based pricing makes the value prop more transparent than traditional tool pricing.
+
+Examples (as of May 2026): Cursor, Lovable, Replit charging in this range with strong growth. Users who spend $4,000-5,000/month on AI tokens personally (OpenAI Codex team benchmarks) represent the high end of this segment.
 
 ## PRICING DECISION TREE
 
@@ -97,3 +114,22 @@ Patterns from Anthropic + OpenAI enterprise deployments:
 | Competition | Competitor strength, barriers | 6+ mo. lead or defensible niche |
 
 > Only scale when all four dimensions are green. Premature scaling kills AI startups.
+
+## COMMON FAILURE MODES
+
+| Failure | Symptom | Prevention |
+|---------|---------|-----------|
+| Premature scaling | Scaling before all 4 canvas dimensions green | Launch Strategy Canvas assessment first |
+| Credit anxiety pricing | Users hoard credits, low engagement | Hybrid pricing with exploration safety |
+| Skipping first 30 minutes | Low activation despite signups | Script the first interaction sequence |
+| Hype over proof | Marketing promise, product disappoints | Ship proof (30s videos), not hype |
+| Wrong intervention stage | Fixing retention when problem is activation | Diagnose stage with signal table before choosing fix |
+| Feature-first launch | Breadth launch, shallow adoption | One hero use case; smallest reliable workflow |
+
+→ See: AI UX (trust engineering, first 30 seconds)
+→ See: Economics & Model Selection (pricing model economics)
+
+---
+
+**Sources:**
+- Henry (Anthropic / formerly Super.com), Product Faculty AI PM Course (May 2026)
