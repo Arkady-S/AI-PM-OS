@@ -1,6 +1,6 @@
 Trust engineering, humorphism, and relationship design for AI products
 
-**May 2026** (updated May 31)
+**May 2026** (updated June 7)
 
 ## CORE CONCEPT
 
@@ -28,6 +28,19 @@ Shift to real-time multimodal collaboration when complexity peaks
 ### ESCALATE
 
 AI surfaces blockers with context + options; never hallucinate through ambiguity
+
+## HUMAN-AGENT HANDOFF & FLOW
+
+The hard UX problems in human-AI collaboration are not about the model's output quality; they are about coordinating two workers in the same workspace. Surfaced from building a human-AI writing tool (Shreya Shankar, June 2026):
+
+| Problem | Why It's Hard | Design Response |
+|---|---|---|
+| Fluid lead handoff | Either party may take or cede the lead mid-task; abrupt handoffs feel jarring or like loss of control | Make the handoff explicit and reversible; show who holds the lead and let the user reclaim it instantly |
+| Concurrency | Human and agent editing the same artifact create conflicts | Define ownership boundaries per region/section; surface agent edits as reviewable, not silent |
+| Keeping the user in flow | A burst of agent activity pulls attention and breaks concentration | Surface agent progress ambiently; interrupt only when input is genuinely needed (see LISTEN / INTERRUPT / ESCALATE) |
+| Parallelizing think-time | In chat, human think-time and agent think-time happen sequentially — each waits for the other | Design for simultaneous work: the agent makes progress while the human thinks, not after |
+
+> Chat is structurally sequential: it forces human think-time and agent think-time to alternate. For collaborative work products, design surfaces where both progress at once. The bottleneck is coordination, not model capability.
 
 ## DESIGN IMPLICATIONS
 
@@ -257,3 +270,4 @@ Design implication: agent output rendering is a UX decision, not an infrastructu
 - Anthropic agent oversight framework
 - Brian Chesky (structured UI for transactional domains)
 - Henry (Anthropic / formerly Super.com), Product Faculty AI PM Course (May 2026)
+- Shreya Shankar (human-agent handoff and flow, June 2026)

@@ -1,6 +1,6 @@
 Moats, archetypes, and frameworks for durable AI advantage
 
-**March 2026**
+**March 2026** (updated June 7)
 
 ## CORE CONCEPT
 
@@ -51,6 +51,37 @@ Evaluate AI impact across four dimensions. A single Critical rating warrants imm
 | Ecosystem lock-in | Switching loses interconnected system, not one tool |
 | Counter-position | Incumbent cannot copy without damaging existing revenue |
 | Process power | Accumulated operational knowledge ships AI 3x faster |
+
+## HARNESS LOCK-IN
+
+The harness (system prompts, tools, orchestration, memory, hooks) is where business logic lives. That makes it a deeper lock-in surface than the model itself.
+
+> Harness lock-in is harder to unwind than model lock-in, because the harness is where your business logic lives. You can swap a model behind a stable harness; you cannot swap a harness without re-encoding how your product works.
+
+Labs are moving to capture teams at the harness layer, not just the model: Claude Agent SDK, OpenAI Agents API, and Vertex AI Agent Builder are "all the same shape." Building your product on a lab-proprietary harness couples your business logic to one vendor's roadmap, pricing, and model family.
+
+| Harness Choice | Upside | Downside |
+|---|---|---|
+| Lab-proprietary (Agent SDK, Agents API, Agent Builder) | Fastest start; post-trained model-harness fit; vendor maintains it | Business logic couples to one vendor; switching cost compounds over time |
+| Neutral (open-source, multi-model, profile-aware) | Model optionality; exploit each model's strengths; no single-vendor capture | Higher build/maintenance cost; you own the fit work |
+
+> Model neutrality matters more than cloud neutrality. Labs leapfrog every quarter, often every month, and open-weight models (Kimi, Mistral, DeepSeek, Qwen) make self-hosting credible. A profile-aware neutral harness (exposes each model's strengths rather than a lowest-common-denominator interface) preserves the right to switch as the frontier moves.
+
+Strategic implication: treat harness architecture as a defensibility decision, not an engineering one. Owning a neutral harness is a switching-cost and counter-positioning moat; renting a lab harness is convenience that can become capture. (LangChain / Neil Dahlke, June 2026)
+
+## AGENT-FIRST / HEADLESS PLATFORMS
+
+> Software platforms are going to be rebuilt for agent-first. Every platform will have a headless version. (Naval; Harrison Chase, June 2026)
+
+The structural shift: platforms whose primary consumer becomes an agent, not a human clicking a UI. A headless surface exposes the platform's capabilities as agent-consumable APIs/tools so external and internal agents can operate it directly. Examples (June 2026): Witan Labs building a headless Office stack; monday.com giving its Sidekick agent a sandbox to write and run code against the platform.
+
+| Question | Why It Matters |
+|---|---|
+| Does the platform expose a headless / agent-first surface? | Agents that can't reach your platform route around it to a competitor that exposes one |
+| Is the surface agent-consumable (typed tools, structured output, stable schema)? | A UI-only platform forces brittle browser automation; an agent-native surface is reliable and cheap |
+| Who owns the agent that operates the platform? | If a third-party agent orchestrates your platform, the agent layer captures the user relationship |
+
+Strategic implication: for an incumbent platform, a headless/agent-first surface is both a defense (stay reachable as agents mediate more work) and an Infra Enabler play (become the substrate other agents build on). Maps to the 4C Capability dimension (tool vs teammate, intelligence vs interface).
 
 ## FIVE AI BUSINESS ARCHETYPES
 

@@ -1,6 +1,6 @@
 Measuring, maintaining, and scaling AI product quality
 
-**May 2026**
+**May 2026** (updated June 7)
 
 Based on Braintrust, LangChain, and Product Faculty research
 
@@ -143,6 +143,30 @@ Score correctness (binary) and quality/efficiency (continuous) independently. La
 
 > Braintrust normalizes all scores 0-1 for temporal comparability (avg 12.8 experiments/day).
 
+## VERIFIER ECONOMICS
+
+LLM-as-judge verifiers are used twice: grading outputs in benchmarking, and as the reward signal in RL post-training. At scale, the verifier itself becomes the cost bottleneck, not the agent. A legal benchmark grading 50+ rubric criteria per answer across thousands of tasks runs the judge far more than the agent.
+
+> Verification is the hidden bottleneck for knowledge-work agents. Optimize the judge's cost the same way you optimize the agent's.
+
+The high-leverage move: use a cheaper open model as the verifier and measure its agreement with a frontier verifier rather than assuming you need the frontier model to grade.
+
+| Verifier Choice | Agreement vs Frontier Judge | Cost | Failure Mode |
+|---|---|---|---|
+| Frontier (Opus 4.7) | Baseline | 1x | Expensive at RL/batch scale |
+| DeepSeek v4 Flash | 94–96% (per-criterion and batch) | 18x cheaper per-criterion; ~1,000x cheaper batch | Minor signal loss |
+| Haiku-class | High but permissive | Cheapest | 48.4% false-pass per-criterion — wrong failure mode for high-stakes |
+
+Hard number: in an RL setting with 3,200 rollouts, swapping the verifier dropped verification cost from ~$18,000 to ~$18.
+
+> Pick the verifier model by its false-pass tolerance, not raw accuracy. A permissive judge (high false-pass) is acceptable for low-stakes quality scoring and dangerous for legal/medical/financial grading. Match the judge's error profile to the cost of a missed catch.
+
+> Even frontier judges disagree (ex: GPT-5.5 vs Opus ~95.7% agreement). Persistent judge disagreement on specific datapoints usually means the rubric is underspecified, not that one judge is wrong. Use those datapoints to tighten the rubric.
+
+> Don't grade a model with a judge from its own lineage. A generator and judge built on the same base share blind spots and fail in correlated ways: the judge waves through exactly the errors it would have made itself, and high agreement reads as confidence when it is shared bias. Source the judge from a different model family than the agent under test, especially for capability and safety gates where a missed catch is expensive. Agreement metrics only tell you the judge is reliable if the two models are independent.
+
+Batch scoring (grade all criteria in one call) is dramatically cheaper than per-criterion scoring but gives coarser signal; per-criterion is more granular and more expensive. Default to batch for broad regression sweeps, per-criterion where you need to know which criterion failed.
+
 ## DEEP AGENT EVAL PATTERNS
 
 Agents break the traditional eval assumption that every datapoint is treated identically. Success criteria vary per test case and span trajectory, final response, and state.
@@ -283,3 +307,4 @@ Run before shipping any AI change:
 - Product Faculty (2026)
 - Reah Miyara, Google Cloud AI / formerly OpenAI (May 2026)
 - Palash Shah, LangSmith Engine (May 2026)
+- Harvey × LangChain Labs, legal verifier study (Niko Grupen, June 2026)

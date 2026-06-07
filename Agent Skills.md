@@ -2,8 +2,6 @@ Patterns for building reusable agent instructions across any platform
 
 **May 2026** (updated May 31)
 
-Based on Anthropic best practices, LangChain skill benchmarking (2026)
-
 ## CORE CONCEPT
 
 A skill is a folder of instructions that teaches an AI agent how to handle specific tasks. Instead of re-explaining workflows every session, you teach the agent once and reuse it consistently.

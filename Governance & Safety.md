@@ -1,6 +1,6 @@
 Risk frameworks, defense in depth, and incident response for AI products
 
-**May 2026** (updated May 31, AI PM Course ingest)
+**May 2026** (updated June 7)
 
 ## CORE CONCEPT
 
@@ -20,6 +20,24 @@ No single layer is enough. Assume any layer can fail. Six layers, each catching 
 | 4. Output guardrails | Filter before user sees output | Toxicity, PII leakage, competitor mentions |
 | 5. Human review | HITL for high-stakes decisions | Nuanced errors requiring judgment |
 | 6. Monitoring | Detect patterns of misuse or failure | Silent drift, bias, novel attack patterns |
+
+## AGENT CREDENTIAL & NETWORK ISOLATION
+
+> Treat agents like untrusted developers. They need the ability to call an API, not possession of the credential. Keep the control plane outside the runtime. Fail closed.
+
+A prompt-injected or compromised agent with a credential in its runtime can exfiltrate it. The mitigation is architectural: the agent never holds the secret. It holds a reference; the harness holds the credential and enforces what the reference can do.
+
+| Pattern | What It Does | Blast-Radius Effect |
+|---|---|---|
+| Auth proxy | Credentials injected at the network layer, not the agent runtime; the model never sees the secret | Prompt injection / accidental logging can't leak a credential the agent never held |
+| Credential brokering | Agent receives a short-lived session reference + scoped token; harness holds the real secret | Stolen reference expires fast and is scoped; the underlying credential stays safe |
+| Explicit network egress | Allowed destinations defined as infra policy; default-deny | Compromised agent can't reach arbitrary endpoints to exfiltrate data |
+| Fail closed | If the credential callback or policy check fails, the action is blocked, not allowed | Failure degrades to no-action, not unauthorized-action |
+| Install quarantine | `pip` / `npm` / `curl \| bash` run in an isolated environment barred from high-privilege actions | Malicious dependency can't pivot to credentialed systems |
+
+> For agents, the default network can be narrow. Unlike human developers who need open environments, an agent's required destinations are usually enumerable, so least-privilege egress is practical rather than aspirational.
+
+Design implication for MCP servers and Super Agents: the server is the control plane. Scope tokens to audience (RFC 8707), broker rather than pass credentials, and make egress an explicit allowlist. This is the production hardening behind the "DOM / untrusted content is a prompt-injection delivery system" problem: any agent touching untrusted input (web pages, third-party docs) must be assumed compromised and denied direct credential access.
 
 ## RED TEAMING ATTACK PATTERNS
 
@@ -151,6 +169,8 @@ Explicit user complaints about safety issues represent a much larger population 
 | Single-layer defense | One bypass exposes the system | Defense in depth; assume any layer can fail |
 | No silent failure detection | Drift and bias go unnoticed | Periodic human audits, golden set monitoring |
 | Hard-coded to one model | Deprecation becomes a crisis | Abstraction layer, quarterly cross-model tests |
+| Credential in agent runtime | Prompt injection exfiltrates the secret | Auth proxy / credential brokering; agent holds a reference, not the credential |
+| Open agent egress | Compromised agent reaches arbitrary endpoints | Default-deny network policy; enumerated allowlist; fail closed |
 
 → See: Evals & Observability (golden set testing, monitoring)
 → See: Economics & Model Selection (vendor risk mitigation)
@@ -161,3 +181,4 @@ Explicit user complaints about safety issues represent a much larger population 
 - Jack Clark, Import AI 457 (May 2026)
 - "The Value Alignment Problem" (Oxford, DeepMind, OpenAI, Anthropic, et al.)
 - Reah Miyara, Google Cloud AI / formerly OpenAI (May 2026)
+- Harrison Chase & Raphael Kalan, LangSmith Auth Proxy (June 2026); Kyle Jeong, Browserbase (June 2026)

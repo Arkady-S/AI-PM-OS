@@ -2,8 +2,6 @@ Design principles, output contracts, and safety patterns for agent-consumable co
 
 **April 2026**
 
-Based on emerging industry patterns from Anthropic, Cloudflare, and open-source agent tooling
-
 ## CORE CONCEPT
 
 CLIs are the new APIs for AI agents. An agent's primary interface to external systems is tool calls, and CLIs map 1:1 to tool schemas: a command name, typed parameters, and structured output. A well-designed CLI is instantly consumable by any agent framework without wrapper code.

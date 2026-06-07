@@ -1,6 +1,6 @@
 How LLMs act in the world: function calling, pipelines, and agent loops
 
-**May 2026** (updated May 31)
+**May 2026** (updated June 7)
 
 ## CORE CONCEPT
 
@@ -222,6 +222,35 @@ Periodically refactor configs: rules should live in exactly one place (though cr
 | Context management | Compaction, offloading, summarization | Cost vs information retention |
 | Verification | Self-eval, test suite, human review | Autonomy vs reliability |
 
+## DYNAMIC WORKFLOWS (MODEL-GENERATED HARNESSES)
+
+Instead of a human pre-building the harness, the model writes its own workflow file (ex: JavaScript) at runtime: a custom harness tailor-made for the task. The workflow orchestrates separate model instances, each with an isolated context window, then synthesizes their outputs. This extends harness engineering from "human designs the scaffold" to "model assembles the scaffold per task."
+
+> Dynamic workflows attack failure modes that a single context window can't escape on its own. The fix is structural (isolated contexts, separate roles), not a better prompt.
+
+### Failure Modes They Address
+
+| Failure Mode | What Happens | Why Isolation Fixes It |
+|---|---|---|
+| Agentic laziness | Agent stops after partial progress (ex: 20 of 50 items) and declares done | A separate driver loop holds the full task list; workers can't shrink the goal |
+| Self-preferential bias | When judging against a rubric, the agent prefers its own prior output | A judge instance with no authorship stake scores neutrally |
+| Goal drift | Lossy compaction silently drops edge-case and "don't do X" constraints | Constraints live in the workflow file, re-injected into each fresh context |
+
+### Orchestration Patterns
+
+| Pattern | Shape | Use When |
+|---|---|---|
+| Classify-and-act | Route input to a handler based on a first-pass classification | Heterogeneous inputs need different handling |
+| Fan-out-and-synthesize | Split work across parallel instances, merge results | Independent subtasks; large item sets |
+| Adversarial verification | One instance extracts claims, separate instances check each | Output correctness matters more than speed |
+| Generate-and-filter | Over-generate candidates, score, keep the best | Quality variance is high |
+| Tournament | Candidates compete; pairwise-judged until a winner emerges | Selecting the single best of many |
+| Loop-until-done | Re-invoke against a completion goal until criteria met | Long-horizon work that exceeds one context |
+
+Use cases: large migrations/refactors, deep research, deep verification (extract claims → check each), memory/rule adherence (one verifier instance per CLAUDE.md rule; mine sessions for recurring corrections and distill into config), root-cause investigation (independent hypotheses from disjoint evidence to avoid self-preferential bias), and scaled triage. Pair with the quarantine pattern: instances reading untrusted public content are barred from high-privilege actions.
+
+> Caveat: dynamic workflows often use more tokens. Pair with a hard completion requirement (ex: /goal), explicit token budgets ("use 10k tokens"), and save proven workflows as skills so they're reusable rather than regenerated each run.
+
 ## BACKGROUND CODING AGENTS
 
 Agents that work autonomously in the cloud without user-initiated sessions. The user triggers a task (or a system event does), the agent executes in a sandboxed environment, and results appear when done.
@@ -252,6 +281,8 @@ Resource: background-agents.com (maintained by Ona) tracks the vendor landscape.
 | Harness overfitting | Agent breaks when tool logic changes | Test with modified tool implementations; don't assume model generalizes |
 | Context overflow | Agent reasoning degrades mid-task | Tool call offloading, compaction triggers, shorter tool outputs |
 | Premature exit | Agent stops before task is complete | Ralph Loop or continuation hooks; plan file with completion criteria |
+| Self-preferential bias | Agent rates its own output highest when judging against a rubric | Use a separate judge instance with no authorship stake (dynamic workflows) |
+| Goal drift | Compaction drops edge-case and "don't do X" constraints mid-task | Keep constraints in a workflow/plan file, re-inject into each fresh context |
 
 → See: MCP (protocol layer for tool connections)
 → See: Agent Skills (skill system, knowledge management)
@@ -263,3 +294,4 @@ Resource: background-agents.com (maintained by Ona) tracks the vendor landscape.
 - Eugene Yan, "How to Work and Compound with AI" (May 2026)
 - Viv (model-harness co-evolution, May 2026)
 - Product Faculty AI PM Course (May 2026)
+- Anthropic, "Dynamic Workflows in Claude Code" (Thariq Shihipar & Sid Bidasaria, June 2026)
