@@ -1,6 +1,6 @@
 Moats, archetypes, and frameworks for durable AI advantage
 
-**March 2026** (updated June 7)
+**March 2026** (updated June 14)
 
 ## CORE CONCEPT
 
@@ -82,6 +82,21 @@ The structural shift: platforms whose primary consumer becomes an agent, not a h
 | Who owns the agent that operates the platform? | If a third-party agent orchestrates your platform, the agent layer captures the user relationship |
 
 Strategic implication: for an incumbent platform, a headless/agent-first surface is both a defense (stay reachable as agents mediate more work) and an Infra Enabler play (become the substrate other agents build on). Maps to the 4C Capability dimension (tool vs teammate, intelligence vs interface).
+
+### Agent Fleet Management
+
+The next step beyond a single agent operating a platform: a fleet of specialized deep agents, each owning a workflow domain (inbox triage, blog writing, competitor research, recruiting) with its own instructions, skills, tools, subagents, and memory. Each agent gets a dedicated communication channel (Slack, Teams, email) so users interact with domain-specific agents through their existing surfaces rather than a single general-purpose chat.
+
+| Design Decision | What It Determines |
+|---|---|
+| Fleet composition | Which workflows get a dedicated agent vs. shared generalist |
+| Channel mapping | Which communication surface each agent owns (Slack channel, email alias, Teams bot) |
+| Memory boundaries | What each agent remembers vs. what's shared across the fleet |
+| Escalation routing | When a specialized agent hands off to a human or another agent |
+
+The fleet model changes the "who owns the agent" question from the table above. A platform that deploys its own fleet of specialized agents retains the user relationship per workflow. A platform that exposes only a headless API cedes fleet orchestration (and the user relationship) to whoever builds the agents on top.
+
+Patrick Collison (Stripe) flagged this as the missing capability in current LLM workflow tools: not a single assistant, but a managed fleet where each agent has deep domain context. (LangChain Fleet / Caspar Broekhuizen, June 2026)
 
 ## FIVE AI BUSINESS ARCHETYPES
 

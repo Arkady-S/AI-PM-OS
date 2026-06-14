@@ -1,6 +1,6 @@
 Risk frameworks, defense in depth, and incident response for AI products
 
-**May 2026** (updated June 7)
+**May 2026** (updated June 14)
 
 ## CORE CONCEPT
 
@@ -20,6 +20,20 @@ No single layer is enough. Assume any layer can fail. Six layers, each catching 
 | 4. Output guardrails | Filter before user sees output | Toxicity, PII leakage, competitor mentions |
 | 5. Human review | HITL for high-stakes decisions | Nuanced errors requiring judgment |
 | 6. Monitoring | Detect patterns of misuse or failure | Silent drift, bias, novel attack patterns |
+
+## SILENT CAPABILITY DEGRADATION
+
+A guardrail variant distinct from outright refusal: the system silently routes to a weaker model when safety classifiers trigger, without informing the user. The user sees lower-quality output but has no signal that a guardrail fired. Claude 5 Fable exhibits this pattern, defaulting to Claude 4.8 Opus at "the faintest hint of a security problem," catching legitimate use cases alongside actual risks.
+
+This fails differently than refusal. A refusal is visible and the user can rephrase. A silent downgrade is invisible and the user attributes the weaker output to general unreliability, eroding trust without a correctable signal.
+
+| Guardrail Behavior | User Experience | Trust Effect |
+|---|---|---|
+| Refusal (explicit) | User sees the block; can rephrase or escalate | Frustrating but transparent; trust recoverable |
+| Silent downgrade | User sees weaker output; no explanation | Perceived inconsistency; trust erodes unpredictably |
+| Downgrade with notification | User informed of reduced capability and reason | Transparent; user can adjust expectations or rephrase |
+
+Design implication: when routing between model tiers based on safety classification, surface the routing decision to the user. A brief "Using a more cautious mode for this request" preserves trust better than unexplained quality variance. Monitor false-positive rate on safety classifiers the same way you monitor refusal rates. (Ethan Mollick, "What it feels like to work with Mythos," June 2026)
 
 ## AGENT CREDENTIAL & NETWORK ISOLATION
 
@@ -165,6 +179,7 @@ Explicit user complaints about safety issues represent a much larger population 
 |--------|---------|-----------|
 | Guardrails too loose | Bad outputs reach users | Adversarial testing, user feedback monitoring |
 | Guardrails too tight | Excessive false refusals, user frustration | Refusal rate monitoring, precision tuning |
+| Silent capability downgrade | Inconsistent quality; user can't diagnose why output varies | Surface routing decisions to user; monitor safety classifier false-positive rate |
 | No incident plan | Scramble when things go wrong | Pre-defined playbooks, practiced response |
 | Single-layer defense | One bypass exposes the system | Defense in depth; assume any layer can fail |
 | No silent failure detection | Drift and bias go unnoticed | Periodic human audits, golden set monitoring |
@@ -182,3 +197,4 @@ Explicit user complaints about safety issues represent a much larger population 
 - "The Value Alignment Problem" (Oxford, DeepMind, OpenAI, Anthropic, et al.)
 - Reah Miyara, Google Cloud AI / formerly OpenAI (May 2026)
 - Harrison Chase & Raphael Kalan, LangSmith Auth Proxy (June 2026); Kyle Jeong, Browserbase (June 2026)
+- Ethan Mollick, "What it feels like to work with Mythos" (June 2026): silent capability degradation pattern

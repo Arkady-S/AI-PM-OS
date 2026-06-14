@@ -1,6 +1,6 @@
 Trust engineering, humorphism, and relationship design for AI products
 
-**May 2026** (updated June 7)
+**May 2026** (updated June 14)
 
 ## CORE CONCEPT
 
@@ -138,6 +138,20 @@ The range of AI behaviors users find acceptable shifts rapidly. Features conside
 
 Implication for roadmap sequencing: design the autonomy staircase knowing users will climb faster than you expect if trust is maintained. Build the infrastructure for Level 3-4 while shipping Level 1-2. The bottleneck shifts from "will users accept this?" to "can we maintain trust at each new level?"
 
+### Structural Opacity at Level 4
+
+At Mythos-class capability (ex: Claude 5 Fable), agents work autonomously for hours, spawning sub-agents, making hundreds of judgment calls, and delivering finished output. The human role at this level is closer to patron than editor: brief the agent, fund execution, judge the result. Process visibility becomes impractical, not because the interface is bad, but because the decision volume exceeds what a human can meaningfully track.
+
+This is distinct from cognitive surrender. Cognitive surrender is the user choosing not to engage. Structural opacity is the user being unable to engage with the process even if they want to. Mollick: "The details of the AI's decision making are not shown to me, and the process would be too long to even be worth following."
+
+| Oversight Model | Works When | Breaks When |
+|---|---|---|
+| Process monitoring (step-by-step traces) | Agent takes 5-20 steps; human can follow the logic | Agent takes hundreds of steps over hours; trace is unreadable |
+| Outcome verification (judge the deliverable) | Output is evaluable by the human; domain expertise sufficient | Output requires domain knowledge the human lacks |
+| Adversarial verification (separate agent checks work) | High-stakes output; cost of verification justified | Verification agent shares blind spots with primary agent |
+
+Design implication for high-autonomy agents: invest in outcome verification tooling (structured diffs, before/after comparisons, automated eval checks) over process transparency. Users at Level 4 need confidence in the result, not visibility into every step. (Ethan Mollick, "What it feels like to work with Mythos," June 2026)
+
 ## AGENT OVERSIGHT PRINCIPLES
 
 From Anthropic's framework for safe, trustworthy agents:
@@ -271,3 +285,4 @@ Design implication: agent output rendering is a UX decision, not an infrastructu
 - Brian Chesky (structured UI for transactional domains)
 - Henry (Anthropic / formerly Super.com), Product Faculty AI PM Course (May 2026)
 - Shreya Shankar (human-agent handoff and flow, June 2026)
+- Ethan Mollick, "What it feels like to work with Mythos" (June 2026): structural opacity, patron model
