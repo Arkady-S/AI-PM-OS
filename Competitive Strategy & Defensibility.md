@@ -33,7 +33,7 @@ Evaluate AI impact across four dimensions. A single Critical rating warrants imm
 
 ## MOAT TAXONOMY
 
-### Traditional moats under pressure:
+### Traditional Moats Under Pressure
 
 | Moat | How AI Erodes It |
 |------|------------------|
@@ -42,7 +42,7 @@ Evaluate AI impact across four dimensions. A single Critical rating warrants imm
 | Beautiful UX | AI anticipates intent, reducing interface dependency |
 | Scale distribution | AI enables direct-to-user delivery |
 
-### Contextual moats that compound:
+### Contextual Moats That Compound
 
 | Moat | How It Strengthens |
 |------|-------------------|
@@ -202,3 +202,10 @@ Not all trends create advantage. The intersection of a trend and your unique cap
 
 → See: Probing for Deep Jobs (behavioral segmentation)
 → See: AI GTM & Pricing (launch strategy, pricing)
+
+---
+
+**Sources:**
+- LangChain / Neil Dahlke (June 2026): harness lock-in, model neutrality
+- Naval; Harrison Chase (June 2026): agent-first / headless platforms
+- LangChain Fleet / Caspar Broekhuizen, Patrick Collison (June 2026): agent fleet management

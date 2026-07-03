@@ -1,6 +1,6 @@
 Cost, latency, and capability ceilings for every AI product decision
 
-**May 2026** (updated May 31, AI PM Course ingest)
+**July 2026** (updated Jul 3, AGENTIC Twitter List ingest)
 
 ## CORE CONCEPT
 
@@ -88,6 +88,67 @@ In priority order, highest impact first:
 | Batch processing | 50% | Non-real-time workloads |
 | Self-hosting | Variable | High volume, data privacy needs |
 
+## PROMPT CACHING DEEP DIVE
+
+Prompt caching is the single highest-impact cost optimization for production AI agents. KV-cache hit rate (the percentage of input tokens served from cache rather than recomputed) is the most important production metric for agent economics, per Manus AI.
+
+### How It Works
+
+LLMs process input tokens by computing key-value (KV) pairs in the attention mechanism. These KV pairs encode the model's "understanding" of the input. Prompt caching stores these computed KV pairs so that when the same prefix appears in a subsequent request, the model skips recomputation and reads from cache. Only the new tokens after the cached prefix need fresh computation.
+
+Requirements for cache hits:
+- The cached portion must be an exact prefix match (same tokens in the same order)
+- Stable elements (system prompt, few-shot examples, tool definitions) should go first in the prompt
+- Variable elements (user query, retrieved context) go last
+- Most providers require a minimum prefix length for caching to activate (ex: Anthropic requires 1,024+ tokens for automatic caching, 2,048+ for some models)
+
+### Model-Specific Savings (Jun 2026 benchmarks on real agent trajectories)
+
+| Model | Cache Hit Savings | Effective Cost Reduction |
+|---|---|---|
+| claude-haiku-4-5 | 90% off cached tokens | -77% total input cost |
+| gpt-5.4-mini | 50% off cached tokens | -80% total input cost |
+| gemini-3.5-flash | 75% off cached tokens (>128 tokens) | -49% total input cost |
+
+The variation comes from differences in pricing structure (how much the cache discount is per provider), typical agent trajectory length (longer trajectories = more cacheable prefix), and minimum cache thresholds.
+
+### Maximizing KV-Cache Hit Rate
+
+Structure prompts so the maximum number of tokens appear in the stable prefix:
+
+1. **System prompt**: instructions, persona, constraints (most stable, always first)
+2. **Tool definitions**: schemas, descriptions (change rarely)
+3. **Few-shot examples**: input/output pairs (change per feature, not per request)
+4. **Domain context**: wiki memory, AGENTS.md content (changes infrequently)
+5. **Retrieved context**: RAG chunks, search results (varies per query)
+6. **Conversation history**: prior turns (grows per session)
+7. **User query**: current request (always different)
+
+Items 1-4 form the cacheable prefix. Items 5-7 are variable. Moving tool definitions or examples below the user query destroys cache hits for all preceding tokens.
+
+Harness-level automation: Deep Agents (LangChain) automatically sets cache breakpoints at the boundary between stable and variable context, removing the need for manual prompt structure management.
+
+### Interaction with Model Routing
+
+Prompt caching creates a strong economic bias toward sticking with the initially-routed model. Switching models mid-session resets the cache (different model = different KV computation), so you pay full price for the first request on the new model. This means:
+
+- Model routing strategies that switch frequently between models sacrifice caching benefits
+- For multi-turn agent sessions, the cost of switching models is not just the current request but the loss of accumulated cache
+- In practice, route at session start and stick with the chosen model unless quality requires escalation
+
+## MODEL ROUTING VS MODEL COUNCIL
+
+Two runtime model selection strategies beyond the upfront selection framework above:
+
+| Strategy | How It Works | Optimize For | Trade-off |
+|---|---|---|---|
+| Model routing | Classify each request, route to one model | Cost (send easy queries to cheap models) | Misrouting sends hard queries to weak models |
+| Model council | Send to multiple models, aggregate outputs | Frontier performance (ensemble wisdom) | Multiplied cost per request |
+
+Routing is the default for production. Council is for use cases where correctness matters more than cost (ex: medical, legal, financial advisory). Devin Fusion (Cognition) implements a hybrid: mix model tiers within a single session, reducing cost 35% while maintaining Fable-level quality on coding tasks.
+
+The prompt caching interaction (above) creates a further constraint: once you route to a model, switching is expensive. This biases routing toward conservative initial selection (choose a model you won't need to upgrade from mid-session).
+
 ## LATENCY LEVERS
 
 | Lever | Impact | When to Use |
@@ -138,3 +199,6 @@ In priority order, highest impact first:
 
 **Sources:**
 - Product Faculty AI PM Course (May 2026)
+- AGENTIC Twitter List digests, Jun 21-Jul 3 2026 (prompt caching economics, model routing vs council)
+- @its_ao (Jun 2026), @hwchase17 (Jun 2026), Manus AI: prompt caching benchmarks
+- @cognition (Jun 2026): Devin Fusion model routing

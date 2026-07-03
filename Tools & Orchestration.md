@@ -1,6 +1,6 @@
 How LLMs act in the world: function calling, pipelines, and agent loops
 
-**May 2026** (updated June 7)
+**July 2026** (updated Jul 3, AGENTIC Twitter List ingest)
 
 ## CORE CONCEPT
 
@@ -28,14 +28,14 @@ Agent reliability scales with constraint. Narrow, well-defined scope is testable
 
 ## PIPELINE VS. AGENT
 
-### PIPELINE (default)
+### Pipeline (Default)
 
 - Static sequence of steps
 - Predictable and debuggable
 - Same flow for all queries
 - Can enumerate all paths
 
-### AGENT (when necessary)
+### Agent (When Necessary)
 
 - Model decides next action
 - Next step depends on results
@@ -62,21 +62,36 @@ Five dimensions for evaluating whether a task warrants agent architecture vs. si
 
 The fundamental cycle for any agent or multi-step system:
 
-### 1. OBSERVE
+### 1. Observe
 
 Read current state: user input, tool results, conversation history
 
-### 2. THINK
+### 2. Think
 
 Model decides what to do next: call a tool, ask for clarification, or respond
 
-### 3. ACT
+### 3. Act
 
 Execute the chosen tool or produce output
 
-### 4. REPEAT
+### 4. Repeat
 
 Feed result back into context. Continue until termination condition met
+
+### 4-Level Loop Stack
+
+The observe/think/act cycle above is the innermost loop (Level 1). Production agent systems stack four loop levels with increasing time horizons. Value compounds primarily at Levels 3 and 4.
+
+| Level | Loop | Time Horizon | What It Does |
+|---|---|---|---|
+| 1 | Agent loop | Single task | Model calls tools until task complete (observe/think/act above) |
+| 2 | Verification loop | Wraps Level 1 | Grader checks output against rubric; rejects and re-runs on failure |
+| 3 | Event-driven loop | Hours to days | Connects agent to ecosystem via triggers (webhooks, cron, channel messages). Agent activates on external events, not just user prompts |
+| 4 | Hill-climbing loop | Days to weeks | Analysis agent reviews accumulated traces, rewrites harness config (prompts, tool selection, routing rules) with improved settings |
+
+> Loops amplify behavior, making them a double-edged sword. To avoid amplifying bad patterns, you need an engaged human in the loop. The agent needs to learn your taste.
+
+Level 1 is table stakes. Level 2 adds correctness guarantees. Level 3 makes agents proactive. Level 4 makes agents self-improving. Most teams build Levels 1-2 and skip 3-4, which is where compounding returns live.
 
 ## PRD ELEMENTS: TOOL DEFINITIONS
 
@@ -251,6 +266,38 @@ Use cases: large migrations/refactors, deep research, deep verification (extract
 
 > Caveat: dynamic workflows often use more tokens. Pair with a hard completion requirement (ex: /goal), explicit token budgets ("use 10k tokens"), and save proven workflows as skills so they're reusable rather than regenerated each run.
 
+## SELF-IMPROVING HARNESSES
+
+Dynamic workflows (above) generate per-task harnesses at runtime. Self-improving harnesses accumulate improvements across runs, so each execution benefits from lessons learned in prior ones. This is the mechanism behind Level 4 of the loop stack.
+
+### Self-Harness Pattern
+
+Three-step cycle:
+
+1. **Weakness mining**: analyze traces from recent runs to identify recurring failure patterns (ex: agent consistently fails at a specific tool call sequence, drops constraints during compaction, or misroutes queries)
+2. **Harness proposal**: agent generates a concrete change to its own configuration (updated prompt section, new tool, modified routing rule, adjusted compaction strategy)
+3. **Proposal validation**: run the proposed change against a regression test suite before accepting. If regressions appear, reject the proposal. Only accept changes that maintain existing pass rates while fixing the identified weakness
+
+Self-Harness formalizes what transcript mining (see above) does manually. The difference: transcript mining requires a human to review corrections and update config. Self-Harness closes the loop with automated validation, allowing unsupervised improvement within the safety boundary of the regression suite.
+
+### Continual Learning Loops
+
+The broader pattern that Self-Harness implements. If you build a good continual learning loop, you can get compounding ~1% daily improvement. The prerequisite: a useful gradient to hill-climb against. Without data, evals, and feedback providing directional signal, auto-improvement loops produce lateral movement or drift, not gains.
+
+Concrete architecture (Moe Ali, Product Faculty):
+
+| Component | What It Does | Cadence |
+|---|---|---|
+| Automated cron | Scheduled tasks and heartbeat checks | Continuous |
+| Memory | Accumulated context about preferences, audience, past performance | Updated per run |
+| Self-review | Each agent reviews its own work against criteria | Monthly |
+| Supervisor review | A supervisor agent reviews its squad, grades performance, proposes config changes | Bi-weekly |
+| Escalation | Agents do work, human makes final decision on high-stakes outputs | Per decision |
+
+> Auto-research style proposal loops work best only when Data/Evals/Feedback give a useful gradient to hill-climb against. Without that gradient, the loop is just busy.
+
+The escalation layer is critical: agents do work, but humans retain decision authority on anything consequential. This prevents compounding errors from auto-accepted bad proposals.
+
 ## BACKGROUND CODING AGENTS
 
 Agents that work autonomously in the cloud without user-initiated sessions. The user triggers a task (or a system event does), the agent executes in a sandboxed environment, and results appear when done.
@@ -295,3 +342,7 @@ Resource: background-agents.com (maintained by Ona) tracks the vendor landscape.
 - Viv (model-harness co-evolution, May 2026)
 - Product Faculty AI PM Course (May 2026)
 - Anthropic, "Dynamic Workflows in Claude Code" (Thariq Shihipar & Sid Bidasaria, June 2026)
+- AGENTIC Twitter List digests, Jun 21-Jul 3 2026 (4-level loop stack, self-harness, continual learning)
+- @sydneyrunkle (Jun 2026): 4-level loop stack
+- @hwchase17 (Jun 2026): self-harness pattern
+- @Vtrivedy10, @ProductFaculty (Jun 2026): continual learning loops

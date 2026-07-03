@@ -1,6 +1,6 @@
 Patterns for building reusable agent instructions across any platform
 
-**May 2026** (updated May 31)
+**July 2026** (updated Jul 3, AGENTIC Twitter List ingest)
 
 ## CORE CONCEPT
 
@@ -208,7 +208,9 @@ Skills solve the "how" problem (reusable instructions). Knowledge management sol
    Curated posts, articles, documentation the agent should reference. Indexed for retrieval, not dumped wholesale. The agent pulls relevant items when a task matches, rather than loading everything into context.
 
 3. **Wiki / Domain Knowledge**
-   Stable facts about the domain: internal terminology, org conventions, architectural decisions, product rules. Updated infrequently. High retrieval priority because these facts apply across many tasks.
+   Stable facts about the domain: internal terminology, org conventions, architectural decisions, product rules. Updated infrequently. High retrieval priority because these facts apply across many tasks. The emerging "wiki memory" pattern uses agents to maintain these wikis automatically from raw sources (code changes, Slack threads, meeting transcripts). Key implementations: OpenWiki (LangChain, auto-generates repo documentation via CLAUDE.md/AGENTS.md references), Operational Language Wiki (Hasura, captures delta between team jargon and LLM training vocabulary). These are distinct from RAG: wiki memory precomputes synthesis rather than retrieving raw chunks.
+
+→ See: Context Engineering (wiki memory pattern)
 
 4. **Skills**
    The existing skill system (SKILL.md, scripts, references). Knowledge management wraps around skills by tracking which skills were used, when, and how effectively.
@@ -292,19 +294,19 @@ A mature agent system uses both: skills define repeatable workflows, knowledge e
 
 ### Iteration Signals
 
-#### UNDERTRIGGERING
+#### Undertriggering
 
 Skill doesn't load when it should. Users manually invoke it.
 
 **Fix:** Add more trigger phrases and keywords to description.
 
-#### OVERTRIGGERING
+#### Overtriggering
 
 Skill loads for irrelevant queries. Users disable it.
 
 **Fix:** Add negative triggers, narrow scope, clarify boundaries.
 
-#### EXECUTION ISSUES
+#### Execution Issues
 
 Inconsistent results, API failures, user corrections needed.
 

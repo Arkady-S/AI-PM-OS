@@ -1,6 +1,6 @@
 Curating the right tokens for every model call
 
-**May 2026** (updated May 31, AI PM Course ingest)
+**July 2026** (updated Jul 3, AGENTIC Twitter List ingest)
 
 Based on Anthropic + Product Faculty research
 
@@ -178,6 +178,51 @@ When the memory store grows large, not everything can load into context. Score m
 
 Design decision: always-load memories (under 2,000 tokens, apply to nearly every task) vs. on-demand retrieval (searched when task matches a known pattern). Keep the always-load set small.
 
+### Functional Memory Taxonomy (Cognitive Science)
+
+Complementary to the structural 6-level taxonomy above. Classifies memory by what kind of knowledge it represents, not where it lives:
+
+| Type | Contains | Example | Impact |
+|---|---|---|---|
+| Semantic | Facts about the world, domain knowledge | "ClickUp uses a Space > Folder > List hierarchy" | Grounds reasoning in correct facts |
+| Episodic | Records of past interactions and outcomes | "Last time user asked for a report, they wanted PDF" | Personalizes behavior over time |
+| Procedural | Instructions, skills, tool-use rules | "When creating a task, always check for duplicate titles first" | Drives most visible quality improvements |
+
+Procedural memory drives the most visible quality gains in practice. It directly shapes agent behavior, while semantic and episodic memory primarily inform reasoning. Implication: invest in capturing and refining procedural memory (skills, rules, tool-use patterns) before scaling episodic or semantic stores.
+
+Three-step update loop: capture traces > analyze for patterns > update the relevant memory type. Design principles: not everything should be a memory update (be selective), ensure future runs actually read the update (test retrieval), protect important behavior with evals before overwriting.
+
+### Wiki Memory
+
+A named pattern converging across the agent ecosystem. Instead of retrieving raw chunks at query time (RAG), an agent precomputes and maintains a synthesized knowledge layer from raw sources (code, logs, Slack threads, transcripts, notes). The wiki is compact, persistent, and agent-readable.
+
+| Implementation | Approach | Update Mechanism |
+|---|---|---|
+| OpenWiki (LangChain) | CLI generates repo wiki, connects to coding agents via CLAUDE.md/AGENTS.md reference | Scheduled GitHub Action diffs recent commits, updates relevant wiki pages |
+| Operational Language Wiki (Hasura) | Captures delta between team's internal "dialect" and LLM's trained "world language." Markdown + JSON | Coding agents maintain |
+| PaperWiki | Obsidian-backed knowledge base, indexed via full-text + semantic search | Agents on a loop ingest from multiple sources |
+| Context Graph (Hyperspell) | Every company source feeds a conflict-resolved graph; wikis render on top | Auto-updates every 15 minutes |
+
+> Wiki memory is great right up until the wiki is confidently wrong and every agent inherits the same bad assumption. Storing was never the hard part; trusting it is.
+
+Mitigation: hybrid architecture pairing a knowledge graph (for the agent) with a bi-directionally synced wiki (for human readability and audit). Graph provides structured relations; wiki provides natural-language summaries. Edits to either sync back to the other.
+
+RAG retrieves raw chunks. Wiki memory retrieves precomputed synthesis. They are complementary: use RAG for specifics that change too fast for wiki maintenance; use wiki for stable, high-level understanding that would be expensive to re-derive every call.
+
+### Sleep-Time Compute
+
+Background process that analyzes agent trajectories after execution to update a persistent memory store. Named by Letta (Sarah Wooders): the next scaling axis for intelligence after train-time and inference-time compute.
+
+Three-step implementation:
+
+1. **Trace**: capture full agent trajectory (tool calls, reasoning, outcomes) to an observability platform
+2. **Analyze**: run an analysis engine (can be a cheaper model) over traces to identify patterns, errors, user preferences, and recurring failure modes
+3. **Update**: write extracted insights to a persistent memory store that future runs read at startup
+
+The pattern separates the "doing" agent from the "learning" agent. The doing agent runs in real time. The learning agent runs asynchronously on cheaper models, processing traces in bulk. This avoids contaminating real-time context with learning overhead.
+
+Key design consideration: memory built on traces stays close to where the run happened and where data lives, reducing drift from reality. Watch for stale memory outliving the context it was true in. Apply the same context rot principle (Principle 8) to memory updates.
+
 ## TOKEN PRIORITY STACK
 
 When filling context, pack in this order:
@@ -247,3 +292,7 @@ Run before every LLM call:
 **Sources:**
 - Anthropic + Product Faculty research (2026)
 - Muhammad Umer Farooq, Flow/Brain Chain (May 2026)
+- AGENTIC Twitter List digests, Jun 21-Jul 3 2026 (wiki memory, sleep-time compute, cognitive science taxonomy)
+- @jakebroekhuizen, LangChain memory guide (Jun 2026): functional memory taxonomy
+- @hwchase17, @BraceSproul, @tanmaigo, @omarsar0, @eddzsh, @SydSachar (Jun-Jul 2026): wiki memory implementations
+- @hwchase17, @sarahwooders (Jun 2026): sleep-time compute

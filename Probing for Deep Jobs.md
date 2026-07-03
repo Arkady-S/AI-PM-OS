@@ -24,23 +24,23 @@ Most PMs stop at the functional layer. Competitors match functional jobs within 
 
 A structured sequence for moving from surface to depth. Each question targets a deeper layer. Pause after each, let silence do the work.
 
-### 1. Functional: "Walk me through what happened."
+### 1. Functional: "Walk me through what happened"
 
 Establish the concrete context. What were they doing, what tools, what sequence. Don't interpret yet.
 
-### 2. Stakes: "What happens if this goes wrong?"
+### 2. Stakes: "What happens if this goes wrong"
 
 Surfaces the weight of the task. Reveals whether the job is high- or low-stakes, and for whom.
 
-### 3. Emotional: "How did that make you feel?"
+### 3. Emotional: "How did that make you feel"
 
 Direct emotional probe. If they deflect, try: "Was that stressful?" or "Were you worried about that?" Name the emotion for them.
 
-### 4. Identity: "What kind of [role] do you want to be?"
+### 4. Identity: "What kind of [role] do you want to be"
 
 Connects the task to self-concept. "What kind of manager do you want to be?" reveals the aspirational identity the product serves.
 
-### 5. Tribal: "What would your team/peers think?"
+### 5. Tribal: "What would your team/peers think"
 
 Surfaces social perception anxiety. How they want to be seen by colleagues, leadership, or their professional community.
 
@@ -71,23 +71,23 @@ Social jobs are about how people want to be perceived. They're outward-facing an
 
 ## 5 SIGNALS YOU'VE HIT A DEEP JOB
 
-### 1. Energy shift.
+### 1. Energy Shift
 
 They lean in, speak faster, or get quieter. Emotional resonance changes body language.
 
-### 2. Unprompted storytelling.
+### 2. Unprompted Storytelling
 
 They volunteer a specific anecdote without you asking. The story is the data.
 
-### 3. "I know this sounds stupid, but..."
+### 3. "I Know This Sounds Stupid, But..."
 
 Vulnerability preambles signal the real job. Whatever follows the qualifier is gold.
 
-### 4. They name a specific person.
+### 4. They Name a Specific Person
 
 "My VP" or "my skip-level" appearing means the social/tribal dimension is active.
 
-### 5. Contradiction with stated priority.
+### 5. Contradiction with Stated Priority
 
 They say speed matters most but spend 20 minutes describing accuracy anxiety. The contradiction reveals the emotional job.
 

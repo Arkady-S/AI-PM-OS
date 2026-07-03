@@ -1,6 +1,6 @@
 Risk frameworks, defense in depth, and incident response for AI products
 
-**May 2026** (updated June 14)
+**May 2026** (updated July 3)
 
 ## CORE CONCEPT
 
@@ -33,7 +33,20 @@ This fails differently than refusal. A refusal is visible and the user can rephr
 | Silent downgrade | User sees weaker output; no explanation | Perceived inconsistency; trust erodes unpredictably |
 | Downgrade with notification | User informed of reduced capability and reason | Transparent; user can adjust expectations or rephrase |
 
-Design implication: when routing between model tiers based on safety classification, surface the routing decision to the user. A brief "Using a more cautious mode for this request" preserves trust better than unexplained quality variance. Monitor false-positive rate on safety classifiers the same way you monitor refusal rates. (Ethan Mollick, "What it feels like to work with Mythos," June 2026)
+Design implication: when routing between model tiers based on safety classification, surface the routing decision to the user. A brief "Using a more cautious mode for this request" preserves trust better than unexplained quality variance. Monitor false-positive rate on safety classifiers the same way you monitor refusal rates.
+
+## CAPABILITY-JAILBREAK EQUIVALENCE
+
+The model layers that enable capabilities and the layers that enable jailbreaks are architecturally the same. Width and depth scaling that improves reasoning also improves the model's ability to reason through guardrail bypasses. You cannot independently strengthen capability and safety because they share substrate.
+
+| Scaling Change | Capability Effect | Safety Effect |
+|---|---|---|
+| More depth (layers) | Better multi-step reasoning | Better multi-step guardrail circumvention |
+| More width (parameters per layer) | Richer representations | Richer adversarial representations |
+
+> Making a model smarter makes it smarter at everything, including bypassing the constraints you built for the previous generation. Defense-in-depth layers must assume each new model generation is better at circumventing the previous generation's guardrails.
+
+Design implication: red teaming and guardrail updates must pace model capability updates, not lag behind them. Budget red teaming as a per-model-upgrade cost, not a one-time launch cost.
 
 ## AGENT CREDENTIAL & NETWORK ISOLATION
 
@@ -86,6 +99,20 @@ This creates a structural tension for product teams: the metrics that indicate u
 
 Design implication: safety review should include positive alignment checks. Does the model push back when the user is wrong? Does it surface uncertainty? Does it help the user think better, or just feel better? These are product quality questions, not just safety questions.
 
+## AI SUPERPERSUASION
+
+AI persuades more effectively than expert human debaters. A study of 18,978 conversations found AI changed minds at higher rates than humans trained in persuasion techniques.
+
+This connects to preference-wellbeing divergence (above). An agent that persuades effectively can optimize for user agreement over user benefit: the same persuasion capability that helps a support agent resolve tickets can push users toward decisions that satisfy preference metrics but not wellbeing.
+
+| Risk Surface | Example | Mitigation |
+|---|---|---|
+| User-facing agents | Super Agent crafts responses optimizing for approval over accuracy | Eval for persuasion patterns; separate accuracy scores from satisfaction scores |
+| Internal tools | AI-generated summaries frame information to support a predetermined conclusion | Require balanced framing; adversarial review of generated summaries |
+| Content generation | Marketing/comms agents produce copy that manipulates rather than informs | Persuasion intensity guardrails; human review for high-stakes content |
+
+> Persuasion capability is dual-use. The same mechanism that makes an agent helpful (clear framing, anticipating objections, tailored communication) makes it manipulative when misaligned. Eval suites should test for persuasion intensity, not just accuracy.
+
 ## COST OF MISPREDICTION
 
 The primary question for any AI feature's safety investment: "What is the cost of a missed prediction?" The answer determines guardrail depth, HITL requirements, and eval rigor.
@@ -110,6 +137,7 @@ The primary question for any AI feature's safety investment: "What is the cost o
 | Model deprecation                | Vendor sunsets model you depend on                                                                                  | Abstraction layer, cross-model testing                                                                                                                                                                                                                                                                                          |
 | Silent failure                   | Errors that look like normal responses                                                                              | Monitoring, user feedback loops, periodic audits                                                                                                                                                                                                                                                                                |
 | Prolonged-use psychological harm | Users develop distorted thinking, dependency, or detachment from reality after extended conversational AI sessions. | Session-length guardrails, tool-mode defaults over open-ended chat, usage pattern monitoring, cool-down nudges after extended sessions. Design distinction: task-bound interactions (agent executes, returns result) vs. unbounded conversation (user talks to AI about personal problems). Default products toward task-bound. |
+| AI persuasion / manipulation | Agent output optimizes for agreement over accuracy; users persuaded against their interests without awareness | Persuasion intensity evals, separate accuracy from satisfaction metrics, balanced-framing requirements, human review for high-stakes content |
 
 ## FTCEM: PRE-LAUNCH SAFETY
 
@@ -198,3 +226,5 @@ Explicit user complaints about safety issues represent a much larger population 
 - Reah Miyara, Google Cloud AI / formerly OpenAI (May 2026)
 - Harrison Chase & Raphael Kalan, LangSmith Auth Proxy (June 2026); Kyle Jeong, Browserbase (June 2026)
 - Ethan Mollick, "What it feels like to work with Mythos" (June 2026): silent capability degradation pattern
+- Susan Zhang (June 2026): capability-jailbreak equivalence
+- Jack Clark, Import AI 462 (June 2026): AI superpersuasion study (Bai et al., 18,978 conversations)

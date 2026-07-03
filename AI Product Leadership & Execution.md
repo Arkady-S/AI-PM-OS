@@ -88,7 +88,7 @@ Replaces static annual planning with continuous calibration. AI costs drop ~50% 
 | Add approval layers | Agree on action triggers tied to specific numbers |
 | **Result: bottlenecks that kill velocity** | **Result: permission to move fast within boundaries** |
 
-## LADDER CLIMB CHECKLIST
+## LADDER CLIMB CRITERIA
 
 Before advancing any initiative to the next level, confirm:
 

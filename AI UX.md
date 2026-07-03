@@ -1,6 +1,6 @@
 Trust engineering, humorphism, and relationship design for AI products
 
-**May 2026** (updated June 14)
+**July 2026** (updated Jul 3, AGENTIC Twitter List ingest)
 
 ## CORE CONCEPT
 
@@ -17,17 +17,11 @@ Replace user interfaces built for operating tools with human interfaces built fo
 
 ## COLLABORATION PATTERNS
 
-### LISTEN
-
-AI reports progress, listens for context shifts, stays aware of user state
-
-### INTERRUPT
-
-Shift to real-time multimodal collaboration when complexity peaks
-
-### ESCALATE
-
-AI surfaces blockers with context + options; never hallucinate through ambiguity
+| Pattern | Behavior |
+|---------|----------|
+| Listen | AI reports progress, listens for context shifts, stays aware of user state |
+| Interrupt | Shift to real-time multimodal collaboration when complexity peaks |
+| Escalate | AI surfaces blockers with context + options; never hallucinate through ambiguity |
 
 ## HUMAN-AGENT HANDOFF & FLOW
 
@@ -262,6 +256,27 @@ HTML outperforms Markdown as the default agent output format. Markdown constrain
 
 Design implication: agent output rendering is a UX decision, not an infrastructure detail. The output format determines whether users can act on results immediately or must copy-paste into another tool. For Super Agents producing multi-step work products (project plans, analysis, dashboards), HTML should be the default output target.
 
+## AGENT-MEDIATED FEATURE DISCOVERY
+
+In traditional products, users discover features through menus, onboarding tours, and documentation. In agent-native products, the agent itself becomes the discovery mechanism: users learn what the product can do by interacting with the agent, which routes them to capabilities they didn't know existed.
+
+Harvey (legal AI, $100M+ NNARR, 53% DAU/MAU) found that prior to agent unification, many capabilities were only discovered by power users. The fix was architectural: cloud agents use all product surfaces rather than being siloed per feature. A single agent entry point connects to the full capability set. When users ask the agent a question, it can draw on any product surface to answer, and the user learns a new capability in the process.
+
+| Siloed Agents | Unified Agent |
+|---|---|
+| Each feature has its own AI entry point | One agent accesses all product surfaces |
+| Users must know where to go first | Agent routes to the right capability |
+| Power users discover 60%+ of features; casual users discover 20% | Discovery gap narrows as agent introduces capabilities contextually |
+| Adoption metrics siloed per feature | Command center monitors adoption/ROI across all surfaces |
+
+Design implications:
+
+> Build one agent identity with access to the full product graph, not per-feature agents that each solve a narrow problem. Users shouldn't need a mental model of your product architecture to get value.
+
+> As the product becomes more connected, users discover more by learning from their agents. The agent is both the product interface and the onboarding mechanism.
+
+> Track agent-mediated discovery as a metric: how often does an agent interaction introduce a user to a capability they hadn't used before?
+
 ## COMMON FAILURE MODES
 
 | Failure | Symptom | Prevention |
@@ -286,3 +301,4 @@ Design implication: agent output rendering is a UX decision, not an infrastructu
 - Henry (Anthropic / formerly Super.com), Product Faculty AI PM Course (May 2026)
 - Shreya Shankar (human-agent handoff and flow, June 2026)
 - Ethan Mollick, "What it feels like to work with Mythos" (June 2026): structural opacity, patron model
+- @gabepereyra (Jul 1 2026): Harvey Q2 results, agent-mediated feature discovery

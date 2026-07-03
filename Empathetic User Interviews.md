@@ -11,15 +11,15 @@ Stated needs differ from real needs. Anthropic's 81,000-person study found users
 
 ## THE MOM TEST: 3 RULES
 
-### 1. Talk about their life, not your idea.
+### 1. Talk About Their Life, Not Your Idea
 
 If you avoid mentioning your idea, you automatically start asking better questions. Never ask if your idea is good. Learn about their problems, context, and constraints instead.
 
-### 2. Ask about specifics in the past, not the future.
+### 2. Ask About Specifics in the Past, Not the Future
 
 People are overly optimistic about hypothetical futures. "Would you use X?" always gets a yes. "What did you do last time this happened?" reveals truth.
 
-### 3. Talk less and listen more.
+### 3. Talk Less and Listen More
 
 The more you talk, the more you bias. Your goal is to learn, not to pitch. When you catch yourself explaining, stop and ask a question instead.
 

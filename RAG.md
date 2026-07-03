@@ -1,6 +1,6 @@
 Retrieval-Augmented Generation: grounding LLMs in facts via pipeline, chunking, and retrieval economics
 
-**March 2026**
+**July 2026** (updated Jul 3, AGENTIC Twitter List ingest)
 
 ## CORE CONCEPT
 
@@ -27,6 +27,23 @@ How you split documents is often more important than which embedding model or ve
 | Large | 1024+ | Preserves context, retrieves noise | Analysis, summarization |
 
 **Overlap:** 10-20% at chunk boundaries prevents losing information at splits. Use paragraph or section boundaries when possible, not arbitrary token counts.
+
+## RAG VS WIKI MEMORY
+
+RAG and wiki memory solve different retrieval problems. They are complementary, not competing.
+
+| Dimension | RAG | Wiki Memory |
+|---|---|---|
+| What's retrieved | Raw chunks from source documents | Precomputed synthesis maintained by agents |
+| When content is processed | At query time (embed > search > return) | Ahead of time (agent reads sources, writes wiki) |
+| Best for | Specific lookups, citations, fast-changing data | Stable domain understanding, codebase context, org knowledge |
+| Update mechanism | Re-index when sources change | Agent periodically diffs sources and rewrites wiki entries |
+| Failure mode | Silent retrieval miss (wrong chunk, confident answer) | Wiki confidently wrong, every agent inherits bad assumption |
+| Cost profile | Per-query retrieval + generation cost | Upfront wiki generation cost, cheap per-query reads |
+
+Use RAG when you need to ground answers in specific source documents with citations, or when data changes faster than a wiki can track. Use wiki memory when you need agents to operate with durable domain understanding that doesn't require re-deriving from raw chunks on every call. Many production systems combine both: wiki provides baseline context, RAG retrieves specifics.
+
+→ See: Context Engineering (wiki memory implementation patterns and failure mitigations)
 
 ## WHEN TO USE RAG
 
