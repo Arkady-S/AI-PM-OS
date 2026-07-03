@@ -1,6 +1,6 @@
-Measuring, maintaining, and scaling AI product quality
+Last updated: June 2026
 
-**May 2026** (updated June 7)
+Measuring, maintaining, and scaling AI product quality
 
 Based on Braintrust, LangChain, and Product Faculty research
 

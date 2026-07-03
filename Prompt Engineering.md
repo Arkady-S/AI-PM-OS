@@ -1,6 +1,6 @@
-Behavioral prompt design: how tone, framing, and session dynamics affect model output quality
+Last updated: April 2026
 
-**April 2026**
+Behavioral prompt design: how tone, framing, and session dynamics affect model output quality
 
 ## CORE CONCEPT
 

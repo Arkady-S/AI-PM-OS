@@ -1,6 +1,6 @@
-Operating model, leverage levels, and strategic alignment
+Last updated: May 2026
 
-**May 2026** (updated May 31)
+Operating model, leverage levels, and strategic alignment
 
 ## CORE CONCEPT
 

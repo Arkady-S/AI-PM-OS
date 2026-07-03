@@ -1,6 +1,6 @@
-Trust mechanics, pricing psychology, and launch strategy for AI products
+Last updated: May 2026
 
-**May 2026** (updated May 31, AI PM Course ingest)
+Trust mechanics, pricing psychology, and launch strategy for AI products
 
 ## CORE CONCEPT
 

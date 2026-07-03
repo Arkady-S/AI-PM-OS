@@ -1,6 +1,6 @@
-Cost, latency, and capability ceilings for every AI product decision
+Last updated: July 2026
 
-**July 2026** (updated Jul 3, AGENTIC Twitter List ingest)
+Cost, latency, and capability ceilings for every AI product decision
 
 ## CORE CONCEPT
 

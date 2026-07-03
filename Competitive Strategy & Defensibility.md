@@ -1,6 +1,6 @@
-Moats, archetypes, and frameworks for durable AI advantage
+Last updated: June 2026
 
-**March 2026** (updated June 14)
+Moats, archetypes, and frameworks for durable AI advantage
 
 ## CORE CONCEPT
 

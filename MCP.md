@@ -1,6 +1,6 @@
-Model Context Protocol: open standard for connecting LLM applications to external data sources and tools via a universal interface
+Last updated: May 2026
 
-**May 2026**
+Model Context Protocol: open standard for connecting LLM applications to external data sources and tools via a universal interface
 
 ## CORE CONCEPT
 

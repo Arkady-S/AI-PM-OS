@@ -1,6 +1,6 @@
-Uncovering psychological and tribal jobs beneath functional requests
+Last updated: March 2026
 
-**March 2026**
+Uncovering psychological and tribal jobs beneath functional requests
 
 ## CORE CONCEPT
 

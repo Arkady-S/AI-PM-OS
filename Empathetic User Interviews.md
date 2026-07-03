@@ -1,6 +1,6 @@
-Discovering problems worth solving through honest conversation
+Last updated: March 2026
 
-**March 2026**
+Discovering problems worth solving through honest conversation
 
 ## CORE CONCEPT
 

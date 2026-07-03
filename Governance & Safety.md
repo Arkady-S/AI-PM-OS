@@ -1,6 +1,6 @@
-Risk frameworks, defense in depth, and incident response for AI products
+Last updated: July 2026
 
-**May 2026** (updated July 3)
+Risk frameworks, defense in depth, and incident response for AI products
 
 ## CORE CONCEPT
 

@@ -1,6 +1,6 @@
-Curating the right tokens for every model call
+Last updated: July 2026
 
-**July 2026** (updated Jul 3, AGENTIC Twitter List ingest)
+Curating the right tokens for every model call
 
 Based on Anthropic + Product Faculty research
 

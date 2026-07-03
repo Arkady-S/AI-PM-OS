@@ -1,6 +1,6 @@
-Design principles, output contracts, and safety patterns for agent-consumable command-line tools
+Last updated: April 2026
 
-**April 2026**
+Design principles, output contracts, and safety patterns for agent-consumable command-line tools
 
 ## CORE CONCEPT
 

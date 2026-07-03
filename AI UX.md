@@ -1,6 +1,6 @@
-Trust engineering, humorphism, and relationship design for AI products
+Last updated: July 2026
 
-**July 2026** (updated Jul 3, AGENTIC Twitter List ingest)
+Trust engineering, humorphism, and relationship design for AI products
 
 ## CORE CONCEPT
 

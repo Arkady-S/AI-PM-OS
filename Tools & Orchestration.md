@@ -1,6 +1,6 @@
-How LLMs act in the world: function calling, pipelines, and agent loops
+Last updated: July 2026
 
-**July 2026** (updated Jul 3, AGENTIC Twitter List ingest)
+How LLMs act in the world: function calling, pipelines, and agent loops
 
 ## CORE CONCEPT
 

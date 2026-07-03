@@ -1,6 +1,6 @@
-Patterns for building reusable agent instructions across any platform
+Last updated: July 2026
 
-**July 2026** (updated Jul 3, AGENTIC Twitter List ingest)
+Patterns for building reusable agent instructions across any platform
 
 ## CORE CONCEPT
 

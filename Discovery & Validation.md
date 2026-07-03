@@ -1,6 +1,6 @@
-Cognitive load mapping, AI-fit classification, and capability validation
+Last updated: March 2026
 
-**March 2026**
+Cognitive load mapping, AI-fit classification, and capability validation
 
 ## CORE CONCEPT
 
