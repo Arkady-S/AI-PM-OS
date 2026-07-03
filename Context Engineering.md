@@ -2,8 +2,6 @@ Last updated: July 2026
 
 Curating the right tokens for every model call
 
-Based on Anthropic + Product Faculty research
-
 ## CORE CONCEPT
 
 Context engineering is curating what information enters a model's limited attention budget at each step. Unlike prompt engineering (writing good instructions), context engineering is iterative and happens every time you decide what to pass to the model.

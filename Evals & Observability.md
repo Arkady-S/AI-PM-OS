@@ -2,8 +2,6 @@ Last updated: June 2026
 
 Measuring, maintaining, and scaling AI product quality
 
-Based on Braintrust, LangChain, and Product Faculty research
-
 ## CORE CONCEPT
 
 > Evals turn vibes into data. Without systematic measurement, you're guessing.
