@@ -93,6 +93,19 @@ The observe/think/act cycle above is the innermost loop (Level 1). Production ag
 
 Level 1 is table stakes. Level 2 adds correctness guarantees. Level 3 makes agents proactive. Level 4 makes agents self-improving. Most teams build Levels 1-2 and skip 3-4, which is where compounding returns live.
 
+### Loop Types by Trigger
+
+The 4-level stack classifies loops by time horizon. A complementary axis classifies by what triggers the loop:
+
+| Loop Type | Trigger | Notes |
+|---|---|---|
+| Turn-based | User prompt | The default chat loop |
+| Goal-based | A completion condition | An evaluator model checks the goal each time the agent tries to stop (ex: `/goal`) |
+| Time-based | Schedule / interval | Local (`/loop`) or cloud (`/schedule`) |
+| Proactive | External event or schedule, no human | Route to smaller/faster models; reserve the capable model for judgment calls |
+
+Token discipline for any loop: pick the right primitive and model, set explicit turn caps, pilot before large runs (dynamic workflows can spawn hundreds of agents), use scripts for deterministic work, and use a second fresh-context agent for review.
+
 ## PRD ELEMENTS: TOOL DEFINITIONS
 
 | Element | What You Define | Example |
@@ -151,6 +164,30 @@ Full control, most debuggable. More boilerplate.
 
 Most production systems end up closer to raw APIs than frameworks. Abstraction overhead exceeds value at scale.
 
+### Frameworks vs Harnesses
+
+The industry frame has shifted from agent frameworks (LangChain, AI SDK, LlamaIndex) to agent harnesses (Deep Agents, Claude Agent SDK). A framework gives you abstractions to assemble a loop; a harness is the assembled, opinionated system around the model. As models converge, the harness is where differentiation moves.
+
+### Harness Selection: Buy, Customize, or Build
+
+| Path | Who | What They Do |
+|---|---|---|
+| Buy | Non-engineers | Adopt AI-native apps (Harvey, Clay, Descript); spend effort on context engineering, not orchestration |
+| Customize | Engineers | BYO-model: document error cases in files, encode codebase structure in a root .md, disconnect unused tools |
+| Build | Advanced teams | Jointly post-train / fine-tune model + harness together (Cursor, OpenCode) |
+
+### Harness Composability Tiers
+
+Three tiers by how much you assemble yourself, scored on eight diagnostic properties: context/state, cross-task memory, MCP/tool support, standard adherence, model-selection flexibility, remote access, observability/debugging, and hackability.
+
+| Tier | Examples | Trade-off |
+|---|---|---|
+| Frameworks / SDKs | Vercel AI SDK, Anthropic Agent SDK, Mastra | Max control, most assembly |
+| Extensible | Deep Agents, Pi | Opinionated core, hackable edges |
+| Turnkey | Claude Code, Codex, Cursor, OpenCode | Fastest start, least hackable |
+
+Evaluate a harness on the eight properties, not just prototyping speed. This supersedes the framework-only view above.
+
 ## HARNESS ENGINEERING
 
 Agent = Model + Harness. The harness is every piece of code, configuration, and execution logic that isn't the model itself. A raw model is not an agent. It becomes one when a harness gives it state, tool execution, feedback loops, and enforceable constraints.
@@ -168,6 +205,20 @@ Agent = Model + Harness. The harness is every piece of code, configuration, and 
 | Hooks / middleware | Deterministic execution: compaction, continuation, lint checks | Some behaviors must be reliable, not probabilistic |
 
 > The filesystem is the most foundational harness primitive. It enables durable state, incremental offloading, and multi-agent coordination through shared files. Git adds versioning, rollback, and branching on top.
+
+### The Harness Is the Product
+
+Move all determinism out of the stochastic agent loop so the model spends tokens only on judgment. Since models improve and are interchangeable, the harness is the durable surface. Concrete patterns from production internal coding agents (Open SWE):
+
+> Context is assembled, not discovered. Pre-hydrate the agent with the full issue, thread, and repo conventions (AGENTS.md) before the first model call, rather than letting it start cold and explore.
+
+> One correct outcome, deterministic node, not a tool call. Steps like clone-repo, checkout-SHA, or compute-diff have a single right result; make them graph nodes. No tokens on narration, failures surface as discrete errors, cleaner traces.
+
+> Reliability lives in middleware, not the model. Wrap the stochastic core with ordered middleware: input sanitization, call limits, tool-error capture, message-queue injection, and a sandbox circuit breaker. Without the breaker, an agent burns ~40 model calls retrying against a dead sandbox.
+
+> Routing by source hash. Derive the agent thread ID as a pure function of source (Slack thread, Linear issue, PR), so follow-ups reuse the same sandbox and state with no session store, and users can message mid-run.
+
+Statelessness (rebuild the agent from config each run; keep state in the sandbox + thread metadata) plus reliability-in-middleware means most of the system is testable without an LLM.
 
 ### Tool Call Offloading
 
@@ -296,6 +347,8 @@ Concrete architecture (Moe Ali, Product Faculty):
 
 > Auto-research style proposal loops work best only when Data/Evals/Feedback give a useful gradient to hill-climb against. Without that gradient, the loop is just busy.
 
+Concrete signal that the gradient is real: harness hill-climbing alone gave a +13.7% lift over the base harness on Terminal Bench 2.0, and a fine-tuned small open "trace judge" model beat closed frontier models on narrow judging tasks at orders-of-magnitude lower cost. Framing: "evals are training data for agents"; every continual-learning company is an observability company. Recommended recipe is a sandwich: harness engineering, then fine-tuning, then harness engineering. (Vtrivedy10, LangChain, July 2026)
+
 The escalation layer is critical: agents do work, but humans retain decision authority on anything consequential. This prevents compounding errors from auto-accepted bad proposals.
 
 ## BACKGROUND CODING AGENTS
@@ -303,6 +356,8 @@ The escalation layer is critical: agents do work, but humans retain decision aut
 Agents that work autonomously in the cloud without user-initiated sessions. The user triggers a task (or a system event does), the agent executes in a sandboxed environment, and results appear when done.
 
 Examples (as of May 2026): Stripe Minions (leveraged years of internal platform tooling), Ramp Inspect (dedicated engineering team built the infrastructure). Both demonstrate that the infrastructure layer is the hard part, not the model capability.
+
+> Convergent design (Stripe Minions, Ramp Inspect, Coinbase Cloudbot, July 2026): three teams independently building internal coding agents landed on the same five patterns: isolated cloud sandboxes, curated (not exhaustive) toolsets, Slack-first invocation, rich context at startup, and subagent orchestration.
 
 ### Build vs. Buy Considerations
 
@@ -346,3 +401,8 @@ Resource: background-agents.com (maintained by Ona) tracks the vendor landscape.
 - @sydneyrunkle (Jun 2026): 4-level loop stack
 - @hwchase17 (Jun 2026): self-harness pattern
 - @Vtrivedy10, @ProductFaculty (Jun 2026): continual learning loops
+- AGENTIC Twitter List digests, Jul 5-19 2026 (harness taxonomy, harness-as-product, loop types, trace numbers)
+- @hwchase17 (Jul 2026): frameworks-to-harnesses shift, buy/customize/build, composability tiers
+- @AranYogesh / Open SWE (Jul 2026): the harness is the product; convergent internal-agent patterns
+- @bcherny, @delba_oliveira (Jul 2026): loop types by trigger
+- @Vtrivedy10, LangChain (Jul 2026): continual-learning trace numbers (Terminal Bench 2.0 +13.7%)

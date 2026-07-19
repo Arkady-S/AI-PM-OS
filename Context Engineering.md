@@ -207,6 +207,29 @@ Mitigation: hybrid architecture pairing a knowledge graph (for the agent) with a
 
 RAG retrieves raw chunks. Wiki memory retrieves precomputed synthesis. They are complementary: use RAG for specifics that change too fast for wiki maintenance; use wiki for stable, high-level understanding that would be expensive to re-derive every call.
 
+#### Proactive vs Reactive Memory
+
+Built-in agent memory (Claude, Codex) is mostly reactive: it stores what the user tells it. A proactive memory layer gathers context on its own: it connects to sources (Gmail, Notion, git, Twitter, web search), writes relevant context into a local wiki, and auto-refreshes on a schedule (ex: a daily GitHub Action opens a PR with wiki updates, skipping the update when nothing changed). Comprehensive memory needs both; proactive complements, not replaces, reactive.
+
+> "Eventual correctness": a wiki self-corrects over time as the maintaining agent revisits sources, converging toward truth rather than being right on first write. Design for convergence, not one-shot accuracy.
+
+#### Memory Evolution Ladder
+
+The substrate for agent memory scales in stages, and structure matters less than links as it grows:
+
+1. Single string
+2. Single file
+3. Directory of files (a wiki)
+4. Hyperlinked pages (the internet-scale argument: at volume, navigation is via links between pages, not file layout)
+
+Treat the wiki as a cache: its job is to keep frequently looked-up knowledge top-of-mind, so what goes in and how it is organized should be driven by retrieval frequency.
+
+#### Open Knowledge Format (OKF)
+
+A candidate standard (Google Cloud) for structuring memory wikis: YAML front matter per markdown file (title, description, tags, categories, resource URLs) plus index.md and logs.md conventions. The point is deterministic metadata and full-text search over the wiki instead of relying only on fuzzy agentic/semantic search, which is slow, expensive, and often unnecessary over hundreds of files. OpenWiki 0.2 adopted it.
+
+> Dissent: not everyone agrees wikis are the right abstraction for agent memory (Cognition/Devin's position). The pattern is converging fast but is not settled; weigh it against structured stores for high-frequency, fast-changing state.
+
 ### Sleep-Time Compute
 
 Background process that analyzes agent trajectories after execution to update a persistent memory store. Named by Letta (Sarah Wooders): the next scaling axis for intelligence after train-time and inference-time compute.
@@ -271,7 +294,7 @@ Run before every LLM call:
 
 ## COMMON FAILURE MODES
 
-| Failure | Symptom | Fix |
+| Failure | Symptom | Prevention |
 |---------|---------|-----|
 | Token overload | Inconsistent behavior, ignored instructions | Priority stack, aggressive curation |
 | Semantic-only search | Irrelevant chunks distort reasoning | Hybrid search, domain structure |
@@ -294,3 +317,6 @@ Run before every LLM call:
 - @jakebroekhuizen, LangChain memory guide (Jun 2026): functional memory taxonomy
 - @hwchase17, @BraceSproul, @tanmaigo, @omarsar0, @eddzsh, @SydSachar (Jun-Jul 2026): wiki memory implementations
 - @hwchase17, @sarahwooders (Jun 2026): sleep-time compute
+- AGENTIC Twitter List digests, Jul 5-19 2026 (proactive/reactive memory, OKF, memory evolution ladder, eventual correctness)
+- @hwchase17, @BraceSproul (July 2026): proactive vs reactive memory, OKF, memory evolution ladder, eventual correctness
+- @devstein64 (July 2026): wiki-as-cache; dissent on wikis as the memory abstraction

@@ -1,4 +1,4 @@
-Last updated: April 2026
+Last updated: July 2026
 
 Behavioral prompt design: how tone, framing, and session dynamics affect model output quality
 
@@ -104,6 +104,17 @@ Mitigation in agent design:
 - Frame retry logic as "trying a different approach" rather than "the previous attempt failed"
 - Strip correction history from context passed to subsequent steps
 
+## PROMPT WEIGHT AS MODELS IMPROVE
+
+As frontier models get stronger, the balance shifts away from heavy system prompts toward context and artifacts. A working heuristic: thin prompts, thick artifacts + context, thin skills. Put the substance in the artifacts and context the model reads, not in elaborate instructions.
+
+> Reduce system prompts for frontier models. Anthropic's own practice is to shrink system prompts as models improve; a capable model needs framing and context more than a long list of rules. (This Year in Claude, July 2026)
+
+This compounds with positive framing: a shorter prompt that defines scope and hands over rich context outperforms a long prohibition-heavy prompt, and stays cheaper to cache.
+
+→ See: Context Engineering (token priority stack, prompts as interface design)
+→ See: Agent Skills (keep SKILL.md lean)
+
 ## COMMON FAILURE MODES
 
 | Failure | Symptom | Prevention |
@@ -123,3 +134,6 @@ Mitigation in agent design:
 **Sources:**
 - Amanda Askell, Anthropic (research on criticism spirals and behavioral prompting)
 - Ole Lehmann (synthesis)
+- AGENTIC Twitter List digests, Jul 5-19 2026 (prompt weight as models improve)
+- @trq212 (July 2026): thin prompts, thick artifacts + context, thin skills
+- aiDotEngineer / "This Year in Claude" (July 2026): reduce system prompts for frontier models

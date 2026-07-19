@@ -1,4 +1,4 @@
-Last updated: June 2026
+Last updated: July 2026
 
 Moats, archetypes, and frameworks for durable AI advantage
 
@@ -98,6 +98,45 @@ The fleet model changes the "who owns the agent" question from the table above. 
 
 Patrick Collison (Stripe) flagged this as the missing capability in current LLM workflow tools: not a single assistant, but a managed fleet where each agent has deep domain context. (LangChain Fleet / Caspar Broekhuizen, June 2026)
 
+## OWN YOUR INTELLIGENCE
+
+Durable advantage is the compounding flywheel around the model, not the model itself. Any competitor rents the same frontier model; what they can't rent is the loop you own around it. Five layers to own, each reinforcing the next:
+
+| Layer | What You Own | Why It Compounds |
+|---|---|---|
+| Harness | Task-specific, deeply integrated orchestration | Encodes business logic; hardest to swap (see Harness Lock-In) |
+| Context / memory | User prefs, org knowledge, workflow patterns | Grows with every interaction; can't be copied from outside |
+| Model optionality | Route across models, providers, deployment modes | Exploit each model's strengths; no single-vendor capture |
+| Economics | Cheap enough to deploy broadly | Low unit cost widens the deployable surface |
+| Feedback loop | Observability + evals feeding improvement | Turns usage into a proprietary gradient |
+
+> The model is the rented layer. The flywheel (harness + context + optionality + economics + feedback) is the owned layer. Strategy is investing in the owned layers while treating the model as swappable.
+
+Maps to the harness-lock-in and data-gravity moats: owning these five layers is what converts a model wrapper into a defensible position.
+
+→ See: Context Engineering (context as the durable moat, memory architecture)
+→ See: Evals & Observability (feedback loop; the harness is the moat)
+
+## VERTICAL AGENT ADVANTAGE
+
+A specialized agent can beat a generalist running the same base model. The advantage is structural: a narrow domain lets you strip tools and slim context, which is simultaneously cheaper and higher-quality.
+
+Shortcut's spreadsheet agent vs a general assistant, same base model (Opus 4.8), on internal finance evals:
+
+| Metric | Specialized | Generalist | Delta |
+|---|---|---|---|
+| Accuracy | Higher | Baseline | +17% |
+| Cost | Lower | Baseline | -40% |
+| Tool calls per task | 37 | 61 | ~half |
+| Input tokens per task | 3.7M | 7.1M | ~half |
+
+The mechanism: a generalist must carry 30+ tools and broad context for every task; a vertical agent carries only what the domain needs. Leaner context is both cheaper (fewer tokens) and smarter (less to distract the model). Reinforced by model-slinging as a vertical-specific lever: swap the base model per subtask (ex: Opus to a GPT-class model in 24h at 2x cheaper and faster; route PDF/image extraction to a cheap flash model; train a small in-house model for subagent offload).
+
+> For a generalist agent surface, tool count and context breadth are a direct tax on both cost and accuracy. A vertical carve-out is a defensibility play, not just a packaging choice.
+
+→ See: Tools & Orchestration (fewer tools is better; model routing)
+→ See: Economics & Model Selection (model routing vs council)
+
 ## FIVE AI BUSINESS ARCHETYPES
 
 Every AI company falls into one archetype. Misidentifying yours means running the wrong playbook.
@@ -135,6 +174,16 @@ Segment by patterns of drive (motivation, enablement, momentum) and resistance (
 | Low drive, High resist. | Mild interest, significant barriers | Deprioritize. Cost exceeds value. |
 | Low drive, Low resist. | Neither motivated nor blocked | Low value. Will adopt whatever is convenient. |
 
+## AI MINDSET SEGMENTATION
+
+Cross-cuts demographics. Affects value framing, defaults, autonomy levels, and trust approach.
+
+| Mindset | Stance | Product Implication |
+|---------|--------|-------------------|
+| Automation | "Just do it." Max delegation. | Default high autonomy. Risk: trust collapses on first error. |
+| Collaboration | "Help me decide." AI as partner. | Default to suggestions. Risk: too much initiative feels intrusive. |
+| Control | "I'll decide when AI helps." | Default manual, AI on-demand. Risk: never discovers full value. |
+
 ## TRADE-OFF MAPPING
 
 Map trade-offs forced by current alternatives, not just competitor names. Differentiation lies in resolving compromises users currently accept.
@@ -145,16 +194,6 @@ Map trade-offs forced by current alternatives, not just competitor names. Differ
 | Adjacent tools | Which 3-4 tools combined; where glue breaks down | Can we collapse into one experience? |
 | Manual workarounds | Spreadsheets, email, Slack; zero switching cost | Is AI 10x better or just incremental? |
 | Doing nothing | Zero learning curve, zero cost, zero risk | Is pain acute enough for inertia? |
-
-## AI MINDSET SEGMENTATION
-
-Cross-cuts demographics. Affects value framing, defaults, autonomy levels, and trust approach.
-
-| Mindset | Stance | Product Implication |
-|---------|--------|-------------------|
-| Automation | "Just do it." Max delegation. | Default high autonomy. Risk: trust collapses on first error. |
-| Collaboration | "Help me decide." AI as partner. | Default to suggestions. Risk: too much initiative feels intrusive. |
-| Control | "I'll decide when AI helps." | Default manual, AI on-demand. Risk: never discovers full value. |
 
 ## ASSESSMENT CADENCE
 
@@ -209,3 +248,5 @@ Not all trends create advantage. The intersection of a trend and your unique cap
 - LangChain / Neil Dahlke (June 2026): harness lock-in, model neutrality
 - Naval; Harrison Chase (June 2026): agent-first / headless platforms
 - LangChain Fleet / Caspar Broekhuizen, Patrick Collison (June 2026): agent fleet management
+- @hwchase17 (July 2026): own your intelligence (five owned layers)
+- @BrainsAndTennis (July 2026): vertical agent economics vs generalist (Shortcut spreadsheet agent)

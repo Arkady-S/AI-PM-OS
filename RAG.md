@@ -8,6 +8,15 @@ RAG is an open-book exam for LLMs. Instead of relying on training memory, the mo
 
 Retrieval failures are silent. If retrieval misses the right document, the model confidently answers with whatever it did retrieve, or hallucinates. Unlike a 500 error, bad retrieval looks like a normal response. This is the key risk.
 
+## WHEN TO USE RAG
+
+| Use RAG When | Don't Use RAG When |
+|---|---|
+| Knowledge changes frequently | Small static corpus (just use long context) |
+| Need citations for trust or compliance | Need behavior change (use prompting or fine-tuning) |
+| Using proprietary or private data | Creative tasks (RAG adds overhead, no benefit) |
+| Corpus too large to fit in context | Cost/latency budget is extremely tight |
+
 ## THE RAG PIPELINE
 
 > **Index (offline):** Collect docs > Chunk > Embed > Store in vector DB.
@@ -45,15 +54,6 @@ Use RAG when you need to ground answers in specific source documents with citati
 
 → See: Context Engineering (wiki memory implementation patterns and failure mitigations)
 
-## WHEN TO USE RAG
-
-| Use RAG When | Don't Use RAG When |
-|---|---|
-| Knowledge changes frequently | Small static corpus (just use long context) |
-| Need citations for trust or compliance | Need behavior change (use prompting or fine-tuning) |
-| Using proprietary or private data | Creative tasks (RAG adds overhead, no benefit) |
-| Corpus too large to fit in context | Cost/latency budget is extremely tight |
-
 ## HYBRID SEARCH IS THE DEFAULT
 
 | Method | Finds | Misses | Use |
@@ -90,6 +90,16 @@ Every retrieved chunk is input tokens you're paying for. Retrieval adds cost and
 | No-result handling | What if retrieval finds nothing | Say "I don't have info on that" |
 | Cost/latency budget | Constraints per query | Retrieval <200ms, <$0.01/query |
 
+## RETRIEVE-THEN-DISCRIMINATE
+
+An alternative to generating an answer from retrieved chunks: retrieve candidate schema entries, then reduce the model's job to a match/no-match judgment against them. JD's Oxygen item system (tens of billions of SKUs, hundreds of millions of updates/day) runs two stages: semantic search over an externalized ontology, then a discrimination step where the model only decides whether an item matches the retrieved entries.
+
+> Externalize the schema, don't bake it into weights. Because the ontology lives in the retrieval layer, it updates without model retraining. Collapsing generation to a discrimination judgment lowers task complexity, cuts hallucination, and generalizes as the schema evolves.
+
+Best for classification and entity-matching over a large, fast-changing taxonomy: catalog tagging, enterprise-search facets, query routing. Pair with lightweight incremental "expert modules" so new categories extend the system without retraining the core or causing catastrophic forgetting.
+
+→ See: Context Engineering (externalized knowledge vs in-weight memory)
+
 ## COMMON FAILURE MODES
 
 | Failure | Symptom | Fix |
@@ -102,3 +112,9 @@ Every retrieved chunk is input tokens you're paying for. Retrieval adds cost and
 
 → See: Context Engineering (token budgets, retrieval context)
 → See: Evals & Observability (retrieval eval, golden set)
+
+---
+
+**Sources:**
+- Hybrid retrieval, reciprocal rank fusion, and chunking: settled RAG best practice (industry consensus)
+- JD Oxygen item system, retrieve-then-discriminate over an externalized ontology (AGENTIC Twitter List digests, 2026)

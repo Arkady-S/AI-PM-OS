@@ -1,4 +1,4 @@
-Last updated: May 2026
+Last updated: July 2026
 
 Model Context Protocol: open standard for connecting LLM applications to external data sources and tools via a universal interface
 
@@ -33,6 +33,15 @@ Single host runs multiple clients, each connected to different server. JSON-RPC 
 2. Operate: Normal exchange: tool calls, resource reads, prompt retrieval; bidirectional
 3. Shutdown: Clean disconnection; either side initiates; stateful sessions torn down
 
+## TRANSPORT TYPES
+
+stdio: simpler (no auth, process-level isolation). Streamable HTTP: required for remote/production; supports OAuth 2.1.
+
+| Transport | How It Works | Best For |
+|-----------|-------------|----------|
+| stdio | Server runs as subprocess; stdin/stdout | Local tools, CLI, desktop apps |
+| Streamable HTTP | HTTP endpoint; supports SSE streaming | Remote, cloud, multi-user; OAuth 2.1 |
+
 ## ADVANCED CAPABILITIES
 
 | Capability | What It Enables | PM Implication |
@@ -44,15 +53,6 @@ Single host runs multiple clients, each connected to different server. JSON-RPC 
 | Roots | Client tells server which paths it can access | Scoping permissions; least privilege |
 
 Events (formerly "Triggers") shift MCP from request/response to event-driven. Claude Code shipped an early version via Channels; the spec is being standardized across clients. For product design: Events enable proactive agent behaviors where the server, not the user, initiates a workflow.
-
-## TRANSPORT TYPES
-
-stdio: simpler (no auth, process-level isolation). Streamable HTTP: required for remote/production; supports OAuth 2.1.
-
-| Transport | How It Works | Best For |
-|-----------|-------------|----------|
-| stdio | Server runs as subprocess; stdin/stdout | Local tools, CLI, desktop apps |
-| Streamable HTTP | HTTP endpoint; supports SSE streaming | Remote, cloud, multi-user; OAuth 2.1 |
 
 ## BUILDING AN MCP SERVER
 
@@ -96,6 +96,10 @@ As of May 2026: 500+ MCP clients, thousands of servers, hockey-stick adoption cu
 | Tool mimicry | Malicious server mimics trusted tool names | Verify server identity; allowlist tools |
 | Prompt injection | Untrusted data triggers unintended actions | Sanitize inputs; human-in-the-loop |
 
+Enforce permissions in a router the model calls through, not in tool descriptions. External MCP tools should sit behind a permission-checked boundary in the untrusted path, not be trusted as local code. The server (control plane) decides what executes, not the model.
+
+→ See: Governance & Safety (runtime-enforced execution, Tool Router)
+
 ## COMMON FAILURE MODES
 
 | Failure | Symptom | Prevention |
@@ -109,3 +113,11 @@ As of May 2026: 500+ MCP clients, thousands of servers, hockey-stick adoption cu
 → See: Tools & Orchestration (agent patterns, harness engineering)
 → See: CLI for AI Agents (CLI as tool interface)
 → See: Governance & Safety (security considerations)
+
+---
+
+**Sources:**
+- Model Context Protocol specification (Linux Foundation / Anthropic)
+- Anthropic: interaction hierarchy (MCP > CLI > browser > computer use); Events via Claude Code Channels
+- Ramp: rationale-parameter observability pattern
+- AGENTIC Twitter List digests (2026): Events/Triggers standardization, server design patterns, ecosystem adoption

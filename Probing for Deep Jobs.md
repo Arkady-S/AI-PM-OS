@@ -105,4 +105,7 @@ They say speed matters most but spend 20 minutes describing accuracy anxiety. Th
 
 ---
 
-**Sources:** Christensen, JTBD Theory. Fitzpatrick, The Mom Test. Anthropic, 81K User Study.
+**Sources:**
+- Christensen, JTBD Theory
+- Fitzpatrick, The Mom Test
+- Anthropic, 81K User Study

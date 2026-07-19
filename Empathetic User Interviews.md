@@ -78,7 +78,7 @@ Compliments are free. Commitment costs something. Escalate asks to test whether 
 
 ## COMMON FAILURE MODES
 
-| Failure | Symptom | Fix |
+| Failure | Symptom | Prevention |
 |---------|---------|-----|
 | Pitching, not learning | You talked more than they did | Ban your idea for the first 15 minutes |
 | Collecting compliments | Everyone says "great idea" | Ask what they're doing about it today |

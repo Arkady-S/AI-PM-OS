@@ -1,4 +1,4 @@
-Last updated: June 2026
+Last updated: July 2026
 
 Measuring, maintaining, and scaling AI product quality
 
@@ -165,6 +165,8 @@ Hard number: in an RL setting with 3,200 rollouts, swapping the verifier dropped
 
 Batch scoring (grade all criteria in one call) is dramatically cheaper than per-criterion scoring but gives coarser signal; per-criterion is more granular and more expensive. Default to batch for broad regression sweeps, per-criterion where you need to know which criterion failed.
 
+The same cheap-verifier pattern extends to trace judging: a fine-tuned small open "trace judge" model beat closed frontier models on narrow judging tasks at orders-of-magnitude lower cost. (Vtrivedy10, LangChain, July 2026)
+
 ## DEEP AGENT EVAL PATTERNS
 
 Agents break the traditional eval assumption that every datapoint is treated identically. Success criteria vary per test case and span trajectory, final response, and state.
@@ -219,6 +221,10 @@ Use your own agent daily. Every error becomes an eval candidate. Trace every int
 
 Pull selected tasks from established benchmarks (ex: Terminal Bench, BFCL) and adapt for your specific agent and domain.
 
+Long-horizon computer use is the current reliability ceiling. On OSWorld 2.0 (108 tasks, median ~1.6 hrs of human work, ~48x longer than v1.0), the strongest setting (Claude Opus 4.8, max thinking, batched tool calls) scores 20.6% binary / 54.8% partial, and accuracy drops sharply as tasks lengthen. Failures cluster where the agent must recover hidden state, track many items, resolve conflicting information, or adapt to changing requirements: a checklist for where long-running agents need checkpoints or human handoff. Treat the score as a moving floor, not a fixed limit (OSWorld 1.0 went ~30% in Jul 2025 to ~75% by Jun 2026).
+
+→ See: Tools & Orchestration (long-horizon loops; premature-exit and goal-drift failures)
+
 ### Handwritten evals
 
 Write focused tests by hand for behaviors you think are important. These 'artisanal' evals often catch what benchmarks miss.
@@ -263,6 +269,33 @@ As models improve, static eval thresholds create a false sense of progress. An o
 
 Every major model update. Quarterly at minimum. When user satisfaction diverges from eval scores. Re-rate past 4/5 and 5/5 outputs with current expectations.
 
+## AUTOMATING EVALS: LIMITS
+
+Automated eval tooling has a ceiling. A study took 100 real production traces from a voice agent, had a human find the failure modes, masked the labels, then tested whether eval platforms (Braintrust, Arize, LangSmith) plus coding agents could rediscover them.
+
+| Automated evals do | Automated evals don't |
+|---|---|
+| Surface issues a human reviewer misses | Catch problems needing domain expertise or taste |
+| Scale across many traces | Learn from human feedback (no built-in mechanism) |
+| Roughly match "just use your coding agent" | Replace the human in the loop |
+
+> Use automated eval tools iteratively with a human in the loop, not as a replacement for looking at your data.
+
+Three mistakes when automating evals: asking the AI to just "find the issues" instead of giving it a review interface and a failure-mode taxonomy; reviewing your data only once; applying one accuracy bar to every app regardless of misprediction cost.
+
+> "It's hard to eval" is a product smell. If a feature is hard to evaluate, that usually signals a product-design problem, not just a measurement gap.
+
+## AGENTIC SESSION REVIEW
+
+Instead of a human scrubbing session replays, an agent investigates structured, queryable session data through MCP tools. The session (actions, console logs, network requests, pixels, accessibility tree) is exposed as tools, not a dashboard, and the agent navigates it with a zoom in/out model, from a coarse overview down to a single event.
+
+> "These are MCP tools, not a dashboard; your agent drives the investigation." The shift is from human-reads-replay to agent-queries-structured-trace.
+
+Design implication: capture session behavior as queryable structured data with a stable schema, so an agent can debug agent (or user) sessions the same way it uses any other tool.
+
+→ See: MCP (tools as the query interface)
+→ See: Tools & Orchestration (agent-on-agent monitoring)
+
 ## EVAL QUALITY CHECKLIST
 
 Run before shipping any AI change:
@@ -285,7 +318,7 @@ Run before shipping any AI change:
 
 ## COMMON FAILURE MODES
 
-| Failure | Symptom | Fix |
+| Failure | Symptom | Prevention |
 |---------|---------|-----|
 | "Vibes only" | No systematic measurement | Build golden set first |
 | Silent regression | Users complain, metrics fine | Golden set + user signals |
@@ -306,3 +339,7 @@ Run before shipping any AI change:
 - Reah Miyara, Google Cloud AI / formerly OpenAI (May 2026)
 - Palash Shah, LangSmith Engine (May 2026)
 - Harvey × LangChain Labs, legal verifier study (Niko Grupen, June 2026)
+- AGENTIC Twitter List digests, Jul 5-19 2026 (automated-eval limits, agentic session review)
+- @HamelHusain, @sh_reya (July 2026): limits of automated evals; "hard to eval is a product smell"
+- @hwchase17, Subtext / Agentic Session Review (July 2026)
+- @Vtrivedy10, LangChain (July 2026): trace-judge verifier

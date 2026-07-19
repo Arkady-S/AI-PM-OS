@@ -21,6 +21,19 @@ No single layer is enough. Assume any layer can fail. Six layers, each catching 
 | 5. Human review | HITL for high-stakes decisions | Nuanced errors requiring judgment |
 | 6. Monitoring | Detect patterns of misuse or failure | Silent drift, bias, novel attack patterns |
 
+## RISK CATEGORIES
+
+| Risk | What It Is | Primary Mitigation |
+|---|---|---|
+| Hallucination | Confident incorrect output | RAG grounding, citations, HITL for critical domains |
+| Prompt injection | User overrides system instructions | Instruction hierarchy, input sanitization |
+| Data leakage | Model reveals sensitive information | Output filtering, access controls, PII detection |
+| Bias | Systematic unfairness in outputs | Diverse eval sets, bias testing, human audits |
+| Model deprecation | Vendor sunsets model you depend on | Abstraction layer, cross-model testing |
+| Silent failure | Errors that look like normal responses | Monitoring, user feedback loops, periodic audits |
+| Prolonged-use psychological harm | Users develop distorted thinking, dependency, or detachment from reality after extended conversational AI sessions | Session-length guardrails, tool-mode defaults over open-ended chat, usage pattern monitoring, cool-down nudges after extended sessions. Design distinction: task-bound interactions (agent executes, returns result) vs. unbounded conversation (user talks to AI about personal problems). Default products toward task-bound. |
+| AI persuasion / manipulation | Agent output optimizes for agreement over accuracy; users persuaded against their interests without awareness | Persuasion intensity evals, separate accuracy from satisfaction metrics, balanced-framing requirements, human review for high-stakes content |
+
 ## SILENT CAPABILITY DEGRADATION
 
 A guardrail variant distinct from outright refusal: the system silently routes to a weaker model when safety classifiers trigger, without informing the user. The user sees lower-quality output but has no signal that a guardrail fired. Claude 5 Fable exhibits this pattern, defaulting to Claude 4.8 Opus at "the faintest hint of a security problem," catching legitimate use cases alongside actual risks.
@@ -65,6 +78,24 @@ A prompt-injected or compromised agent with a credential in its runtime can exfi
 > For agents, the default network can be narrow. Unlike human developers who need open environments, an agent's required destinations are usually enumerable, so least-privilege egress is practical rather than aspirational.
 
 Design implication for MCP servers and Super Agents: the server is the control plane. Scope tokens to audience (RFC 8707), broker rather than pass credentials, and make egress an explicit allowlist. This is the production hardening behind the "DOM / untrusted content is a prompt-injection delivery system" problem: any agent touching untrusted input (web pages, third-party docs) must be assumed compromised and denied direct credential access.
+
+## RUNTIME-ENFORCED EXECUTION
+
+Separate reasoning from execution authority: the model proposes, the runtime decides. Safety policy lives outside the model's discretion, so a prompt-injected or misaligned model cannot grant itself an action it isn't permitted.
+
+| Component | What It Does |
+|---|---|
+| Tool Router | Sits between model-proposed tool calls and execution; enforces permissions before anything runs |
+| MCP boundary | External MCP tools are permission-checked and kept in the untrusted path, never treated as trusted local code |
+| Untrusted tool outputs | Tool results are treated as untrusted context (prompt-injection defense), not as instructions |
+| Bounded child agents | Subagents constrained by profiles, context scopes, and approval caps |
+| Memory ≠ context | Memory is a controlled store, not automatically injected into the model's working context |
+
+> The model should reason, but the runtime should control execution. If safety depends on the model choosing to comply, it is not a control.
+
+Design implication for MCP servers and Super Agents: put the permission decision in a router the model calls through, not in the prompt. This is the enforcement layer behind "treat agents like untrusted developers."
+
+→ See: MCP (tool poisoning, permission scoping)
 
 ## RED TEAMING ATTACK PATTERNS
 
@@ -125,19 +156,6 @@ The primary question for any AI feature's safety investment: "What is the cost o
 | Catastrophic | Autonomous vehicle (misprediction = fatal) | Redundant systems, continuous monitoring, human override |
 
 > Calibrate safety investment to misprediction cost, not feature complexity. A simple feature with catastrophic failure cost needs more guardrails than a complex feature with low failure cost.
-
-## RISK CATEGORIES
-
-| Risk                             | What It Is                                                                                                          | Primary Mitigation                                                                                                                                                                                                                                                                                                              |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Hallucination                    | Confident incorrect output                                                                                          | RAG grounding, citations, HITL for critical domains                                                                                                                                                                                                                                                                             |
-| Prompt injection                 | User overrides system instructions                                                                                  | Instruction hierarchy, input sanitization                                                                                                                                                                                                                                                                                       |
-| Data leakage                     | Model reveals sensitive information                                                                                 | Output filtering, access controls, PII detection                                                                                                                                                                                                                                                                                |
-| Bias                             | Systematic unfairness in outputs                                                                                    | Diverse eval sets, bias testing, human audits                                                                                                                                                                                                                                                                                   |
-| Model deprecation                | Vendor sunsets model you depend on                                                                                  | Abstraction layer, cross-model testing                                                                                                                                                                                                                                                                                          |
-| Silent failure                   | Errors that look like normal responses                                                                              | Monitoring, user feedback loops, periodic audits                                                                                                                                                                                                                                                                                |
-| Prolonged-use psychological harm | Users develop distorted thinking, dependency, or detachment from reality after extended conversational AI sessions. | Session-length guardrails, tool-mode defaults over open-ended chat, usage pattern monitoring, cool-down nudges after extended sessions. Design distinction: task-bound interactions (agent executes, returns result) vs. unbounded conversation (user talks to AI about personal problems). Default products toward task-bound. |
-| AI persuasion / manipulation | Agent output optimizes for agreement over accuracy; users persuaded against their interests without awareness | Persuasion intensity evals, separate accuracy from satisfaction metrics, balanced-framing requirements, human review for high-stakes content |
 
 ## FTCEM: PRE-LAUNCH SAFETY
 
@@ -228,3 +246,5 @@ Explicit user complaints about safety issues represent a much larger population 
 - Ethan Mollick, "What it feels like to work with Mythos" (June 2026): silent capability degradation pattern
 - Susan Zhang (June 2026): capability-jailbreak equivalence
 - Jack Clark, Import AI 462 (June 2026): AI superpersuasion study (Bai et al., 18,978 conversations)
+- AGENTIC Twitter List digests, Jul 5-19 2026 (runtime-enforced execution)
+- SydSachar (July 2026): runtime-enforced execution, Tool Router, MCP boundary

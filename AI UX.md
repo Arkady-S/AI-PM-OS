@@ -256,6 +256,14 @@ HTML outperforms Markdown as the default agent output format. Markdown constrain
 
 Design implication: agent output rendering is a UX decision, not an infrastructure detail. The output format determines whether users can act on results immediately or must copy-paste into another tool. For Super Agents producing multi-step work products (project plans, analysis, dashboards), HTML should be the default output target.
 
+## GENERATED UI AS FEEDBACK LOOP
+
+Agent-generated UI can be an input, not just an output. Using a monitor primitive that reacts to each new log line as an event, an agent generates UI code that logs user interactions ("clicked X, typed Y"), subscribes to those logs in real time, and adapts the interface as the user works.
+
+> The UI code is no longer just output, it's the input too. The agent watches how its generated interface is used and revises it live, closing the loop between generation and interaction. (Shreya Shankar, July 2026)
+
+Design implication: for Super Agents that produce interactive artifacts, instrument the generated surface so interaction telemetry flows back to the agent. The output becomes a running feedback channel, extending "output as a working surface" into a live loop.
+
 ## AGENT-MEDIATED FEATURE DISCOVERY
 
 In traditional products, users discover features through menus, onboarding tours, and documentation. In agent-native products, the agent itself becomes the discovery mechanism: users learn what the product can do by interacting with the agent, which routes them to capabilities they didn't know existed.
@@ -302,3 +310,4 @@ Design implications:
 - Shreya Shankar (human-agent handoff and flow, June 2026)
 - Ethan Mollick, "What it feels like to work with Mythos" (June 2026): structural opacity, patron model
 - @gabepereyra (Jul 1 2026): Harvey Q2 results, agent-mediated feature discovery
+- Shreya Shankar (July 2026): generated UI as input / feedback loop
