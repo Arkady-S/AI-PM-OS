@@ -141,6 +141,11 @@ Score correctness (binary) and quality/efficiency (continuous) independently. La
 
 > Braintrust normalizes all scores 0-1 for temporal comparability (avg 12.8 experiments/day).
 
+> Rubrics are references, not just scoring keys. A rubric encodes your taste in a domain (ex: what good API design looks like) so verifier agents in a dynamic workflow can check output against it. This makes subjective quality gradeable the same way a test suite makes behavior gradeable.
+
+→ See: Context Engineering (reference fidelity)
+→ See: Tools & Orchestration (dynamic workflows)
+
 ## VERIFIER ECONOMICS
 
 LLM-as-judge verifiers are used twice: grading outputs in benchmarking, and as the reward signal in RL post-training. At scale, the verifier itself becomes the cost bottleneck, not the agent. A legal benchmark grading 50+ rubric criteria per answer across thousands of tasks runs the judge far more than the agent.
@@ -343,3 +348,4 @@ Run before shipping any AI change:
 - @HamelHusain, @sh_reya (July 2026): limits of automated evals; "hard to eval is a product smell"
 - @hwchase17, Subtext / Agentic Session Review (July 2026)
 - @Vtrivedy10, LangChain (July 2026): trace-judge verifier
+- Anthropic, "The new rules of context engineering for Claude 5 models" (trq212, 2026): rubrics as references for verifier agents

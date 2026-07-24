@@ -24,8 +24,9 @@ Context is the only durable moat. Competitors can buy the same model via API. Th
 4. **Structure beats cleverness**
    XML tags and labeled delimiters reduce model guesswork. A well-structured mediocre prompt outperforms a clever unstructured one.
 
-5. **Examples are the fastest multiplier**
-   One strong input-output example often outperforms paragraphs of instructions. Show, don't tell.
+5. **Examples multiply, but can also constrain**
+   One strong input-output example often outperforms paragraphs of instructions. But on Claude 5-class models, an example can narrow the exploration space: the model copies the example's shape instead of reasoning to a better one. For open-ended and tool-use tasks, prefer expressive interfaces (clear parameter names, enum values, tight output contracts) over examples. Keep examples for format-matching and for weaker models.
+   → See: Tools & Orchestration (interface as specification)
 
 6. **Bad behavior = missing spec**
    Fix is usually: tighten constraints, select better context, or add eval-style tests. Debug the spec, not the model.
@@ -211,6 +212,8 @@ RAG retrieves raw chunks. Wiki memory retrieves precomputed synthesis. They are 
 
 Built-in agent memory (Claude, Codex) is mostly reactive: it stores what the user tells it. A proactive memory layer gathers context on its own: it connects to sources (Gmail, Notion, git, Twitter, web search), writes relevant context into a local wiki, and auto-refreshes on a schedule (ex: a daily GitHub Action opens a PR with wiki updates, skipping the update when nothing changed). Comprehensive memory needs both; proactive complements, not replaces, reactive.
 
+Auto-memory is the newer built-in reactive layer. Rather than the user writing to CLAUDE.md by hand (the old `#` hotkey pattern), the harness decides which facts from the work and the user are worth persisting and saves them automatically. This deprecates manual memory capture for most cases but inherits the reactive limit: it stores what surfaced in-session, not what the agent could have gathered on its own. A proactive layer on top is still what closes that gap.
+
 > "Eventual correctness": a wiki self-corrects over time as the maintaining agent revisits sources, converging toward truth rather than being right on first write. Design for convergence, not one-shot accuracy.
 
 #### Memory Evolution Ladder
@@ -243,6 +246,28 @@ Three-step implementation:
 The pattern separates the "doing" agent from the "learning" agent. The doing agent runs in real time. The learning agent runs asynchronously on cheaper models, processing traces in bulk. This avoids contaminating real-time context with learning overhead.
 
 Key design consideration: memory built on traces stays close to where the run happened and where data lives, reducing drift from reality. Watch for stale memory outliving the context it was true in. Apply the same context rot principle (Principle 8) to memory updates.
+
+## REFERENCE FIDELITY
+
+A reference is context you point the model at instead of describing. Higher-fidelity references beat prose descriptions of the same thing and cost less to maintain. As models get stronger, the balance shifts from writing instructions to handing over good references.
+
+Fidelity ladder, low to high:
+
+| Reference | Fidelity | Use for |
+|---|---|---|
+| Prose description | Lowest | Quick intent, throwaway tasks |
+| Screenshot / mockup image | Low | Rough visual direction |
+| Markdown spec | Medium | Plans and requirements the model tracks |
+| HTML artifact | High | Interactive specs and design mockups the model reads structurally |
+| Code (function to port, test suite) | Highest | Behavior the output must match exactly |
+| Rubric | Highest | Encoding taste (ex: what good API design looks like) for verifier agents to check against |
+
+> Prefer references in code. A test suite or a function to port gives the model high-fidelity, executable intent in a language it knows well. An HTML mockup beats a screenshot or a written description of the same design.
+
+Rubrics are references for judgment rather than behavior: they let the model verify taste in a domain (API design, doc tone) by feeding verifier agents in a dynamic workflow.
+
+→ See: Evals & Observability (rubric-driven verifiers)
+→ See: Tools & Orchestration (dynamic workflows)
 
 ## TOKEN PRIORITY STACK
 
@@ -312,6 +337,7 @@ Run before every LLM call:
 
 **Sources:**
 - Anthropic + Product Faculty research (2026)
+- Anthropic, "The new rules of context engineering for Claude 5 models" (trq212, 2026): examples-can-constrain, reference fidelity, auto-memory
 - Muhammad Umer Farooq, Flow/Brain Chain (May 2026)
 - AGENTIC Twitter List digests, Jun 21-Jul 3 2026 (wiki memory, sleep-time compute, cognitive science taxonomy)
 - @jakebroekhuizen, LangChain memory guide (Jun 2026): functional memory taxonomy

@@ -115,6 +115,32 @@ This compounds with positive framing: a shorter prompt that defines scope and ha
 → See: Context Engineering (token priority stack, prompts as interface design)
 → See: Agent Skills (keep SKILL.md lean)
 
+## UNHOBBLING: RULES TO JUDGMENT
+
+Over-constraining is now a top failure mode. Guardrails written for weaker models (ex: "default to no comments," "never write docstrings") fire on cases where they are wrong, and conflicting instructions across the system prompt, skills, and user request force the model to spend reasoning resolving the conflict before it starts the task. Anthropic removed over 80% of Claude Code's system prompt for Claude 5-class models (Opus 5, Fable 5) with no measurable loss on coding evals.
+
+The shift is from stating rules to defining scope and trusting judgment. A capable model reads the surrounding context and matches it.
+
+> Rigid: "In code, default to writing no comments. Never write multi-line comment blocks."
+> Judgment: "Write code that reads like the surrounding code: match its comment density, naming, and idiom."
+
+### Then to Now
+
+| Old rule | New rule | Detail lives in |
+|---|---|---|
+| Give the model explicit rules | Define scope, let it use judgment | This section |
+| Give examples for tool use | Design expressive tool interfaces | Tools & Orchestration; Context Engineering (Principle 5) |
+| Put everything upfront | Progressive disclosure, load on demand | Agent Skills; Tools & Orchestration (deferred tool loading) |
+| Repeat instructions across prompt and tools | Put usage in the tool description, once | Tools & Orchestration |
+| Save memory to CLAUDE.md by hand | Auto-memory (model persists what matters) | Context Engineering |
+| Simple markdown specs | Rich references (code, tests, rubrics, HTML) | Context Engineering; Evals & Observability |
+
+Audit existing guidance after every frontier model upgrade. Instructions that compensated for a prior model's weakness become noise the new model has to reconcile. Anthropic ships `claude doctor` / `/doctor` to rightsize CLAUDE.md and skills for this.
+
+→ See: Context Engineering (examples caveat, reference fidelity)
+→ See: Tools & Orchestration (interface as specification, deferred tool loading)
+→ See: Agent Skills (progressive disclosure, prune stale workarounds)
+
 ## COMMON FAILURE MODES
 
 | Failure | Symptom | Prevention |
@@ -137,3 +163,4 @@ This compounds with positive framing: a shorter prompt that defines scope and ha
 - AGENTIC Twitter List digests, Jul 5-19 2026 (prompt weight as models improve)
 - @trq212 (July 2026): thin prompts, thick artifacts + context, thin skills
 - aiDotEngineer / "This Year in Claude" (July 2026): reduce system prompts for frontier models
+- Anthropic, "The new rules of context engineering for Claude 5 models" (trq212, 2026): unhobbling, rules-to-judgment, claude doctor

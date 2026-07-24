@@ -26,6 +26,20 @@ Agent reliability scales with constraint. Narrow, well-defined scope is testable
 | Explicit params | Required vs optional clear | order_id (req), include_history (opt) |
 | Structured errors | Errors model can interpret | {error: order_not_found, suggestion: ...} |
 
+### Interface as Specification
+
+On Claude 5-class models, the tool's interface carries the guidance that examples used to. Expressive parameter names, enum values, and defaults tell the model how to use the tool without a separate worked example. An enum of `pending | in_progress | completed` plus one line ("keep exactly one item in_progress") defines intended behavior more reliably than an example, and it does not lock the model into the example's shape. Design the interface to be self-describing; reserve prose for the constraint the schema can't express.
+
+→ See: Context Engineering (Principle 5, examples can constrain)
+
+### Deferred Tool Loading
+
+Progressive disclosure applies to tools, not just skills and docs. A large tool set is context overhead even when unused. Deferred (lazy) loading keeps a tool's full definition out of context until the agent searches for it (ex: a ToolSearch step), so a harness can offer many tools without paying for all of them upfront. Pair with the "fewer tools" principle: fewer tools loaded at once, more available on demand.
+
+### Instructions in the Description, Not the Prompt
+
+Put usage guidance in the tool description, once. Older models needed the same rule repeated in the system prompt and the tool schema; capable models read the description reliably, so repetition is wasted tokens that can also conflict. If a tool is being misused, fix its description before adding a system-prompt rule.
+
 ## PIPELINE VS. AGENT
 
 ### Pipeline (Default)
@@ -406,3 +420,4 @@ Resource: background-agents.com (maintained by Ona) tracks the vendor landscape.
 - @AranYogesh / Open SWE (Jul 2026): the harness is the product; convergent internal-agent patterns
 - @bcherny, @delba_oliveira (Jul 2026): loop types by trigger
 - @Vtrivedy10, LangChain (Jul 2026): continual-learning trace numbers (Terminal Bench 2.0 +13.7%)
+- Anthropic, "The new rules of context engineering for Claude 5 models" (trq212, 2026): interface as specification, deferred tool loading, instructions in tool descriptions
