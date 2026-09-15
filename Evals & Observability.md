@@ -1,4 +1,4 @@
-Last updated: July 2026
+Last updated: September 2026
 
 Measuring, maintaining, and scaling AI product quality
 
@@ -51,6 +51,52 @@ Rapid iteration without production risk. Top teams average 12+ experiments per d
 
 Thumbs down, regenerates, task abandonment catch failure modes automated evals miss. Feed production signals back into your eval pipeline.
 
+## EVALUATION-DRIVEN DEVELOPMENT
+
+Feature-driven development assumes deterministic pass/fail tests against a spec. AI outputs vary across identical inputs and shift with small context changes, so the eval suite becomes the spec. Build it in this order.
+
+### 1. Define the objective
+
+Anchor on the user problem and a measurable business outcome, not the feature. Every scorecard metric must trace back to this objective.
+
+| Weak (feature) | Strong (outcome) |
+|---|---|
+| Build a CRM feature to summarize call transcripts | Cut sales reps' post-call admin time by 50% with accurate, relevant summaries |
+
+> If a metric can't be traced to the objective, it measures the model, not the product. Teams skip this step because it feels obvious; it is the step that keeps evals honest.
+
+→ See: AI Product Leadership & Execution (KPI graph: the objective should be a lever on the product NSM)
+
+### 2. Build the golden set
+
+Happy path, edge, and adversarial cases. Treat it as a living document: after launch, real user scenarios flow in continuously. An alternative weighting puts ~80% on the happy path versus the ~60% split in Golden Set Structure below. Neither ratio is evidence-backed; weight edge and adversarial cases higher when a missed failure is expensive.
+
+### 3. Define a multi-dimensional scorecard
+
+"High quality" is five measured dimensions, not one number. The full cross-functional team owns the scorecard, not product alone.
+
+| Dimension | Metrics | Watch For |
+|---|---|---|
+| Accuracy & factuality | Relevance, precision, recall, hallucination rate, citation quality | Usually trades against latency |
+| Performance & efficiency | Latency, inference cost, step and tool-call ratios | Route by task complexity to hold both accuracy and latency |
+| Robustness & reliability | Consistency, coverage across input types, brand voice adherence | Aggregate accuracy hides segment failures |
+| Trust & responsible AI | Safety, security, compliance | Weight higher for agents acting on user data |
+| Business outcome | Task completion rate, time saved, ROI against the objective | The only dimension that confirms step 1 was met |
+
+> A scorecard without a business-outcome dimension can stay green while the feature misses its objective. For agentic workflows, pair per-step correctness with task completion and time saved per run.
+
+### 4. Run and compare
+
+Baseline, hypothesis (ex: "adding a reasoning step improves accuracy without breaking the latency budget"), change, rerun the full suite, check every dimension for regressions, not only the one targeted. Measurement methods in order of cost: code-based checks, LLM-as-judge, human review.
+
+→ See: Three-Tier Eval Scaling Strategy
+
+### 5. Close the loop post-launch
+
+Usage generates feedback, feedback updates the golden set, the golden set updates evals, evals drive model and prompt changes, changes refresh the product. Internal evals are a proxy; real usage is ground truth. Delaying launch delays the highest-value signal. Automate the loop where possible; its cycle time is the team's iteration speed.
+
+→ See: Offline / Online Eval Loop
+
 ## EVAL TYPES & WHEN TO USE
 
 | Type | How | Best For | Limits |
@@ -70,6 +116,8 @@ Use them together: exact match for deterministic, LLM-as-judge for subjective, h
 PMs and domain experts review outputs by hand. Define what 'good' looks like. Build initial 50-100 golden set examples.
 
 **Caveat: human labelers are unreliable.** Two humans with the same background from the same university labeling the same prompt agree less than 50% of the time. The same grader shown the same prompt at different times also shows discrepancy. Humans are the "master of all LLM judges" but require redundancy. Use humans as tiebreakers for epistemic uncertainty (when model and automated classifiers disagree), not as the primary evaluation mechanism at scale. Build redundant labeling into any human review process.
+
+**Reviewer profile shifts as models mature.** Early on, volume matters and contractor labeling vendors (ex: Scale AI, Surge AI) cover breadth. As models improve, obvious errors disappear and the remaining failures take domain knowledge to spot. Label volume drops while required expertise and cost per label rise (financial analysts, engineers, PhD-level reviewers). Budget human eval in specialist hours, not crowd volume, once agents move into specialized knowledge work.
 
 ### Tier 2: Programmatic
 
@@ -214,6 +262,22 @@ Categorize evals by what they test, not where they come from. This gives a middl
 | Errors | API failures, guardrail triggers | Error rate >X% for 5+ min |
 | Quality | Thumbs down, regenerates, abandon | Significant shift from baseline |
 
+### Check Metric Direction Before Alerting
+
+Abandonment is not always failure. An answer-in-place product (ex: Ask AI resolving a question without a click-through) produces the same signal as a user who gave up. Reading "abandonment up" as bad can kill a working feature.
+
+Google Shopping ads (2009) raised whole-page abandonment, and leadership planned not to launch. Very short clicks (click, glance, bounce back) fell at the same time. The combined metric, queries with a short click OR abandonment, was neutral: the image and price answered the question on the page. The feature launched at 1% of query traffic and later research confirmed "good abandonment." Google Search later replaced "time to first good click" with "time to first good interaction" for the same reason.
+
+| If the metric moves... | Check before acting |
+|---|---|
+| Abandonment up | Did short clicks, regenerates, or follow-up queries fall? Combine them into one metric |
+| Clicks down | Did the answer move onto the surface (ex: inline answer, agent completing the task)? |
+| Session length down | Did task completion or time saved rise? |
+
+> Before inheriting a metric, write down what user behavior "up" and "down" each represent. Metrics are not memorized as up-good, down-bad.
+
+No general rule exists for when to question a metric's direction versus trust it. Default to questioning it whenever the AI feature changes where the user gets value.
+
 **Tracing is non-negotiable for agents.** Capture: input at each step, model output, tool calls, return values. Without tracing, you're guessing at root cause.
 
 ## DATA SOURCING FOR EVALS
@@ -245,6 +309,16 @@ Agent transcripts (skill invocations, MCP tool calls, reasoning traces, error re
 Capture strategy: persist full transcripts server-side, distill into structured records (tool sequences, success/failure outcomes, time-to-completion, error types), feed into eval pipelines as trajectory-level test cases. Over time, transcript-derived data becomes a proprietary asset for fine-tuning and RL.
 
 **Separate SDK unit/integration tests from model capability evals.** Any model passes plumbing tests, so including them in scoring adds no signal.
+
+### Agent-authored evals from repo + traces
+
+Bootstrap an eval suite when you have none: point a coding agent at the repo and existing agent traces and have it propose evals. LangChain's Eval Engineering Skill maps the agent surface (prompts, models, tools, skills, hooks), mines traces for observed contracts (tool arguments, results, errors), then interviews the user to approve each proposal, outputting executable Harbor-format tests. Interviewing the user beat one-shot generation on eval acceptance.
+
+Complementary trace-first workflow: cluster your traces, build a lightweight annotation app, then have an AI monitor your annotations in real time to adapt sampling and propose new cases to accept or reject. Traces are the raw material; the human stays in the loop on what counts as a failure.
+
+> Harbor (the runner behind Terminal Bench) is emerging as a portable eval format: provide agent + dataset + sandbox. Authoring evals in a portable format makes them reusable across harnesses and model swaps.
+
+→ See: Agent Skills (skills that author artifacts from repo context)
 
 ## GOLDEN SET STRUCTURE
 
@@ -331,6 +405,10 @@ Run before shipping any AI change:
 | Offline/online gap | Offline 0.75, online 0.3 | Score production logs too |
 | Unfocused evals | No mapping to prod behaviors | Docstring per eval |
 | Stale golden set | Same examples for 6 months | Weekly production feedback |
+| Feature-framed objective | Evals pass; feature doesn't move the outcome it was built for | Write the objective as an outcome; trace every metric to it |
+| No business-outcome dimension | Scorecard green, task completion and time saved flat | Add business outcome as a scorecard dimension |
+| Crowd labels at maturity | Human review passes outputs a domain expert would reject | Shift human review to domain experts as volume drops |
+| Wrong-direction metric | Answer-in-place feature flagged as failing on abandonment | Pair abandonment with short-click and follow-up signals before alerting |
 
 → See: Context Engineering (prompt/context quality)
 → See: Agent Skills (skill testing and benchmarking)
@@ -347,5 +425,8 @@ Run before shipping any AI change:
 - AGENTIC Twitter List digests, Jul 5-19 2026 (automated-eval limits, agentic session review)
 - @HamelHusain, @sh_reya (July 2026): limits of automated evals; "hard to eval is a product smell"
 - @hwchase17, Subtext / Agentic Session Review (July 2026)
-- @Vtrivedy10, LangChain (July 2026): trace-judge verifier
+- @Vtrivedy10, LangChain (July 2026): trace-judge verifier; Eval Engineering Skill (agent authors Harbor-format evals from repo + traces)
+- @HamelHusain, @sh_reya (July 2026): cluster traces → annotation app → AI-monitored sampling for eval bootstrapping
 - Anthropic, "The new rules of context engineering for Claude 5 models" (trq212, 2026): rubrics as references for verifier agents
+- Roger Jin, Jennifer Liu / AI Leadership course, Motion session (Aug 2026): evaluation-driven development, multi-dimensional scorecard, human eval shift to domain experts
+- Jennifer Liu, Satyajit Salgar / AI Leadership course, Product Metrics & Growth session (Sep 2026): good abandonment (Google Shopping 2009), time to first good interaction; the direction-check table is synthesis

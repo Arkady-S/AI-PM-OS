@@ -1,4 +1,4 @@
-Last updated: March 2026
+Last updated: September 2026
 
 Discovering problems worth solving through honest conversation
 
@@ -55,6 +55,8 @@ Findings from Anthropic's 81K qualitative study and AI lab product practices tha
 
 > Prototype before you spec. Anthropic optimizes for speed to learning: build fast, ship internally, learn from real usage. The prototype becomes the spec.
 
+> Recall has a floor. Past-anchored questions cannot surface pain from a workflow the user has never had. For genuinely novel categories the interview is the wrong instrument: put a prototype in front of them and read the behavior.
+
 ## INTERVIEW STRUCTURE
 
 | Phase | Time | What to Do |
@@ -89,8 +91,11 @@ Compliments are free. Commitment costs something. Escalate asks to test whether 
 
 → See: Probing for Deep Jobs (emotional/social job layers beneath functional requests)
 
+→ See: Discovery & Validation (latent vs manifest pain; exposure-based validation)
+
 ---
 
 **Sources:**
 - Fitzpatrick, The Mom Test (2013)
 - Anthropic, 81K User Study (2026)
+- Jennifer Liu / AI Leadership course (July 2026): recall limits for novel categories

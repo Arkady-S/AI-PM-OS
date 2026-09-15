@@ -1,4 +1,4 @@
-Last updated: July 2026
+Last updated: September 2026
 
 Moats, archetypes, and frameworks for durable AI advantage
 
@@ -16,9 +16,39 @@ Traditional moats (network effects, brand, UX) are collapsing under AI pressure.
 
 > 3. **Counter-positioning is the strongest moat.** Find the approach incumbents can't copy without damaging existing business. Structural, not capability-based.
 
-> 4. **Data gravity > distribution.** Same model, different data. Every interaction generating proprietary signal widens the gap.
+> 4. **Data gravity outlasts distribution.** Same model, different data. Every interaction generating proprietary signal widens the gap. Distribution wins a market faster; data gravity holds it longer. Ranking the two without naming the time horizon mis-prices an installed base.
 
 > 5. **Measure dependency, not engagement.** Better autonomous AI reduces frequency. A weekly user who can't function without you beats a daily user who could switch.
+
+## DISTRIBUTION VS DIFFERENTIATION
+
+Three paths win a contested category. Everything else is a faster version of what the leader already ships.
+
+| Path | Mechanism | Wins When |
+|------|-----------|-----------|
+| Distribution | Bundle into a channel users already occupy: install base, partnership, acquisition, platform default | Product is at rough parity and the channel is one you own rather than rent |
+| Differentiation | Build what the competitor cannot replicate without restructuring | The capability is co-specialized with assets the competitor lacks |
+| Complement | Make the incumbent's bundled apps work better inside your product instead of replacing them | The bundle is entrenched and users already move between its apps and yours daily |
+
+> Free is not a distribution strategy. Giving the product away buys reach and removes the revenue that funds closing the product gap, so the gap widens while reach grows.
+
+Atlassian ran both paths on Stride against Slack and neither cleared. Distribution: the Zoom acquisition was refused, and free pricing failed because pricing was already far below market and the product could not be funded without revenue. Differentiation: combining messaging with Trello and Jitsi produced mockups the team judged better than the current product but never "amazing." Both paths returning a weak answer is itself the signal.
+
+Slack took the complement path against Microsoft 365 and Google Workspace bundling. Google Docs and Office files were the most-used apps inside Slack, so Slack invested in richer file sharing, access management, and previews for them rather than competing with them. The positioning: "Slack is 2% of your enterprise software budget that makes the other 98% more valuable."
+
+> Complementing lowers head-on exposure; it does not remove it. Slack still sold to Salesforce (July 2021), and one case does not show that complementing alone holds a category.
+
+For a work-management platform facing suite bundling, the MCP server and deep suite integrations are how the complement path gets built.
+
+→ See: MCP (client/server surface as competitive exposure)
+
+| Test | Distribution Path | Differentiation Path | Complement Path |
+|------|-------------------|----------------------|-----------------|
+| Asset | Do we own the channel or rent it? | Is the asset co-specialized or independently replaceable? | Are the incumbent's apps already among the most used inside our product? |
+| Funding | Does the play still fund the product gap? | Can we reach "amazing," or only "better"? | Does integration depth justify its own budget line, or is it treated as a connector? |
+| Response | How fast can the competitor match the channel? | What would the competitor give up to copy this? | Can the incumbent restrict access to its files or APIs? |
+
+→ See: AI GTM & Pricing (pricing model effects, launch plays)
 
 ## 4C DISRUPTION FRAMEWORK
 
@@ -114,6 +144,12 @@ Durable advantage is the compounding flywheel around the model, not the model it
 
 Maps to the harness-lock-in and data-gravity moats: owning these five layers is what converts a model wrapper into a defensible position.
 
+### Co-Specialization Test
+
+Owning the layers is not enough. They compound only when co-specialized: each layer must be worth more because the others exist, rather than accumulated side by side.
+
+> Remove one asset and look at the rest. If the remaining stack is undiminished, that asset is independently replaceable and is not part of the moat. A portfolio of individually strong assets that do not need each other is a list, not a position.
+
 → See: Context Engineering (context as the durable moat, memory architecture)
 → See: Evals & Observability (feedback loop; the harness is the moat)
 
@@ -195,13 +231,46 @@ Map trade-offs forced by current alternatives, not just competitor names. Differ
 | Manual workarounds | Spreadsheets, email, Slack; zero switching cost | Is AI 10x better or just incremental? |
 | Doing nothing | Zero learning curve, zero cost, zero risk | Is pain acute enough for inertia? |
 
+## COMPETITIVE MARKET MAP
+
+Two axes: direct vs functional (same job, different shape) and current vs potential. Most teams populate only direct-current, the quadrant where the threat is already priced into deals and the response window has closed.
+
+| Quadrant | Definition | Work management example |
+|----------|-----------|------------------------|
+| Direct current | Head-on competitors named in deals | Linear, Asana, Monday |
+| Direct potential | Adjacent players one move from entering | Figma moving from discovery into build |
+| Functional current | Different tools serving the same job today | Spreadsheets, docs, Slack threads |
+| Functional potential | Emerging tools that will become direct | General and coding agents absorbing the work-management job via MCP |
+
+Functional-potential is the quadrant that decides agent-mediated platforms. A competitor occupies it before it is nameable in a deal, and that period is the only one in which a cannibalization bet is still cheap.
+
+→ See: MCP (client/server surface as competitive exposure)
+
+## MOAT DECAY AND CANNIBALIZATION
+
+Every moat decays. Model improvement compresses multi-step workflows, so the integration depth that defends a product today becomes the legacy surface it defends tomorrow. Monitoring alone does not survive this: the output of a signal review is climb, hold, or pull back, and all three assume the current line persists.
+
+The dynamic capabilities cycle closes that gap.
+
+| Stage | Question | Output |
+|-------|----------|--------|
+| Sense | Which signals suggest the current moat is compressing? | Signal log, moat scorecard |
+| Seize | What do we fund that makes a current line worth less? | One funded cannibalization bet |
+| Transform | What org, ownership, and operating-model change does that bet require? | Reorg, retired surface, new DNA |
+
+> If a model release made our core feature free tomorrow, what would we need to have already built to survive? Answer it while the answer is cheap, not when the competitor has reached direct-current.
+
+GitHub is the worked case: it sensed that AI code generation would reduce the platform to storage, funded Copilot against its own storage-first revenue model, and moved product and engineering DNA into the developer's editor.
+
+→ See: AI Product Leadership & Execution (sensing function, guardrails)
+
 ## ASSESSMENT CADENCE
 
 | Cadence | Activity | Output |
 |---------|----------|--------|
 | Weekly | Monitor signals: launches, pricing, hiring, sentiment | Signal log with flagged items |
 | Monthly | Moat health check: contextual moats strengthening? | Moat scorecard with trends |
-| Quarterly | Full 4C assessment across all dimensions | Strategy memo, assumptions tested |
+| Quarterly | Full 4C assessment; refresh all four market-map quadrants | Strategy memo, assumptions tested |
 | Annually | Seven Powers audit: exist, building, need investment | Defensibility roadmap |
 
 ## STRATEGIC LEVERAGE
@@ -238,6 +307,11 @@ Not all trends create advantage. The intersection of a trend and your unique cap
 | Ignoring doing nothing | Assuming all TAM will adopt | Test if pain overcomes inertia |
 | Underestimating inc. | Planning 12-month window | Plan for 90-day response |
 | Capability-only | Differentiating on replicable AI | Pair capability with defensibility |
+| Sensing without seizing | Signals logged; no bet funded against a current line | Every moat scorecard names one cannibalization bet |
+| Direct-current only | Competitive review lists named deal competitors | Populate all four quadrants; watch functional-potential |
+| Asset list, not position | Strong assets that do not need each other | Run the co-specialization removal test |
+| Free as distribution | Price cut to zero to buy reach; product investment starves | Test whether the distribution play still funds the product gap |
+| Two-path framing against a bundle | Only distribution or differentiation considered against a bundled incumbent | Test the complement path: make the incumbent's apps better inside your product |
 
 → See: Probing for Deep Jobs (behavioral segmentation)
 → See: AI GTM & Pricing (launch strategy, pricing)
@@ -250,3 +324,6 @@ Not all trends create advantage. The intersection of a trend and your unique cap
 - LangChain Fleet / Caspar Broekhuizen, Patrick Collison (June 2026): agent fleet management
 - @hwchase17 (July 2026): own your intelligence (five owned layers)
 - @BrainsAndTennis (July 2026): vertical agent economics vs generalist (Shortcut spreadsheet agent)
+- Jennifer Liu, Joff Redfern / AI Leadership course (July 2026): co-specialized assets and dynamic capabilities (Teece), competitive market map (Helmer), GitHub cannibalization case
+- Joff Redfern / AI Leadership course (July 2026): distribution vs differentiation as the two win paths, HipChat/Stride case
+- Arjuna Kanan (SVP Slack), AI Leadership course (Aug 2026): complement strategy against Microsoft and Google bundling

@@ -1,4 +1,4 @@
-Last updated: May 2026
+Last updated: September 2026
 
 Trust mechanics, pricing psychology, and launch strategy for AI products
 
@@ -66,7 +66,7 @@ When adoption metrics disappoint, locate the failure stage before choosing an in
 
 > Traditional SaaS fixes retention with features. AI faces a trust dynamic where a single visible failure undoes weeks of earned confidence. Diagnose the stage, not the symptom.
 
-## 7 AI LAUNCH PLAYS
+## 8 AI LAUNCH PLAYS
 
 1. **Smallest reliable workflow**
    - Ship the boring workflow that works 95%. Early trust beats early wow.
@@ -90,6 +90,9 @@ When adoption metrics disappoint, locate the failure stage before choosing an in
 7. **Proof as distribution**
    - 30s videos of messy input to crisp output. Proof compels; hype fades.
 
+8. **Package before you build**
+   - Combine existing features into a solution for one team type before shipping new ones. Users who find features one at a time rarely combine them. Slack Templates packaged a list, a canvas, and automatic grouping of similar bugs into a bug-triage solution for engineering teams.
+
 ## ENTERPRISE ADOPTION SIGNALS
 
 Patterns from Anthropic + OpenAI enterprise deployments:
@@ -103,6 +106,30 @@ Patterns from Anthropic + OpenAI enterprise deployments:
 > **Guardrails are conversion levers, not compliance chores:** trust and observability reduce procurement friction and accelerate adoption.
 
 > **Prompt-layer adoption captures convenience, not advantage:** move from "asking AI for outputs" to "delegating multi-step workflows" to compound gains.
+
+## ENTERPRISE UPMARKET MOTION
+
+Moving from SMB to enterprise is a new motion, not the same one with bigger customers. Priorities reorder and a new persona appears.
+
+| Priority | SMB | Enterprise |
+|----------|-----|------------|
+| P0 | Workflows (small teams need to move fast) | Security and trust; administrative controls |
+| P1 | Collaborative content, light automation | Apps and integrations, workflows, analytics and reporting, AI productivity |
+| P2 | Delight features | Delight features |
+
+> The IT admin is a distinct persona with its own jobs: provision, restrict, audit, prove compliance. In SMB, the admin is one person managing the tool alongside ten other duties. In enterprise, the admin can block the deal.
+
+| Requirement | What Changes |
+|-------------|--------------|
+| Dedicated admin and trust team | Admin needs get a roadmap owner, not leftover capacity |
+| Solution engineering | Pre-sale technical fit and deployment support |
+| White-glove support | High-touch onboarding for large accounts |
+| Protected PLG investment | Self-serve motion keeps its own team and budget as the sales motion grows |
+
+For agentic products, every expansion of agent autonomy or external access (ex: MCP server scopes, agents acting across workspaces) adds admin surface: permission scopes, audit logs, per-workspace policy. Admin controls gate enterprise adoption of those capabilities.
+
+→ See: Governance & Safety (guardrails, HITL trigger criteria)
+→ See: MCP (server security)
 
 ## LAUNCH STRATEGY CANVAS
 
@@ -125,6 +152,9 @@ Patterns from Anthropic + OpenAI enterprise deployments:
 | Hype over proof | Marketing promise, product disappoints | Ship proof (30s videos), not hype |
 | Wrong intervention stage | Fixing retention when problem is activation | Diagnose stage with signal table before choosing fix |
 | Feature-first launch | Breadth launch, shallow adoption | One hero use case; smallest reliable workflow |
+| Build before package | New features ship; existing ones stay undiscovered | Package existing features into team-type solutions first |
+| Upmarket as extension | Enterprise deals stall on security review and admin gaps | Treat the admin as a P0 persona with a dedicated team |
+| PLG starved by sales motion | Self-serve growth slows after the enterprise push | Protect PLG with its own team and budget |
 
 → See: AI UX (trust engineering, first 30 seconds)
 → See: Economics & Model Selection (pricing model economics)
@@ -133,3 +163,4 @@ Patterns from Anthropic + OpenAI enterprise deployments:
 
 **Sources:**
 - Henry (Anthropic / formerly Super.com), Product Faculty AI PM Course (May 2026)
+- Arjuna Kanan (SVP Slack), AI Leadership course (Aug 2026): SMB vs enterprise prioritization, admin persona, PLG protection, Slack Templates packaging

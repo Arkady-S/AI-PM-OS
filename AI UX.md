@@ -1,4 +1,4 @@
-Last updated: July 2026
+Last updated: September 2026
 
 Trust engineering, humorphism, and relationship design for AI products
 
@@ -35,6 +35,23 @@ The hard UX problems in human-AI collaboration are not about the model's output 
 | Parallelizing think-time | In chat, human think-time and agent think-time happen sequentially — each waits for the other | Design for simultaneous work: the agent makes progress while the human thinks, not after |
 
 > Chat is structurally sequential: it forces human think-time and agent think-time to alternate. For collaborative work products, design surfaces where both progress at once. The bottleneck is coordination, not model capability.
+
+## ESCAPE HATCH DESIGN
+
+When a product introduces a new transactional behavior, keep a visible path back to the familiar one. The exit is not a recovery step after failure; it runs in parallel with the new path at the moment the action commits.
+
+Google Shopping's 2015 transactional ads test (buy without leaving the results page) produced greater than 10x conversion uplift among users who understood what they were doing, and broke trust among users who did not realize they had bought something. The fix was a "check out now" action beside a large "take me to the retailer site" button. Forking the traffic resolved user confusion and partner resistance with one control.
+
+| Design Question | Why It Matters |
+|---|---|
+| Is the exit visible at the commitment moment, not after it? | An exit discovered afterward prevents nothing |
+| Does the exit lead somewhere the user already knows? | A novel recovery path is a second thing to learn under stress |
+| Does the fork let a partner keep the transaction on their surface? | Partner resistance and user distrust often share one fix |
+| Can a user who took the exit still find the new path later? | A permanent opt-out trades a trust win for an adoption loss |
+
+> The escape hatch is orthogonal to autonomy level. The staircase sets how much the agent decides; the escape hatch preserves the familiar manual path at the point of commitment.
+
+→ See: Competitive Strategy & Defensibility (agent-first platforms: who owns the completing surface)
 
 ## DESIGN IMPLICATIONS
 
@@ -203,6 +220,41 @@ Users form trust judgments almost immediately. The first interaction must demons
 | Engagement | Dim. returns | Learning loops, visible personalization. |
 | Retention | Trust erosion | Surface uncertainty, recover from errors. |
 
+## BEHAVIOR CHANGE AUDIT
+
+Behavior changes only when motivation, ability, and a prompt converge (Fogg Behavior Model). Most PM effort goes to ability because friction is visible and fixable inside the product. When motivation is the missing input, ability work does not move usage, CSAT, or retention.
+
+| Bucket | Question | Example Investments |
+|--------|----------|---------------------|
+| Motivation | Is the pain or payoff large enough to act? Who else cares whether the user acts? | Leadership visibility, success stories, expert endorsement, time-limited offers |
+| Ability | Can the user act with little effort? | Templates, AI assistance, better search, simpler flows |
+| Prompt | Does a cue arrive at the right time and place? | Digest emails, in-app notifications, reminders, first-party integrations |
+
+### 1. Bucket the backlog
+
+Sort planned initiatives into the three buckets. Ability and prompt blur at the edges; the value is in the distribution, not perfect classification.
+
+### 2. Check the skew
+
+If most investment sits in ability while usage is flat, test motivation before shipping more UX.
+
+### 3. Find the real motivation source
+
+In B2B, motivation is often top-down: people act because a manager or exec will look. Features that make usage visible to leadership can move adoption more than UX polish.
+
+### 4. Stack-rank within each bucket
+
+Pick the highest-value item per bucket rather than ranking the whole backlog on one axis.
+
+Lattice's OKR product: three teams improved UI and flows for months under pressure from sales, CX, and the CEO, and CSAT, engagement, and usage stayed flat. Employees updated OKRs because leadership asked, not because the tool was easy. Leadership overviews were the missing investment.
+
+> Ability work cannot compensate for missing motivation. Diagnose which input is absent before choosing the fix.
+
+For agentic features in enterprise accounts, manager and admin expectations may be the main motivation source. Treat that as an assumption to test per account, not a default. Evidence for the pattern is one case study.
+
+→ See: Competitive Strategy & Defensibility (behavioral segmentation: drive vs resistance)
+→ See: AI Product Leadership & Execution (AI-native transformation model: leadership layer)
+
 ## MEASUREMENT
 
 | Stop Measuring | Start Measuring |
@@ -212,6 +264,12 @@ Users form trust judgments almost immediately. The first interaction must demons
 | Feature adoption % | Task completion rate with AI |
 | NPS alone | Human-AI pair outcome quality |
 | Clicks to complete | Cognitive load reduction |
+
+Contested: a competing view holds that AI should not change product success metrics at all, since users should experience the product as better, not as "AI." Neither position is evidence-backed. The middle path is to keep the North Star about user value and redefine what counts as a valued interaction, as Google Search (DAU to multi-need engagement) and YouTube (watch time to valued watch time) did.
+
+Task completion with AI often lands outside the AI surface, in the task, doc, or automation the answer led to. Instrument those downstream actions, or AI metrics read low.
+
+→ See: AI Product Leadership & Execution (North Star evolution; cross-surface attribution in KPI graph validation)
 
 ## 7 AI UX TRAPS
 
@@ -294,6 +352,8 @@ Design implications:
 | Silent failures | Users perceive stupidity | Surface uncertainty, show errors |
 | Prompt dependency | Only power users succeed | Context packs, not blank boxes |
 | Cognitive overload | Users abandon complex UIs | Structured UI, structured tasks |
+| No escape hatch | Users complete an action they did not intend | Parallel visible exit to the familiar path at commitment |
+| Ability over-investment | UX keeps improving; usage and CSAT stay flat | Bucket backlog by motivation, ability, prompt; test motivation first |
 
 → See: Context Engineering (context curation for AI features)
 → See: Prompt Engineering (behavioral framing in system prompts)
@@ -308,6 +368,9 @@ Design implications:
 - Brian Chesky (structured UI for transactional domains)
 - Henry (Anthropic / formerly Super.com), Product Faculty AI PM Course (May 2026)
 - Shreya Shankar (human-agent handoff and flow, June 2026)
+- John Alternis (former VP Google, CPO Walmart), AI Leadership course (Aug 2026): escape hatch design, Google Shopping transactional ads
 - Ethan Mollick, "What it feels like to work with Mythos" (June 2026): structural opacity, patron model
 - @gabepereyra (Jul 1 2026): Harvey Q2 results, agent-mediated feature discovery
 - Shreya Shankar (July 2026): generated UI as input / feedback loop
+- Jennifer Liu / AI Leadership course (Aug 2026): Fogg model applied as a backlog audit, Lattice OKR case, Airtable bucketing exercise
+- Satyajit Salgar / AI Leadership course, Product Metrics & Growth session (Sep 2026): "AI should not change your product metrics" position
